@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 require.config({
@@ -11,7 +11,6 @@ require.config({
         "mage/adminhtml/backup": ["prototype"],
         "mage/captcha": ["prototype"],
         "mage/common": ["jquery"],
-        "mage/requirejs/plugin/id-normalizer": ["jquery"],
         "mage/webapi": ["jquery"],
         "ko": { exports: "ko" },
         "moment": { exports: "moment" }

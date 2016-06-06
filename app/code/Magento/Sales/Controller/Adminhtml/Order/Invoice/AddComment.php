@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order\Invoice;
@@ -74,7 +74,7 @@ class AddComment extends \Magento\Sales\Controller\Adminhtml\Invoice\AbstractInv
             $this->getRequest()->setParam('invoice_id', $this->getRequest()->getParam('id'));
             $data = $this->getRequest()->getPost('comment');
             if (empty($data['comment'])) {
-                throw new LocalizedException(__('The Comment Text field cannot be empty.'));
+                throw new LocalizedException(__('Please enter a comment.'));
             }
             $invoice = $this->getInvoice();
             if (!$invoice) {

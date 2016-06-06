@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -43,7 +43,7 @@ class AssertOrderInOrdersGrid extends AbstractConstraint
     {
         $filter = [
             'id' => $order->hasData('id') ? $order->getId() : $orderId,
-            'status' => $status,
+            'status' => $status
         ];
         $errorMessage = implode(', ', $filter);
         \PHPUnit_Framework_Assert::assertTrue(

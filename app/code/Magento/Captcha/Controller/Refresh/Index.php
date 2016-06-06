@@ -3,7 +3,7 @@
  * Refreshes captcha and returns JSON encoded URL to image (AJAX action)
  * Example: {'imgSrc': 'http://example.com/media/captcha/67842gh187612ngf8s.png'}
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Captcha\Controller\Refresh;
@@ -35,7 +35,11 @@ class Index extends \Magento\Framework\App\Action\Action
         $formId = $this->_request->getPost('formId');
         if (null === $formId) {
             try {
-                $params = \Zend_Json::decode($this->_request->getContent());
+                $params = [];
+                $content = $this->_request->getContent();
+                if ($content) {
+                    $params = \Zend_Json::decode($content);
+                }
                 $formId = isset($params['formId']) ? $params['formId'] : null;
             } catch (\Zend_Json_Exception $exception) {
                 $formId = null;

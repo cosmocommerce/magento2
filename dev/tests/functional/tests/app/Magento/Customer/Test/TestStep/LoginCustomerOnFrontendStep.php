@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -71,7 +71,7 @@ class LoginCustomerOnFrontendStep implements TestStepInterface
     public function run()
     {
         $this->logoutCustomerOnFrontend->run();
-        $this->cmsIndex->getLinksBlock()->openLink("Log In");
+        $this->cmsIndex->getLinksBlock()->openLink('Sign In');
         $this->cmsIndex->getCmsPageBlock()->waitPageInit();
         $this->customerAccountLogin->getLoginBlock()->login($this->customer);
         $this->cmsIndex->getCmsPageBlock()->waitPageInit();

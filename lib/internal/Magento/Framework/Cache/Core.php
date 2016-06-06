@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Cache;
@@ -29,6 +29,7 @@ class Core extends \Zend_Cache_Core
     protected function _id($cacheId)
     {
         if ($cacheId !== null) {
+            $cacheId = str_replace('.', '__', $cacheId); //reduce collision chances
             $cacheId = preg_replace('/([^a-zA-Z0-9_]{1,1})/', '_', $cacheId);
             if (isset($this->_options['cache_id_prefix'])) {
                 $cacheId = $this->_options['cache_id_prefix'] . $cacheId;

@@ -1,11 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogSearch\Test\Unit\Model\Layer\Filter;
 
+use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
@@ -22,7 +23,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     /** @var  \Magento\Eav\Model\Entity\Attribute\Frontend\AbstractFrontend|MockObject */
     private $frontend;
 
-    /** @var  \Magento\CatalogSearch\Model\Resource\Fulltext\Collection|MockObject */
+    /** @var  \Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection|MockObject */
     private $fulltextCollection;
 
     /** @var  \Magento\Catalog\Model\Layer\State|MockObject */
@@ -34,7 +35,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     /** @var \Magento\Framework\App\RequestInterface|MockObject */
     private $request;
 
-    /** @var  \Magento\Catalog\Model\Resource\Layer\Filter\AttributeFactory|MockObject */
+    /** @var  \Magento\Catalog\Model\ResourceModel\Layer\Filter\AttributeFactory|MockObject */
     private $filterAttributeFactory;
 
     /** @var  \Magento\Catalog\Model\Layer\Filter\ItemFactory|MockObject */
@@ -67,7 +68,8 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(['getState', 'getProductCollection'])
             ->getMock();
-        $this->fulltextCollection = $this->getMockBuilder('\Magento\CatalogSearch\Model\Resource\Fulltext\Collection')
+        $this->fulltextCollection =
+            $this->getMockBuilder('\Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection')
             ->disableOriginalConstructor()
             ->setMethods(['addFieldToFilter', 'getFacetedData', 'getSize'])
             ->getMock();
@@ -81,7 +83,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->filterAttributeFactory = $this->getMockBuilder(
-            '\Magento\Catalog\Model\Resource\Layer\Filter\AttributeFactory'
+            '\Magento\Catalog\Model\ResourceModel\Layer\Filter\AttributeFactory'
         )
             ->disableOriginalConstructor()
             ->setMethods(['create'])
@@ -103,9 +105,6 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(['getAttributeCode', 'getFrontend', 'getIsFilterable'])
             ->getMock();
-        $this->attribute->expects($this->atLeastOnce())
-            ->method('getFrontend')
-            ->will($this->returnValue($this->frontend));
 
         $this->request = $this->getMockBuilder('\Magento\Framework\App\RequestInterface')
             ->setMethods(['getParam'])
@@ -142,6 +141,9 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $this->attribute->expects($this->exactly(2))
             ->method('getAttributeCode')
             ->will($this->returnValue($attributeCode));
+        $this->attribute->expects($this->atLeastOnce())
+            ->method('getFrontend')
+            ->will($this->returnValue($this->frontend));
 
         $this->target->setAttributeModel($this->attribute);
 
@@ -201,6 +203,9 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $this->attribute->expects($this->exactly(2))
             ->method('getAttributeCode')
             ->will($this->returnValue($attributeCode));
+        $this->attribute->expects($this->atLeastOnce())
+            ->method('getFrontend')
+            ->will($this->returnValue($this->frontend));
 
         $this->target->setAttributeModel($this->attribute);
 
@@ -282,15 +287,9 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $this->attribute->expects($this->exactly(2))
             ->method('getAttributeCode')
             ->will($this->returnValue($attributeCode));
-        $this->attribute->expects($this->at(3))
-            ->method('getIsFilterable')
-            ->will($this->returnValue(1));
-        $this->attribute->expects($this->at(4))
-            ->method('getIsFilterable')
-            ->will($this->returnValue(2));
-        $this->attribute->expects($this->at(5))
-            ->method('getIsFilterable')
-            ->will($this->returnValue(1));
+        $this->attribute->expects($this->atLeastOnce())
+            ->method('getFrontend')
+            ->will($this->returnValue($this->frontend));
 
         $this->target->setAttributeModel($this->attribute);
 
@@ -335,6 +334,105 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $result = $this->target->getItems();
 
         $this->assertEquals($expectedFilterItems, $result);
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function testGetItemsOnlyWithResults()
+    {
+        $attributeCode = 'attributeCode';
+        $selectedOptions = [
+            [
+                'label' => 'selectedOptionLabel1',
+                'value' => 'selectedOptionValue1',
+            ],
+            [
+                'label' => 'selectedOptionLabel2',
+                'value' => 'selectedOptionValue2',
+            ],
+        ];
+        $facetedData = [
+            'selectedOptionValue1' => ['count' => 10],
+            'selectedOptionValue2' => ['count' => 0],
+        ];
+        $builtData = [
+            [
+                'label' => $selectedOptions[0]['label'],
+                'value' => $selectedOptions[0]['value'],
+                'count' => $facetedData[$selectedOptions[0]['value']]['count'],
+            ],
+        ];
+
+        $this->attribute->expects($this->atLeastOnce())
+            ->method('getAttributeCode')
+            ->willReturn($attributeCode);
+        $this->attribute->expects($this->atLeastOnce())
+            ->method('getIsFilterable')
+            ->willReturn(AbstractFilter::ATTRIBUTE_OPTIONS_ONLY_WITH_RESULTS);
+        $this->attribute->expects($this->atLeastOnce())
+            ->method('getFrontend')
+            ->will($this->returnValue($this->frontend));
+
+        $this->target->setAttributeModel($this->attribute);
+
+        $this->frontend->expects($this->once())
+            ->method('getSelectOptions')
+            ->willReturn($selectedOptions);
+
+        $this->fulltextCollection->expects($this->once())
+            ->method('getFacetedData')
+            ->willReturn($facetedData);
+        $this->fulltextCollection->expects($this->once())
+            ->method('getSize')
+            ->will($this->returnValue(50));
+
+        $this->itemDataBuilder->expects($this->once())
+            ->method('addItemData')
+            ->with(
+                $selectedOptions[0]['label'],
+                $selectedOptions[0]['value'],
+                $facetedData[$selectedOptions[0]['value']]['count']
+            )
+            ->will($this->returnSelf());
+
+        $this->itemDataBuilder->expects($this->once())
+            ->method('build')
+            ->willReturn($builtData);
+
+        $expectedFilterItems = [
+            $this->createFilterItem(0, $builtData[0]['label'], $builtData[0]['value'], $builtData[0]['count']),
+        ];
+        $result = $this->target->getItems();
+
+        $this->assertEquals($expectedFilterItems, $result);
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function testGetItemsIfFacetedDataIsEmpty()
+    {
+        $attributeCode = 'attributeCode';
+
+        $this->attribute->expects($this->atLeastOnce())
+            ->method('getAttributeCode')
+            ->willReturn($attributeCode);
+        $this->attribute->expects($this->atLeastOnce())
+            ->method('getIsFilterable')
+            ->willReturn(0);
+
+        $this->target->setAttributeModel($this->attribute);
+
+        $this->fulltextCollection->expects($this->once())
+            ->method('getFacetedData')
+            ->willReturn([]);
+
+        $this->itemDataBuilder->expects($this->once())
+            ->method('build')
+            ->willReturn([]);
+
+        $this->assertEquals([], $this->target->getItems());
     }
 
     /**

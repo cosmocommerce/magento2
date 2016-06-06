@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,6 +8,8 @@
  * Coverage of obsolete nodes in layout
  */
 namespace Magento\Test\Legacy;
+
+use Magento\Framework\Component\ComponentRegistrar;
 
 class LayoutTest extends \PHPUnit_Framework_TestCase
 {
@@ -129,12 +131,15 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
                     $this->assertContains('::', $action->getAttribute('helper'));
                 }
 
+                $componentRegistrar = new ComponentRegistrar();
                 if (false !== strpos(
                     $layoutFile,
-                    'app/code/Magento/Sales/view/adminhtml/layout/sales_order'
+                    $componentRegistrar->getPath(ComponentRegistrar::MODULE, 'Magento_Sales')
+                    . '/view/adminhtml/layout/sales_order'
                 ) || false !== strpos(
                     $layoutFile,
-                    'app/code/Magento/Shipping/view/adminhtml/layout/adminhtml_order'
+                    $componentRegistrar->getPath(ComponentRegistrar::MODULE, 'Magento_Shipping')
+                    . '/view/adminhtml/layout/adminhtml_order'
                 )
                 ) {
                     $this->markTestIncomplete(
@@ -349,7 +354,8 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
             'setWrapperClass',
             'unsetChild',
             'unsetChildren',
-            'updateButton'
+            'updateButton',
+            'setIsProductListingContext'
         ];
     }
 }

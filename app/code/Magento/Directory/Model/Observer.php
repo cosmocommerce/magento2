@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -136,8 +136,8 @@ class Observer
                 )
             )->setTemplateOptions(
                 [
-                    'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
-                    'store' => $this->_storeManager->getStore()->getId(),
+                    'area' => \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE,
+                    'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
                 ]
             )->setTemplateVars(
                 ['warnings' => join("\n", $importWarnings)]

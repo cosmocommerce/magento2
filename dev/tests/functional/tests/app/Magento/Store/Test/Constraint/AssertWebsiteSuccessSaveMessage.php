@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,7 +18,7 @@ class AssertWebsiteSuccessSaveMessage extends AbstractConstraint
     /**
      * Success website create message
      */
-    const SUCCESS_MESSAGE = 'The website has been saved.';
+    const SUCCESS_MESSAGE = 'You saved the website.';
 
     /**
      * Assert that success message is displayed after Website has been created
@@ -30,7 +30,7 @@ class AssertWebsiteSuccessSaveMessage extends AbstractConstraint
     {
         \PHPUnit_Framework_Assert::assertEquals(
             self::SUCCESS_MESSAGE,
-            $storeIndex->getMessagesBlock()->getSuccessMessages(),
+            $storeIndex->getMessagesBlock()->getSuccessMessage(),
             'Wrong success message is displayed.'
         );
     }

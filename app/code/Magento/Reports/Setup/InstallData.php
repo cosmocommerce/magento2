@@ -1,13 +1,11 @@
 <?php
 
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Reports\Setup;
-
-// @codingStandardsIgnoreFile
 
 use Magento\Cms\Model\PageFactory;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -82,11 +80,13 @@ class InstallData implements \Magento\Framework\Setup\InstallDataInterface
         $cms = $this->pageFactory->create();
         $cms->load('home', 'identifier');
 
+        // @codingStandardsIgnoreStart
         $reportLayoutUpdate = '<!--
     <referenceContainer name="right">
         <action method="unsetChild"><argument name="alias" xsi:type="string">right.reports.product.viewed</argument></action>
         <action method="unsetChild"><argument name="alias" xsi:type="string">right.reports.product.compared</argument></action>
     </referenceContainer>-->';
+        // @codingStandardsIgnoreEnd
 
         /*
          * Merge and save old layout update data with report layout data

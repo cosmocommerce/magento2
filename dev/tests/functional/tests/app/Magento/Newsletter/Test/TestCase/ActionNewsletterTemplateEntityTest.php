@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -21,7 +21,7 @@ use Magento\Mtf\TestCase\Injectable;
  * 1. Open Backend
  * 2. Go to Marketing > Newsletter Template
  * 3. Find created template in grid
- * 4. Select action in action dropdown for created template according to dataSet
+ * 4. Select action in action dropdown for created template according to dataset
  * 5. Perform all assertions
  *
  * @group Newsletters_(MX)

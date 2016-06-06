@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Model;
@@ -151,5 +151,18 @@ class CcConfig
             $this->logger->critical($e);
             return $this->urlBuilder->getUrl('', ['_direct' => 'core/index/notFound']);
         }
+    }
+
+    /**
+     * Create a file asset that's subject of fallback system
+     *
+     * @param string $fileId
+     * @param array $params
+     * @return \Magento\Framework\View\Asset\File
+     */
+    public function createAsset($fileId, array $params = [])
+    {
+        $params = array_merge(['_secure' => $this->request->isSecure()], $params);
+        return $this->assetRepo->createAsset($fileId, $params);
     }
 }

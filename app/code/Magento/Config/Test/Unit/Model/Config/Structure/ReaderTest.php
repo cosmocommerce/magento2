@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Config\Test\Unit\Model\Config\Structure;
@@ -89,8 +89,8 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
             ->method('compile')
             ->with(
                 $this->isInstanceOf('\DOMElement'),
-                $this->isInstanceOf('Magento\Framework\Object'),
-                $this->isInstanceOf('Magento\Framework\Object')
+                $this->isInstanceOf('Magento\Framework\DataObject'),
+                $this->isInstanceOf('Magento\Framework\DataObject')
             );
         $this->converterMock->expects($this->once())
             ->method('convert')

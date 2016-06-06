@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Review\Test\Unit\Block\Adminhtml\Rating\Edit\Tab;
@@ -19,7 +19,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
     protected $rating;
 
     /**
-     * @var \Magento\Review\Model\Resource\Rating\Option\Collection
+     * @var \Magento\Review\Model\ResourceModel\Rating\Option\Collection
      */
     protected $ratingOptionCollection;
 
@@ -96,7 +96,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->ratingOptionCollection = $this->getMock(
-            '\Magento\Review\Model\Resource\Rating\Option\Collection',
+            '\Magento\Review\Model\ResourceModel\Rating\Option\Collection',
             [],
             [],
             '',

@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -45,20 +45,6 @@ define([
             columnsInstance.viewportMaxSize = 4;
             columnsInstance.elems.push(new FakeElement());
             expect(columnsInstance.isDisabled(columnsInstance.elems()[0])).toBeTruthy();
-
-            columnsInstance.elems.push(new FakeElement());
-            expect(columnsInstance.isDisabled(columnsInstance.elems()[0])).toBeFalsy();
-
-            columnsInstance.elems.push(new FakeElement());
-            expect(columnsInstance.isDisabled(columnsInstance.elems()[0])).toBeFalsy();
-
-            columnsInstance.elems.push(new FakeElement());
-            expect(columnsInstance.isDisabled(columnsInstance.elems()[0])).toBeFalsy();
-
-            columnsInstance.elems.push(new FakeElement());
-            expect(columnsInstance.isDisabled(columnsInstance.elems()[0])).toBeTruthy();
-            expect(columnsInstance.isDisabled(columnsInstance.elems()[3])).toBeTruthy();
         });
-
     });
 });

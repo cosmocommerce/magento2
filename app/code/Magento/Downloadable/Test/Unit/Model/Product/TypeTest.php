@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Downloadable\Test\Unit\Model\Product;
@@ -17,6 +17,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
      * @var \Magento\Downloadable\Model\Product\Type
      */
     private $target;
+
     /**
      * @var TypeHandlerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -43,11 +44,17 @@ class TypeTest extends \PHPUnit_Framework_TestCase
         $coreRegistry = $this->getMock('Magento\Framework\Registry', [], [], '', false);
         $logger = $this->getMock('Psr\Log\LoggerInterface');
         $productFactoryMock = $this->getMock('Magento\Catalog\Model\ProductFactory', [], [], '', false);
-        $sampleResFactory = $this->getMock('Magento\Downloadable\Model\Resource\SampleFactory', [], [], '', false);
-        $linkResource = $this->getMock('Magento\Downloadable\Model\Resource\Link', [], [], '', false);
-        $linksFactory = $this->getMock('Magento\Downloadable\Model\Resource\Link\CollectionFactory', [], [], '', false);
+        $sampleResFactory = $this->getMock('Magento\Downloadable\Model\ResourceModel\SampleFactory', [], [], '', false);
+        $linkResource = $this->getMock('Magento\Downloadable\Model\ResourceModel\Link', [], [], '', false);
+        $linksFactory = $this->getMock(
+            'Magento\Downloadable\Model\ResourceModel\Link\CollectionFactory',
+            [],
+            [],
+            '',
+            false
+        );
         $samplesFactory = $this->getMock(
-            'Magento\Downloadable\Model\Resource\Sample\CollectionFactory',
+            'Magento\Downloadable\Model\ResourceModel\Sample\CollectionFactory',
             [],
             [],
             '',
@@ -58,7 +65,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
 
         $entityTypeMock = $this->getMock('Magento\Eav\Model\Entity\Type', [], [], '', false);
         $resourceProductMock = $this->getMock(
-            'Magento\Catalog\Model\Resource\Product',
+            'Magento\Catalog\Model\ResourceModel\Product',
             ['getEntityType'],
             [],
             '',
@@ -77,6 +84,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
                 'getDownloadableData',
                 'setTypeHasOptions',
                 'setLinksExist',
+                'getDownloadableLinks',
                 '__wakeup',
             ],
             [],
@@ -139,15 +147,11 @@ class TypeTest extends \PHPUnit_Framework_TestCase
         $this->target->beforeSave($this->product);
     }
 
-    public function testSave()
+    public function testHasLinks()
     {
-        $data = ['sample' => ['sampleData', 'link' => ['linkData']]];
-        $this->product->expects($this->once())
-            ->method('getDownloadableData')
-            ->will($this->returnValue($data));
-        $this->typeHandler->expects($this->once())
-            ->method('save')
-            ->with($this->product, $data);
-        $this->target->save($this->product);
+        $this->product->expects($this->exactly(2))
+            ->method('getDownloadableLinks')
+            ->willReturn(['link1', 'link2']);
+        $this->assertTrue($this->target->hasLinks($this->product));
     }
 }

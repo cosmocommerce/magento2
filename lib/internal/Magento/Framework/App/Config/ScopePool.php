@@ -1,12 +1,15 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Config;
 
-use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\RequestInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class ScopePool
 {
     const CACHE_TAG = 'config_scopes';
@@ -42,6 +45,11 @@ class ScopePool
     protected $_scopeResolverPool;
 
     /**
+     * @var RequestInterface
+     */
+    private $request;
+
+    /**
      * @param \Magento\Framework\App\Config\Scope\ReaderPoolInterface $readerPool
      * @param DataFactory $dataFactory
      * @param \Magento\Framework\Cache\FrontendInterface $cache
@@ -63,16 +71,28 @@ class ScopePool
     }
 
     /**
+     * @return RequestInterface
+     */
+    private function getRequest()
+    {
+        if ($this->request === null) {
+            $this->request = \Magento\Framework\App\ObjectManager::getInstance()->get(RequestInterface::class);
+        }
+        return $this->request;
+    }
+    
+    /**
      * Retrieve config section
      *
      * @param string $scopeType
-     * @param string|\Magento\Framework\Object|null $scopeCode
+     * @param string|\Magento\Framework\DataObject|null $scopeCode
      * @return \Magento\Framework\App\Config\DataInterface
      */
     public function getScope($scopeType, $scopeCode = null)
     {
         $scopeCode = $this->_getScopeCode($scopeType, $scopeCode);
-        $code = $scopeType . '|' . $scopeCode;
+        $baseUrl = $this->getRequest()->getDistroBaseUrl();
+        $code = $scopeType . '|' . $scopeCode . '|' . $baseUrl;
         if (!isset($this->_scopes[$code])) {
             $cacheKey = $this->_cacheId . '|' . $code;
             $data = $this->_cache->load($cacheKey);
@@ -107,7 +127,7 @@ class ScopePool
      * Retrieve scope code value
      *
      * @param string $scopeType
-     * @param string|\Magento\Framework\Object|null $scopeCode
+     * @param string|\Magento\Framework\DataObject|null $scopeCode
      * @return string
      */
     protected function _getScopeCode($scopeType, $scopeCode)

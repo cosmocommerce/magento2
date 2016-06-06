@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -38,7 +38,7 @@ class Config
     /**
      * Prepare variable wysiwyg config
      *
-     * @param \Magento\Framework\Object $config
+     * @param \Magento\Framework\DataObject $config
      * @return array
      */
     public function getWysiwygPluginSettings($config)

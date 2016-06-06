@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Widget\Grid\Massaction;
@@ -77,16 +77,16 @@ abstract class AbstractMassaction extends \Magento\Backend\Block\Widget
      * );
      *
      * @param string $itemId
-     * @param array|\Magento\Framework\Object $item
+     * @param array|\Magento\Framework\DataObject $item
      * @return $this
      */
     public function addItem($itemId, $item)
     {
         if (is_array($item)) {
-            $item = new \Magento\Framework\Object($item);
+            $item = new \Magento\Framework\DataObject($item);
         }
 
-        if ($item instanceof \Magento\Framework\Object) {
+        if ($item instanceof \Magento\Framework\DataObject) {
             $item->setId($itemId);
             $item->setUrl($this->getUrl($item->getUrl()));
             $this->_items[$itemId] = $item;

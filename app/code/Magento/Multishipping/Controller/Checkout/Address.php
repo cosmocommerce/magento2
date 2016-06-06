@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Multishipping\Controller\Checkout;
@@ -8,7 +8,7 @@ namespace Magento\Multishipping\Controller\Checkout;
 /**
  * Multishipping checkout address manipulation controller
  */
-class Address extends \Magento\Framework\App\Action\Action
+abstract class Address extends \Magento\Framework\App\Action\Action
 {
     /**
      * {@inheritdoc}

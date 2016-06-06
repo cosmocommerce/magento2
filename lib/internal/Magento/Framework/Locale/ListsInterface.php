@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Locale;
@@ -62,8 +62,9 @@ interface ListsInterface
     /**
      * Returns the localized country name
      *
-     * @param  $value string Name to get detailed information about
+     * @param  string $value  Name to get detailed information about
+     * @param  string $locale Optional locale string
      * @return string
      */
-    public function getCountryTranslation($value);
+    public function getCountryTranslation($value, $locale = null);
 }

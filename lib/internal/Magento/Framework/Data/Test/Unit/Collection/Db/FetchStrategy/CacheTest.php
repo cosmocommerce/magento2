@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Data\Test\Unit\Collection\Db\FetchStrategy;
@@ -37,7 +37,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->_select = $this->getMock('Zend_Db_Select', ['assemble'], [], '', false);
+        $this->_select = $this->getMock('Magento\Framework\DB\Select', ['assemble'], [], '', false);
         $this->_select->expects(
             $this->once()
         )->method(

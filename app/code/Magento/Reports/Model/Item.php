@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Model;
 
-class Item extends \Magento\Framework\Object
+class Item extends \Magento\Framework\DataObject
 {
     /**
      * @var bool
@@ -19,6 +19,7 @@ class Item extends \Magento\Framework\Object
 
     /**
      * Set is empty indicator
+     * @codeCoverageIgnore
      *
      * @param bool $flag
      * @return $this
@@ -31,6 +32,7 @@ class Item extends \Magento\Framework\Object
 
     /**
      * Get is empty indicator
+     * @codeCoverageIgnore
      *
      * @return bool
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
@@ -49,6 +51,7 @@ class Item extends \Magento\Framework\Object
 
     /**
      * Get children
+     * @codeCoverageIgnore
      *
      * @return array
      */
@@ -59,6 +62,7 @@ class Item extends \Magento\Framework\Object
 
     /**
      * Set children
+     * @codeCoverageIgnore
      *
      * @param array $children
      * @return $this

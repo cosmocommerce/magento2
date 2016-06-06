@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\User\Block\Role\Grid;
@@ -26,6 +26,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testPreparedCollection()
     {
         $this->_block->toHtml();
-        $this->assertInstanceOf('Magento\User\Model\Resource\Role\User\Collection', $this->_block->getCollection());
+        $this->assertInstanceOf(
+            'Magento\User\Model\ResourceModel\Role\User\Collection',
+            $this->_block->getCollection()
+        );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -32,6 +32,7 @@ class Captcha extends \Magento\Framework\View\Element\Template
     ) {
         $this->_captchaData = $captchaData;
         parent::__construct($context, $data);
+        $this->_isScopePrivate = true;
     }
 
     /**

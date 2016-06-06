@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -14,11 +14,11 @@ class ItemCollectionProviderTest extends \PHPUnit_Framework_TestCase
     {
         $categoryMock = $this->getMock('Magento\Catalog\Model\Category', [], [], '', false);
 
-        $collectionMock = $this->getMock('Magento\Catalog\Model\Resource\Product\Collection', [], [], '', false);
+        $collectionMock = $this->getMock('Magento\Catalog\Model\ResourceModel\Product\Collection', [], [], '', false);
         $collectionMock->expects($this->once())->method('addCategoryFilter')->with($categoryMock);
 
         $collectionFactoryMock = $this->getMock(
-            'Magento\Catalog\Model\Resource\Product\CollectionFactory',
+            'Magento\Catalog\Model\ResourceModel\Product\CollectionFactory',
             ['create'],
             [],
             '',

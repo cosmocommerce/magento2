@@ -1,11 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Test\Unit\Gateway\Validator;
 
 use Magento\Payment\Gateway\Validator\ValidatorComposite;
+use Magento\Payment\Gateway\Validator\ValidatorInterface;
 
 class ValidatorCompositeTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,10 +17,26 @@ class ValidatorCompositeTest extends \PHPUnit_Framework_TestCase
             ->getMockForAbstractClass();
         $validator2 = $this->getMockBuilder('Magento\Payment\Gateway\Validator\ValidatorInterface')
             ->getMockForAbstractClass();
-
+        $tMapFactory = $this->getMockBuilder('Magento\Framework\ObjectManager\TMapFactory')
+            ->disableOriginalConstructor()
+            ->setMethods(['create'])
+            ->getMock();
         $tMap = $this->getMockBuilder('Magento\Framework\ObjectManager\TMap')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $tMapFactory->expects(static::once())
+            ->method('create')
+            ->with(
+                [
+                    'array' => [
+                        'validator1' => 'Magento\Payment\Gateway\Validator\ValidatorInterface',
+                        'validator2' => 'Magento\Payment\Gateway\Validator\ValidatorInterface'
+                    ],
+                    'type' => ValidatorInterface::class
+                ]
+            )
+            ->willReturn($tMap);
         $tMap->expects(static::once())
             ->method('getIterator')
             ->willReturn(new \ArrayIterator([$validator1, $validator2]));
@@ -64,7 +81,14 @@ class ValidatorCompositeTest extends \PHPUnit_Framework_TestCase
             ->willReturn($compositeResult);
 
 
-        $validatorComposite = new ValidatorComposite($resultFactory, $tMap);
+        $validatorComposite = new ValidatorComposite(
+            $resultFactory,
+            $tMapFactory,
+            [
+                'validator1' => 'Magento\Payment\Gateway\Validator\ValidatorInterface',
+                'validator2' => 'Magento\Payment\Gateway\Validator\ValidatorInterface'
+            ]
+        );
         static::assertSame($compositeResult, $validatorComposite->validate($validationSubject));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -57,12 +57,12 @@ class RowsTest extends \PHPUnit_Framework_TestCase
      */
     protected $_flatTableBuilder;
 
-    public function setUp()
+    protected function setUp()
     {
         $objectManager = new ObjectManager($this);
 
         $this->_connection = $this->getMock('\Magento\Framework\DB\Adapter\AdapterInterface');
-        $this->_resource = $this->getMock('Magento\Framework\App\Resource', [], [], '', false);
+        $this->_resource = $this->getMock('Magento\Framework\App\ResourceConnection', [], [], '', false);
         $this->_resource->expects($this->any())->method('getConnection')
             ->with('default')
             ->will($this->returnValue($this->_connection));

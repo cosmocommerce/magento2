@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -70,7 +70,7 @@ class Filter extends AbstractSimpleObject
      */
     public function getConditionType()
     {
-        return $this->_get(self::KEY_CONDITION_TYPE);
+        return $this->_get(self::KEY_CONDITION_TYPE) ?: 'eq';
     }
 
     /**

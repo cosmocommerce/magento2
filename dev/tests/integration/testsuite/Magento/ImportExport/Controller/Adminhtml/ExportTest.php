@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ImportExport\Controller\Adminhtml;
@@ -8,7 +8,7 @@ namespace Magento\ImportExport\Controller\Adminhtml;
 /**
  * @magentoAppArea adminhtml
  */
-class ExportTest extends \Magento\Backend\Utility\Controller
+class ExportTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * Set value of $_SERVER['HTTP_X_REQUESTED_WITH'] parameter here

@@ -1,11 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Rule\Model\Condition\Sql;
 
+use Magento\Framework\DB\Select;
 use Magento\Rule\Model\Condition\AbstractCondition;
 use Magento\Rule\Model\Condition\Combine;
 
@@ -151,7 +152,7 @@ class Builder
         $conditions = $combine->getConditions();
         foreach ($conditions as $key => $condition) {
             /** @var $condition AbstractCondition|Combine */
-            $con = ($getAggregator == 'any' ? \Zend_Db_Select::SQL_OR : \Zend_Db_Select::SQL_AND);
+            $con = ($getAggregator == 'any' ? Select::SQL_OR : Select::SQL_AND);
             $con = (isset($conditions[$key+1]) ? $con : '');
             if ($condition instanceof Combine) {
                 $out .= $this->_getMappedSqlCombination($condition, $value);
@@ -175,7 +176,7 @@ class Builder
         \Magento\Eav\Model\Entity\Collection\AbstractCollection $collection,
         Combine $combine
     ) {
-        $this->_connection = $collection->getResource()->getReadConnection();
+        $this->_connection = $collection->getResource()->getConnection();
         $this->_joinTablesToCollection($collection, $combine);
         $whereExpression = (string)$this->_getMappedSqlCombination($combine);
         if (!empty($whereExpression)) {

@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Controller\Adminhtml\Page;
@@ -46,13 +46,15 @@ class PostDataProcessor
      */
     public function filter($data)
     {
-        $inputFilter = new \Zend_Filter_Input(
-            ['custom_theme_from' => $this->dateFilter, 'custom_theme_to' => $this->dateFilter],
-            [],
-            $data
-        );
-        $data = $inputFilter->getUnescaped();
-        return $data;
+        $filterRules = [];
+
+        foreach (['custom_theme_from', 'custom_theme_to'] as $dateField) {
+            if (!empty($data[$dateField])) {
+                $filterRules[$dateField] = $this->dateFilter;
+            }
+        }
+
+        return (new \Zend_Filter_Input($filterRules, [], $data))->getUnescaped();
     }
 
     /**
@@ -77,6 +79,31 @@ class PostDataProcessor
             }
             foreach ($validatorCustomLayout->getMessages() as $message) {
                 $this->messageManager->addError($message);
+            }
+        }
+        return $errorNo;
+    }
+
+    /**
+     * Check if required fields is not empty
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function validateRequireEntry(array $data)
+    {
+        $requiredFields = [
+            'title' => __('Page Title'),
+            'stores' => __('Store View'),
+            'is_active' => __('Status')
+        ];
+        $errorNo = true;
+        foreach ($data as $field => $value) {
+            if (in_array($field, array_keys($requiredFields)) && $value == '') {
+                $errorNo = false;
+                $this->messageManager->addError(
+                    __('To apply changes you should fill in hidden required "%1" field', $requiredFields[$field])
+                );
             }
         }
         return $errorNo;

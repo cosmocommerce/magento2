@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\SendFriend\Controller;
@@ -14,7 +14,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Product extends \Magento\Framework\App\Action\Action
+abstract class Product extends \Magento\Framework\App\Action\Action
 {
     /**
      * Core registry
@@ -76,7 +76,7 @@ class Product extends \Magento\Framework\App\Action\Action
             throw new NotFoundException(__('Page not found.'));
         }
 
-        if (!$helper->isAllowForGuest() && !$session->authenticate($this)) {
+        if (!$helper->isAllowForGuest() && !$session->authenticate()) {
             $this->_actionFlag->set('', self::FLAG_NO_DISPATCH, true);
             if ($this->getRequest()->getActionName() == 'sendemail') {
                 $session->setBeforeAuthUrl($this->_url->getUrl('sendfriend/product/send', ['_current' => true]));

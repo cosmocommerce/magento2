@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,7 +13,7 @@ $_item = $block->getItem();
 <?php if (($block->displayPriceInclTax() || $block->displayBothPrices()) && !$_item->getNoSubtotal()): ?>
     <span class="price-including-tax" data-label="<?php echo $block->escapeHtml(__('Incl. Tax'));?>">
         <span class="cart-price">
-            <?php echo $block->formatPrice($_item->getRowTotalInclTax()) ?>
+            <?php /* @escapeNotVerified */ echo $block->formatPrice($_item->getRowTotalInclTax()) ?>
         </span>
     </span>
 <?php endif; ?>
@@ -21,7 +21,7 @@ $_item = $block->getItem();
 <?php if (($block->displayPriceExclTax() || $block->displayBothPrices()) && !$_item->getNoSubtotal()): ?>
     <span class="price-excluding-tax" data-label="<?php echo $block->escapeHtml(__('Excl. Tax'));?>">
         <span class="cart-price">
-            <?php echo $block->formatPrice($_item->getRowTotal()) ?>
+            <?php /* @escapeNotVerified */ echo $block->formatPrice($_item->getRowTotal()) ?>
         </span>
     </span>
 <?php endif; ?>

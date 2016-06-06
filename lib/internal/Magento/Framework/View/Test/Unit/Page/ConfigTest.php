@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -9,10 +9,18 @@
  */
 namespace Magento\Framework\View\Test\Unit\Page;
 
+use Magento\Framework\Locale\Resolver;
+use Magento\Framework\View\Page\Config;
+
+/**
+ * @covers Magento\Framework\View\Page\Config
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Magento\Framework\View\Page\Config
+     * @var Config
      */
     protected $model;
 
@@ -56,7 +64,12 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     protected $title;
 
-    public function setUp()
+    /**
+     * @var \Magento\Framework\App\State|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $areaResolverMock;
+
+    protected function setUp()
     {
         $this->assetRepo = $this->getMock('Magento\Framework\View\Asset\Repository', [], [], '', false);
         $this->pageAssets = $this->getMock('Magento\Framework\View\Asset\GroupedCollection', [], [], '', false);
@@ -66,6 +79,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->asset = $this->getMock('Magento\Framework\View\Asset\File', [], [], '', false);
         $this->remoteAsset = $this->getMock('\Magento\Framework\View\Asset\Remote', [], [], '', false);
         $this->title = $this->getMock('Magento\Framework\View\Page\Title', [], [], '', false);
+        $locale = $this->getMockForAbstractClass('Magento\Framework\Locale\ResolverInterface', [], '', false);
+        $locale->expects($this->any())
+            ->method('getLocale')
+            ->willReturn(Resolver::DEFAULT_LOCALE);
         $this->model = (new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this))
             ->getObject(
                 'Magento\Framework\View\Page\Config',
@@ -73,9 +90,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                     'assetRepo' => $this->assetRepo,
                     'pageAssets' => $this->pageAssets,
                     'scopeConfig' => $this->scopeConfig,
-                    'favicon' => $this->favicon
+                    'favicon' => $this->favicon,
+                    'localeResolver' => $locale,
                 ]
             );
+
+        $this->areaResolverMock = $this->getMock('Magento\Framework\App\State', [], [], '', false);
+        $areaResolverReflection = (new \ReflectionClass(get_class($this->model)))->getProperty('areaResolver');
+        $areaResolverReflection->setAccessible(true);
+        $areaResolverReflection->setValue($this->model, $this->areaResolverMock);
     }
 
     public function testSetBuilder()
@@ -110,8 +133,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             'keywords' => null,
             'robots' => null,
             'name' => 'test_value',
+            'html_encoded' => '&lt;title&gt;&lt;span class=&quot;test&quot;&gt;Test&lt;/span&gt;&lt;/title&gt;',
         ];
         $this->model->setMetadata('name', 'test_value');
+        $this->model->setMetadata('html_encoded', '<title><span class="test">Test</span></title>');
         $this->assertEquals($expectedMetadata, $this->model->getMetadata());
     }
 
@@ -124,7 +149,14 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testContentTypeEmpty()
     {
+        $expectedData = null;
+        $this->assertEquals($expectedData, $this->model->getContentType());
+    }
+
+    public function testContentTypeAuto()
+    {
         $expectedData = 'default_media_type; charset=default_charset';
+        $this->model->setContentType('auto');
         $this->scopeConfig->expects($this->at(0))->method('getValue')->with('design/head/default_media_type', 'store')
             ->will($this->returnValue('default_media_type'));
         $this->scopeConfig->expects($this->at(1))->method('getValue')->with('design/head/default_charset', 'store')
@@ -194,6 +226,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testRobots()
     {
+        $this->areaResolverMock->expects($this->once())->method('getAreaCode')->willReturn('frontend');
         $robots = 'test_robots';
         $this->model->setRobots($robots);
         $this->assertEquals($robots, $this->model->getRobots());
@@ -201,6 +234,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testRobotsEmpty()
     {
+        $this->areaResolverMock->expects($this->once())->method('getAreaCode')->willReturn('frontend');
         $expectedData = 'default_robots';
         $this->scopeConfig->expects($this->once())->method('getValue')->with(
             'design/search_engine_robots/default_robots',
@@ -208,6 +242,14 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         )
             ->will($this->returnValue('default_robots'));
         $this->assertEquals($expectedData, $this->model->getRobots());
+    }
+
+    public function testRobotsAdminhtml()
+    {
+        $this->areaResolverMock->expects($this->once())->method('getAreaCode')->willReturn('adminhtml');
+        $robots = 'test_robots';
+        $this->model->setRobots($robots);
+        $this->assertEquals('NOINDEX,NOFOLLOW', $this->model->getRobots());
     }
 
     public function testGetAssetCollection()
@@ -339,15 +381,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 'test',
             ],
             [
-                'html',
-                'context',
-                'value'
-            ],
-            [
                 'body',
                 'class',
                 'value'
-            ]
+            ],
+            [
+                Config::ELEMENT_TYPE_HTML,
+                Config::HTML_ATTRIBUTE_LANG,
+                str_replace('_', '-', Resolver::DEFAULT_LOCALE)
+            ],
         ];
     }
 
@@ -387,15 +429,29 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $elementType
-     * @param string $attribute
-     * @param string $value
+     * @param string $attributes
      *
-     * @dataProvider elementAttributeDataProvider
+     * @dataProvider elementAttributesDataProvider
      */
-    public function testElementAttributes($elementType, $attribute, $value)
+    public function testElementAttributes($elementType, $attributes)
     {
-        $this->model->setElementAttribute($elementType, $attribute, $value);
-        $this->assertEquals([$attribute => $value], $this->model->getElementAttributes($elementType));
+        foreach ($attributes as $attribute => $value) {
+            $this->model->setElementAttribute($elementType, $attribute, $value);
+        }
+        $this->assertEquals($attributes, $this->model->getElementAttributes($elementType));
+    }
+
+    public function elementAttributesDataProvider()
+    {
+        return [
+            [
+                'html',
+                [
+                    'context' => 'value',
+                    Config::HTML_ATTRIBUTE_LANG => str_replace('_', '-', Resolver::DEFAULT_LOCALE)
+                ],
+            ],
+        ];
     }
 
     /**

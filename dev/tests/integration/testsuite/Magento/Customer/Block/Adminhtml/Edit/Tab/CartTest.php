@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Edit\Tab;
@@ -89,7 +89,7 @@ class CartTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRowUrl()
     {
-        $row = new \Magento\Framework\Object();
+        $row = new \Magento\Framework\DataObject();
         $row->setProductId(1);
         $this->assertContains('/backend/catalog/product/edit/id/1', $this->_block->getRowUrl($row));
     }
@@ -99,7 +99,7 @@ class CartTest extends \PHPUnit_Framework_TestCase
         $html = $this->_block->toHtml();
         $this->assertContains("<div id=\"customer_cart_grid\"", $html);
         $this->assertContains("<div class=\"admin__data-grid-header admin__data-grid-toolbar\"", $html);
-        $this->assertContains("customer_cart_gridJsObject = new varienGrid('customer_cart_grid',", $html);
+        $this->assertContains("customer_cart_gridJsObject = new varienGrid(\"customer_cart_grid\",", $html);
         $this->assertContains(
             "backend/customer/cart_product_composite_cart/configure/customer_id/" . self::CUSTOMER_ID_VALUE,
             $html

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Plugin;
@@ -19,7 +19,7 @@ class QuoteItemProductOption
         \Magento\Quote\Model\Quote\Item\ToOrderItem $subject,
         \Closure $proceed,
         \Magento\Quote\Model\Quote\Item\AbstractItem $item,
-        $additional
+        $additional = []
     ) {
         /** @var $orderItem \Magento\Sales\Model\Order\Item */
         $orderItem = $proceed($item, $additional);

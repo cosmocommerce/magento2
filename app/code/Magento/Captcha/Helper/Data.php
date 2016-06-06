@@ -1,12 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Captcha\Helper;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\DriverInterface;
 
 /**
  * Captcha image model
@@ -149,8 +150,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $mediaDir = $this->_filesystem->getDirectoryWrite(DirectoryList::MEDIA);
         $captchaDir = '/captcha/' . $this->_getWebsiteCode($website);
         $mediaDir->create($captchaDir);
-        $mediaDir->changePermissions($captchaDir, 0775);
-
         return $mediaDir->getAbsolutePath($captchaDir) . '/';
     }
 

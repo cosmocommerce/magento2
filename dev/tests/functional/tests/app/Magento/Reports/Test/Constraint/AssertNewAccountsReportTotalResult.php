@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -11,12 +11,12 @@ use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertNewAccountsReportTotalResult
- * Assert that new account total result is equals to data from dataSet
+ * Assert that new account total result is equals to data from dataset
  */
 class AssertNewAccountsReportTotalResult extends AbstractConstraint
 {
     /**
-     * Assert that new account total result is equals to data from dataSet
+     * Assert that new account total result is equals to data from dataset
      *
      * @param CustomerAccounts $customerAccounts
      * @param string $total
@@ -35,6 +35,6 @@ class AssertNewAccountsReportTotalResult extends AbstractConstraint
      */
     public function toString()
     {
-        return 'New account total result is equals to data from dataSet.';
+        return 'New account total result is equals to data from dataset.';
     }
 }

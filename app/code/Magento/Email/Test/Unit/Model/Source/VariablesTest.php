@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Email\Test\Unit\Model\Source;
@@ -46,6 +46,7 @@ class VariablesTest extends \PHPUnit_Framework_TestCase
             ['value' => 'trans_email/ident_custom2/email', 'label' => __('Custom2 Contact Email')],
             ['value' => 'general/store_information/name', 'label' => __('Store Name')],
             ['value' => 'general/store_information/phone', 'label' => __('Store Phone Number')],
+            ['value' => 'general/store_information/hours', 'label' => __('Store Hours')],
             ['value' => 'general/store_information/country_id', 'label' => __('Country')],
             ['value' => 'general/store_information/region_id', 'label' => __('Region/State')],
             ['value' => 'general/store_information/postcode', 'label' => __('Zip/Postal Code')],

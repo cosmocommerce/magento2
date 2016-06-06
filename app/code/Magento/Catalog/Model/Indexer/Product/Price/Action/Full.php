@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Indexer\Product\Price\Action;
@@ -21,11 +21,10 @@ class Full extends \Magento\Catalog\Model\Indexer\Product\Price\AbstractAction
     public function execute($ids = null)
     {
         try {
-            $this->_useIdxTable(true);
-            $this->_emptyTable($this->_getIdxTable());
+            $this->_defaultIndexerResource->getTableStrategy()->setUseIdxTable(true);
+            $this->_emptyTable($this->_defaultIndexerResource->getIdxTable());
             $this->_prepareWebsiteDateTable();
             $this->_prepareTierPriceIndex();
-            $this->_prepareGroupPriceIndex();
 
             foreach ($this->getTypeIndexers() as $indexer) {
                 $indexer->reindexAll();

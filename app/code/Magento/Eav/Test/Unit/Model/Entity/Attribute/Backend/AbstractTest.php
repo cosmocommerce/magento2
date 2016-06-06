@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Test\Unit\Model\Entity\Attribute\Backend;
@@ -42,7 +42,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
 
         $this->_model->setAttribute($attribute);
 
-        $object = new \Magento\Framework\Object();
+        $object = new \Magento\Framework\DataObject();
         $this->_model->setValueId($valueId);
 
         $this->assertEquals(

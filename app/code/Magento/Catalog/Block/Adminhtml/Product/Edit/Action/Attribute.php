@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,7 +12,7 @@
 namespace Magento\Catalog\Block\Adminhtml\Product\Edit\Action;
 
 use Magento\Catalog\Helper\Product\Edit\Action\Attribute as ActionAttribute;
-use Magento\Catalog\Model\Resource\Product\Collection;
+use Magento\Catalog\Model\ResourceModel\Product\Collection;
 
 class Attribute extends \Magento\Backend\Block\Widget
 {

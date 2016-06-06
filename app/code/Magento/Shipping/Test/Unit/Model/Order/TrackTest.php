@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Shipping\Test\Unit\Model\Order;
@@ -32,28 +32,27 @@ class TrackTest extends \PHPUnit_Framework_TestCase
 
         $shipment = $this->getMock(
             'Magento\OfflineShipping\Model\Carrier\Freeshipping',
-            ['load'],
+            [],
             [],
             '',
             false
         );
-        $shipment->expects($this->any())->method('load')->will($this->returnValue($shipment));
 
-        $shipmentFactory = $this->getMock(
-            '\Magento\Sales\Model\Order\ShipmentFactory',
-            ['create'],
+        $shipmentRepository = $this->getMock(
+            'Magento\Sales\Model\Order\ShipmentRepository',
+            ['get'],
             [],
             '',
             false
         );
-        $shipmentFactory->expects($this->any())->method('create')->will($this->returnValue($shipment));
+        $shipmentRepository->expects($this->any())->method('get')->willReturn($shipment);
 
         /** @var \Magento\Shipping\Model\Order\Track $model */
         $model = $helper->getObject(
             'Magento\Shipping\Model\Order\Track',
-            ['carrierFactory' => $carrierFactory, 'shipmentFactory' => $shipmentFactory]
+            ['carrierFactory' => $carrierFactory, 'shipmentRepository' => $shipmentRepository]
         );
-
+        $model->setParentId(1);
         $this->assertEquals('trackingInfo', $model->getNumberDetail());
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Block\Adminhtml\Catalog\Product\Edit\Tab;
@@ -66,6 +66,7 @@ class Bundle extends \Magento\Backend\Block\Widget implements \Magento\Backend\B
      */
     protected function _prepareLayout()
     {
+        $this->setData('opened', true);
         $this->addChild(
             'add_button',
             'Magento\Backend\Block\Widget\Button',

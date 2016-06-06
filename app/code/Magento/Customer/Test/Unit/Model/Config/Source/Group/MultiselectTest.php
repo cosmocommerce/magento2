@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Test\Unit\Model\Config\Source\Group;
@@ -26,7 +26,7 @@ class MultiselectTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->groupServiceMock = $this->getMock('\Magento\Customer\Api\GroupManagementInterface');
-        $this->converterMock = $this->getMock('\Magento\Framework\Convert\Object', [], [], '', false);
+        $this->converterMock = $this->getMock('\Magento\Framework\Convert\DataObject', [], [], '', false);
         $this->model =
             new \Magento\Customer\Model\Config\Source\Group\Multiselect($this->groupServiceMock, $this->converterMock);
     }

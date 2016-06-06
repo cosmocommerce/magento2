@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Test\Unit\Gateway\Config;
@@ -23,7 +23,8 @@ class ConfigValueHandlerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->configMock = $this->getMockBuilder('Magento\Payment\Gateway\ConfigInterface')->getMockForAbstractClass();
+        $this->configMock = $this->getMockBuilder('Magento\Payment\Gateway\ConfigInterface')
+            ->getMockForAbstractClass();
         $this->model = new ConfigValueHandler($this->configMock);
     }
 
@@ -38,7 +39,7 @@ class ConfigValueHandlerTest extends \PHPUnit_Framework_TestCase
             ->with($field, $storeId)
             ->willReturn($expected);
 
-        $this->assertEquals($expected, $this->model->handle($field, $storeId));
+        $this->assertEquals($expected, $this->model->handle(['field' => $field], $storeId));
     }
 
     public function testHandleWithoutStoreId()
@@ -51,6 +52,6 @@ class ConfigValueHandlerTest extends \PHPUnit_Framework_TestCase
             ->with($field, null)
             ->willReturn($expected);
 
-        $this->assertEquals($expected, $this->model->handle($field));
+        $this->assertEquals($expected, $this->model->handle(['field' => $field]));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogUrlRewrite\Model\Category\Plugin\Category;
@@ -27,7 +27,7 @@ class Move
     }
 
     /**
-     * @param \Magento\Catalog\Model\Resource\Category $subject
+     * @param \Magento\Catalog\Model\ResourceModel\Category $subject
      * @param callable $proceed
      * @param Category $category
      * @param Category $newParent
@@ -36,7 +36,7 @@ class Move
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function aroundChangeParent(
-        \Magento\Catalog\Model\Resource\Category $subject,
+        \Magento\Catalog\Model\ResourceModel\Category $subject,
         \Closure $proceed,
         $category,
         $newParent,

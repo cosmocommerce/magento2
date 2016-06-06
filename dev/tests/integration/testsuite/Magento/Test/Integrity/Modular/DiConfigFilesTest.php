@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\Modular;
@@ -35,10 +35,11 @@ class DiConfigFilesTest extends \PHPUnit_Framework_TestCase
         $filesystem = $objectManager->get('Magento\Framework\Filesystem');
         $configDirectory = $filesystem->getDirectoryRead(DirectoryList::CONFIG);
         $fileIteratorFactory = $objectManager->get('Magento\Framework\Config\FileIteratorFactory');
-        self::$_primaryFiles = $fileIteratorFactory->create(
-            $configDirectory,
-            $configDirectory->search('{*/di.xml,di.xml}')
-        );
+        $search = [];
+        foreach ($configDirectory->search('{*/di.xml,di.xml}') as $path) {
+            $search[] = $configDirectory->getAbsolutePath($path);
+        }
+        self::$_primaryFiles = $fileIteratorFactory->create($search);
         //init module global configs
         /** @var $modulesReader \Magento\Framework\Module\Dir\Reader */
         $modulesReader = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
@@ -54,11 +55,12 @@ class DiConfigFilesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $filePath
      * @param string $xml
-     * @return void
+     * @throws \Exception
      * @dataProvider linearFilesProvider
      */
-    public function testDiConfigFileWithoutMerging($xml)
+    public function testDiConfigFileWithoutMerging($filePath, $xml)
     {
         /** @var \Magento\Framework\ObjectManager\Config\SchemaLocator $schemaLocator */
         $schemaLocator = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
@@ -67,8 +69,16 @@ class DiConfigFilesTest extends \PHPUnit_Framework_TestCase
 
         $dom = new \DOMDocument();
         $dom->loadXML($xml);
-        if (!@$dom->schemaValidate($schemaLocator->getSchema())) {
-            $this->fail('File ' . $xml . ' has invalid xml structure.');
+
+        libxml_use_internal_errors(true);
+        $result = \Magento\Framework\Config\Dom::validateDomDocument($dom, $schemaLocator->getSchema());
+        libxml_use_internal_errors(false);
+
+        if (!empty($result)) {
+            $this->fail(
+                'File ' . $filePath . ' has invalid xml structure. '
+                . implode("\n", $result)
+            );
         }
     }
 
@@ -85,8 +95,8 @@ class DiConfigFilesTest extends \PHPUnit_Framework_TestCase
         }
 
         $output = [];
-        foreach ($common as $path => $file) {
-            $output[$path] = [$file];
+        foreach ($common as $path => $content) {
+            $output[] = [substr($path, strlen(BP)), $content];
         }
 
         return $output;
@@ -102,7 +112,7 @@ class DiConfigFilesTest extends \PHPUnit_Framework_TestCase
         $fileResolverMock = $this->getMock('Magento\Framework\Config\FileResolverInterface');
         $fileResolverMock->expects($this->any())->method('read')->will($this->returnValue($files));
         $validationStateMock = $this->getMock('Magento\Framework\Config\ValidationStateInterface');
-        $validationStateMock->expects($this->any())->method('isValidated')->will($this->returnValue(true));
+        $validationStateMock->expects($this->any())->method('isValidationRequired')->will($this->returnValue(true));
 
         /** @var \Magento\Framework\ObjectManager\Config\SchemaLocator $schemaLocator */
         $schemaLocator = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(

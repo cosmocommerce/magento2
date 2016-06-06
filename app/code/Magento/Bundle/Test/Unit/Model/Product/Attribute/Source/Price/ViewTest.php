@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Test\Unit\Model\Product\Attribute\Source\Price;
@@ -15,12 +15,12 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     protected $model;
 
     /**
-     * @var \Magento\Eav\Model\Resource\Entity\Attribute\Option|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $option;
 
     /**
-     * @var \Magento\Eav\Model\Resource\Entity\Attribute\OptionFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\OptionFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $optionFactory;
 
@@ -29,11 +29,11 @@ class ViewTest extends \PHPUnit_Framework_TestCase
      */
     protected $attribute;
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->option = $this->getMock('Magento\Eav\Model\Resource\Entity\Attribute\Option', [], [], '', false);
+        $this->option = $this->getMock('Magento\Eav\Model\ResourceModel\Entity\Attribute\Option', [], [], '', false);
         $this->optionFactory = $this->getMock(
-            'Magento\Eav\Model\Resource\Entity\Attribute\OptionFactory',
+            'Magento\Eav\Model\ResourceModel\Entity\Attribute\OptionFactory',
             ['create'],
             [],
             '',

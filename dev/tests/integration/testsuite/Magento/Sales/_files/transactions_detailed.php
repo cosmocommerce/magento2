@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,6 +18,8 @@ $payment->setTransactionId('trx_auth');
 $payment->setIsTransactionClosed(true);
 $payment->setTransactionAdditionalInfo('auth_key', 'data');
 $payment->addTransaction(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_AUTH);
+
+$payment->resetTransactionAdditionalInfo();
 
 $payment->setTransactionId('trx_capture');
 $payment->setIsTransactionClosed(false);

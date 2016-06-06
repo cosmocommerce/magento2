@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Account;
@@ -66,7 +66,7 @@ class AuthorizationLink extends \Magento\Framework\View\Element\Html\Link
      */
     public function getLabel()
     {
-        return $this->isLoggedIn() ? __('Log Out') : __('Log In');
+        return $this->isLoggedIn() ? __('Sign Out') : __('Sign In');
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Controller\Adminhtml\Promo\Quote;
@@ -21,7 +21,7 @@ class Delete extends \Magento\SalesRule\Controller\Adminhtml\Promo\Quote
                 $model = $this->_objectManager->create('Magento\SalesRule\Model\Rule');
                 $model->load($id);
                 $model->delete();
-                $this->messageManager->addSuccess(__('The rule has been deleted.'));
+                $this->messageManager->addSuccess(__('You deleted the rule.'));
                 $this->_redirect('sales_rule/*/');
                 return;
             } catch (\Magento\Framework\Exception\LocalizedException $e) {

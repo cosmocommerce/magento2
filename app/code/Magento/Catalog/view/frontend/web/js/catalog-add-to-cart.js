@@ -1,11 +1,12 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 define([
     'jquery',
+    'mage/translate',
     'jquery/ui'
-], function($) {
+], function($, $t) {
     "use strict";
 
     $.widget('mage.catalogAddToCart', {
@@ -16,7 +17,12 @@ define([
             bindSubmit: true,
             minicartSelector: '[data-block="minicart"]',
             messagesSelector: '[data-placeholder="messages"]',
-            productStatusSelector: '.stock.available'
+            productStatusSelector: '.stock.available',
+            addToCartButtonSelector: '.action.tocart',
+            addToCartButtonDisabledClass: 'disabled',
+            addToCartButtonTextWhileAdding: '',
+            addToCartButtonTextAdded: '',
+            addToCartButtonTextDefault: ''
         },
 
         _create: function() {
@@ -37,10 +43,20 @@ define([
             return this.options.processStart && this.options.processStop;
         },
 
-        submitForm: function(form) {
-            var self = this;
-            if (form.has('input[type="file"]').length  && form.find('input[type="file"]').val() !== '') {
+        /**
+         * Handler for the form 'submit' event
+         *
+         * @param {Object} form
+         */
+        submitForm: function (form) {
+            var addToCartButton, self = this;
+
+            if (form.has('input[type="file"]').length && form.find('input[type="file"]').val() !== '') {
                 self.element.off('submit');
+                // disable 'Add to Cart' button
+                addToCartButton = $(form).find(this.options.addToCartButtonSelector);
+                addToCartButton.prop('disabled', true);
+                addToCartButton.addClass(this.options.addToCartButtonDisabledClass);
                 form.submit();
             } else {
                 self.ajaxSubmit(form);
@@ -49,6 +65,9 @@ define([
 
         ajaxSubmit: function(form) {
             var self = this;
+            $(self.options.minicartSelector).trigger('contentLoading');
+            self.disableAddToCartButton(form);
+
             $.ajax({
                 url: form.attr('action'),
                 data: form.serialize(),
@@ -82,8 +101,33 @@ define([
                             .find('span')
                             .html(res.product.statusText);
                     }
+                    self.enableAddToCartButton(form);
                 }
             });
+        },
+
+        disableAddToCartButton: function(form) {
+            var addToCartButtonTextWhileAdding = this.options.addToCartButtonTextWhileAdding || $t('Adding...');
+            var addToCartButton = $(form).find(this.options.addToCartButtonSelector);
+            addToCartButton.addClass(this.options.addToCartButtonDisabledClass);
+            addToCartButton.find('span').text(addToCartButtonTextWhileAdding);
+            addToCartButton.attr('title', addToCartButtonTextWhileAdding);
+        },
+
+        enableAddToCartButton: function(form) {
+            var addToCartButtonTextAdded = this.options.addToCartButtonTextAdded || $t('Added');
+            var self = this,
+                addToCartButton = $(form).find(this.options.addToCartButtonSelector);
+
+            addToCartButton.find('span').text(addToCartButtonTextAdded);
+            addToCartButton.attr('title', addToCartButtonTextAdded);
+
+            setTimeout(function() {
+                var addToCartButtonTextDefault = self.options.addToCartButtonTextDefault || $t('Add to Cart');
+                addToCartButton.removeClass(self.options.addToCartButtonDisabledClass);
+                addToCartButton.find('span').text(addToCartButtonTextDefault);
+                addToCartButton.attr('title', addToCartButtonTextDefault);
+            }, 1000);
         }
     });
 

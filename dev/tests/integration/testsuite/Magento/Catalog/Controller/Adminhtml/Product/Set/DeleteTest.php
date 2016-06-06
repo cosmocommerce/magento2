@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Adminhtml\Product\Set;
 
 use Magento\Framework\Message\MessageInterface;
 
-class DeleteTest extends \Magento\Backend\Utility\Controller
+class DeleteTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * @magentoDataFixture Magento/Eav/_files/empty_attribute_set.php

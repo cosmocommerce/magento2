@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Api\Test\Unit\Code\Generator;
@@ -109,7 +109,7 @@ abstract class EntityChildTestAbstract extends \PHPUnit_Framework_TestCase
 
         //Mocking generation
         $this->ioObjectMock->expects($this->any())
-            ->method('getResultFileName')
+            ->method('generateResultFileName')
             ->with($this->getResultClassName())
             ->willReturn($resultFileName);
         $this->ioObjectMock->expects($this->once())
@@ -126,7 +126,7 @@ abstract class EntityChildTestAbstract extends \PHPUnit_Framework_TestCase
     protected function mockDefinedClassesCall()
     {
         $this->definedClassesMock->expects($this->at(0))
-            ->method('classLoadable')
+            ->method('isClassLoadable')
             ->with($this->getSourceClassName())
             ->willReturn(true);
     }

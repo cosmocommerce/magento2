@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -841,6 +841,11 @@ class ItemTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($optionMock2, $this->model->getOptionByCode($optionCode2));
     }
 
+    public function testSetOptionsWithNull()
+    {
+        $this->assertEquals($this->model, $this->model->setOptions(null));
+    }
+
     private function createOptionMock($optionCode, $optionData = [])
     {
         $optionMock = $this->getMockBuilder('Magento\Quote\Model\Quote\Item\Option')
@@ -918,7 +923,7 @@ class ItemTest extends \PHPUnit_Framework_TestCase
             ->method('getTypeInstance')
             ->will($this->returnValue($typeInstanceMock));
 
-        $optionMock = $this->getMockBuilder('Magento\Framework\Object')
+        $optionMock = $this->getMockBuilder('Magento\Framework\DataObject')
             ->disableOriginalConstructor()
             ->setMethods(['getProduct'])
             ->getMock();
@@ -1094,7 +1099,7 @@ class ItemTest extends \PHPUnit_Framework_TestCase
         $origin = 'origin';
         $code = 1;
         $message = "message";
-        $additionalData = new \Magento\Framework\Object();
+        $additionalData = new \Magento\Framework\DataObject();
         $additionalData->setTemp(true);
 
         $this->errorInfos->expects($this->once())

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -90,14 +90,14 @@ class Transaction
     protected function _startTransaction(\PHPUnit_Framework_TestCase $test)
     {
         if (!$this->_isTransactionActive) {
-            $this->_getAdapter()->beginTransparentTransaction();
+            $this->_getConnection()->beginTransparentTransaction();
             $this->_isTransactionActive = true;
             try {
                 $this->_eventManager->fireEvent('startTransaction', [$test]);
             } catch (\Exception $e) {
                 $test->getTestResultObject()->addFailure(
                     $test,
-                    new \PHPUnit_Framework_AssertionFailedError($e->getMessage()),
+                    new \PHPUnit_Framework_AssertionFailedError((string)$e),
                     0
                 );
             }
@@ -110,7 +110,7 @@ class Transaction
     protected function _rollbackTransaction()
     {
         if ($this->_isTransactionActive) {
-            $this->_getAdapter()->rollbackTransparentTransaction();
+            $this->_getConnection()->rollbackTransparentTransaction();
             $this->_isTransactionActive = false;
             $this->_eventManager->fireEvent('rollbackTransaction');
         }
@@ -119,14 +119,15 @@ class Transaction
     /**
      * Retrieve database adapter instance
      *
-     * @param string $connectionName 'read' or 'write'
+     * @param string $connectionName
      * @return \Magento\Framework\DB\Adapter\AdapterInterface|\Magento\TestFramework\Db\Adapter\TransactionInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function _getAdapter($connectionName = 'core_write')
+    protected function _getConnection($connectionName = \Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION)
     {
-        /** @var $resource \Magento\Framework\App\Resource */
-        $resource = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get('Magento\Framework\App\Resource');
+        /** @var $resource \Magento\Framework\App\ResourceConnection */
+        $resource = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
+            ->get('Magento\Framework\App\ResourceConnection');
         return $resource->getConnection($connectionName);
     }
 

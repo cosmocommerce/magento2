@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Setup\Test\Unit\Module\Dependency\Report\Writer\Csv;
@@ -19,7 +19,7 @@ class AbstractWriterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->csvMock = $this->getMock('Magento\Framework\File\Csv');
+        $this->csvMock = $this->getMock('Magento\Framework\File\Csv', [], [], '', false);
 
         $this->writer = $this->getMockForAbstractClass(
             'Magento\Setup\Module\Dependency\Report\Writer\Csv\AbstractWriter',

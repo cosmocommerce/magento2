@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogImportExport\Model\Import\Product\Type;
@@ -23,8 +23,9 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->_model = $this->getMockForAbstractClass(
             'Magento\CatalogImportExport\Model\Import\Product\Type\AbstractType',
             [
-                $objectManager->get('Magento\Eav\Model\Resource\Entity\Attribute\Set\CollectionFactory'),
-                $objectManager->get('Magento\Catalog\Model\Resource\Product\Attribute\CollectionFactory'),
+                $objectManager->get('Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory'),
+                $objectManager->get('Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory'),
+                $objectManager->get('Magento\Framework\App\ResourceConnection'),
                 $params
             ]
         );

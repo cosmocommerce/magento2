@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -92,6 +92,11 @@ class Menu extends Block
         $this->waitForElementVisible($subMenuSelector, Locator::SELECTOR_XPATH);
         $subMenuItem = $subMenuSelector . sprintf($this->subMenuItem, $subMenu);
         $this->waitForElementVisible($subMenuItem, Locator::SELECTOR_XPATH);
+        // Resolve an issue on with "Offset within element cannot be scrolled into view" on low screen resolution
+        try {
+            $this->_rootElement->find($subMenuItem, Locator::SELECTOR_XPATH)->hover();
+        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException  $e) {
+        }
         $this->_rootElement->find($subMenuItem, Locator::SELECTOR_XPATH)->click();
         $this->waitForElementNotVisible($subMenuSelector, Locator::SELECTOR_XPATH);
     }

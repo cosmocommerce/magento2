@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\HTTP\Test\Unit;
@@ -18,7 +18,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     protected $_request;
 
     /**
-     * @var \Magento\Framework\Stdlib\String
+     * @var \Magento\Framework\Stdlib\StringUtils
      */
     protected $_converter;
 
@@ -34,7 +34,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $this->_converter = $this->getMock('\Magento\Framework\Stdlib\String', ['cleanString']);
+        $this->_converter = $this->getMock('\Magento\Framework\Stdlib\StringUtils', ['cleanString']);
     }
 
     /**

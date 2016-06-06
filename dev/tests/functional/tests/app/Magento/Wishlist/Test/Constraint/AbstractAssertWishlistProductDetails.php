@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,7 +12,7 @@ use Magento\Wishlist\Test\Page\WishlistIndex;
 use Magento\Mtf\Constraint\AbstractAssertForm;
 
 /**
- * Assert that the correct option details are displayed on the "View Details" tool tip.
+ * Assert that the correct option details are displayed on the "See Details" tooltip.
  */
 abstract class AbstractAssertWishlistProductDetails extends AbstractAssertForm
 {

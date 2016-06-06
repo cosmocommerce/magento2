@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order\Creditmemo;
@@ -10,6 +10,13 @@ use Magento\Sales\Model\Order\Email\Sender\CreditmemoCommentSender;
 
 class AddComment extends \Magento\Backend\App\Action
 {
+    /**
+     * Authorization level of a basic admin session
+     *
+     * @see _isAllowed()
+     */
+    const ADMIN_RESOURCE = 'Magento_Sales::sales_creditmemo';
+
     /**
      * @var \Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader
      */
@@ -60,14 +67,6 @@ class AddComment extends \Magento\Backend\App\Action
     }
 
     /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Magento_Sales::sales_creditmemo');
-    }
-
-    /**
      * Add comment to creditmemo history
      *
      * @return \Magento\Framework\Controller\Result\Raw|\Magento\Framework\Controller\Result\Json
@@ -79,7 +78,7 @@ class AddComment extends \Magento\Backend\App\Action
             $data = $this->getRequest()->getPost('comment');
             if (empty($data['comment'])) {
                 throw new \Magento\Framework\Exception\LocalizedException(
-                    __('The Comment Text field cannot be empty.')
+                    __('Please enter a comment.')
                 );
             }
             $this->creditmemoLoader->setOrderId($this->getRequest()->getParam('order_id'));

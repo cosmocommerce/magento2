@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Request\Filter;
@@ -57,6 +57,7 @@ class Range implements FilterInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -77,6 +78,7 @@ class Range implements FilterInterface
      * Get From
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getFrom()
     {
@@ -87,6 +89,7 @@ class Range implements FilterInterface
      * Get To
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getTo()
     {

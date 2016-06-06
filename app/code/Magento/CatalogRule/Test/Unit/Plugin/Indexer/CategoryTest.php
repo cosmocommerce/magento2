@@ -1,10 +1,8 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-
-// @codingStandardsIgnoreFile
 
 namespace Magento\CatalogRule\Test\Unit\Plugin\Indexer;
 
@@ -29,20 +27,37 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->productRuleProcessor = $this->getMock('Magento\CatalogRule\Model\Indexer\Product\ProductRuleProcessor',
-            [], [], '', false);
-        $this->subject = $this->getMock('Magento\Catalog\Model\Category', ['getAffectedProductIds', '__wakeUp'], [],
-            '', false);
+        $this->productRuleProcessor = $this->getMock(
+            'Magento\CatalogRule\Model\Indexer\Product\ProductRuleProcessor',
+            [],
+            [],
+            '',
+            false
+        );
+        $this->subject = $this->getMock(
+            'Magento\Catalog\Model\Category',
+            ['getAffectedProductIds', '__wakeUp'],
+            [],
+            '',
+            false
+        );
 
-        $this->plugin = (new ObjectManager($this))->getObject('Magento\CatalogRule\Plugin\Indexer\Category', [
-            'productRuleProcessor' => $this->productRuleProcessor,
-        ]);
+        $this->plugin = (new ObjectManager($this))->getObject(
+            'Magento\CatalogRule\Plugin\Indexer\Category',
+            [
+                'productRuleProcessor' => $this->productRuleProcessor,
+            ]
+        );
     }
 
     public function testAfterSaveWithoutAffectedProductIds()
     {
-        $this->subject->expects($this->any())->method('getAffectedProductIds')->will($this->returnValue([]));
-        $this->productRuleProcessor->expects($this->never())->method('reindexList');
+        $this->subject->expects($this->any())
+            ->method('getAffectedProductIds')
+            ->will($this->returnValue([]));
+
+        $this->productRuleProcessor->expects($this->never())
+            ->method('reindexList');
 
         $this->assertEquals($this->subject, $this->plugin->afterSave($this->subject, $this->subject));
     }
@@ -51,15 +66,21 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     {
         $productIds = [1, 2, 3];
 
-        $this->subject->expects($this->any())->method('getAffectedProductIds')->will($this->returnValue($productIds));
-        $this->productRuleProcessor->expects($this->once())->method('reindexList')->with($productIds);
+        $this->subject->expects($this->any())
+            ->method('getAffectedProductIds')
+            ->will($this->returnValue($productIds));
+
+        $this->productRuleProcessor->expects($this->once())
+            ->method('reindexList')
+            ->with($productIds);
 
         $this->assertEquals($this->subject, $this->plugin->afterSave($this->subject, $this->subject));
     }
 
     public function testAfterDelete()
     {
-        $this->productRuleProcessor->expects($this->once())->method('markIndexerAsInvalid');
+        $this->productRuleProcessor->expects($this->once())
+            ->method('markIndexerAsInvalid');
 
         $this->assertEquals($this->subject, $this->plugin->afterDelete($this->subject, $this->subject));
     }

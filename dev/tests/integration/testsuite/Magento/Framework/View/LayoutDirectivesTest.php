@@ -2,7 +2,7 @@
 /**
  * Set of tests of layout directives handling behavior
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View;
@@ -75,9 +75,19 @@ class LayoutDirectivesTest extends \PHPUnit_Framework_TestCase
     public function testRenderElement()
     {
         $layout = $this->_getLayoutModel('render.xml');
-        $this->assertEmpty($layout->renderElement('nonexisting_element'));
         $this->assertEquals('124', $layout->renderElement('container_one'));
         $this->assertEquals('12', $layout->renderElement('block_one'));
+    }
+
+    /**
+     * @expectedException \OutOfBoundsException
+     * @expectedExceptionMessage No element found with ID 'nonexisting_element'
+     * @magentoAppIsolation enabled
+     */
+    public function testRenderNonExistentElementShouldThrowException()
+    {
+        $layout = $this->_getLayoutModel('render.xml');
+        $this->assertEmpty($layout->renderElement('nonexisting_element'));
     }
 
     /**

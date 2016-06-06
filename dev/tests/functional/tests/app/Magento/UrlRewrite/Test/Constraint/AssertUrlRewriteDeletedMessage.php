@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,7 +18,7 @@ class AssertUrlRewriteDeletedMessage extends AbstractConstraint
     /**
      * Message that displayed after delete url rewrite
      */
-    const SUCCESS_DELETE_MESSAGE = 'The URL Rewrite has been deleted.';
+    const SUCCESS_DELETE_MESSAGE = 'You deleted the URL rewrite.';
 
     /**
      * Assert that delete message is displayed
@@ -28,7 +28,7 @@ class AssertUrlRewriteDeletedMessage extends AbstractConstraint
      */
     public function processAssert(UrlRewriteIndex $index)
     {
-        $actualMessage = $index->getMessagesBlock()->getSuccessMessages();
+        $actualMessage = $index->getMessagesBlock()->getSuccessMessage();
         \PHPUnit_Framework_Assert::assertEquals(
             self::SUCCESS_DELETE_MESSAGE,
             $actualMessage,

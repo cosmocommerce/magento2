@@ -1,12 +1,10 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Integration\Api;
-
-use Magento\Framework\Exception\AuthenticationException;
 
 /**
  * Interface providing token generation for Customers
@@ -21,7 +19,7 @@ interface CustomerTokenServiceInterface
      * @param string $username
      * @param string $password
      * @return string Token created
-     * @throws AuthenticationException
+     * @throws \Magento\Framework\Exception\AuthenticationException
      */
     public function createCustomerAccessToken($username, $password);
 

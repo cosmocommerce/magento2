@@ -2,7 +2,7 @@
 /**
  * Integration test for Magento\Framework\ValidatorFactory
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework;
@@ -20,7 +20,7 @@ class ValidatorFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateWithInstanceName()
     {
-        $setName = 'Magento\Framework\Object';
+        $setName = 'Magento\Framework\DataObject';
         $this->assertInstanceOf($setName, $this->model->create([], $setName));
     }
 

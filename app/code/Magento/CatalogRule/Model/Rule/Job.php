@@ -4,7 +4,7 @@
  *
  * Uses for encapsulate some logic of rule model and for having ability change behavior (for example, in controller)
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -24,7 +24,7 @@ namespace Magento\CatalogRule\Model\Rule;
 
 use Magento\CatalogRule\Model\Indexer\Rule\RuleProductProcessor;
 
-class Job extends \Magento\Framework\Object
+class Job extends \Magento\Framework\DataObject
 {
     /**
      * @var RuleProductProcessor

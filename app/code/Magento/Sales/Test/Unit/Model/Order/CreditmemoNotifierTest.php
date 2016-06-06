@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -9,7 +9,7 @@ namespace Magento\Sales\Test\Unit\Model\Order;
 use \Magento\Sales\Model\Order\CreditmemoNotifier;
 
 use Magento\Framework\Exception\MailException;
-use Magento\Sales\Model\Resource\Order\Status\History\CollectionFactory;
+use Magento\Sales\Model\ResourceModel\Order\Status\History\CollectionFactory;
 
 /**
  * Class CreditmemoNotifierTest
@@ -22,12 +22,12 @@ class CreditmemoNotifierTest extends \PHPUnit_Framework_TestCase
     protected $historyCollectionFactory;
 
     /**
-     * @var \Magento\Sales\Model\CreditmemoNotifier
+     * @var CreditmemoNotifier
      */
     protected $notifier;
 
     /**
-     * @var \Magento\Sales\Model\Order|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Sales\Model\Order\Creditmemo|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $creditmemo;
 
@@ -41,10 +41,10 @@ class CreditmemoNotifierTest extends \PHPUnit_Framework_TestCase
      */
     protected $creditmemoSenderMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->historyCollectionFactory = $this->getMock(
-            'Magento\Sales\Model\Resource\Order\Status\History\CollectionFactory',
+            'Magento\Sales\Model\ResourceModel\Order\Status\History\CollectionFactory',
             ['create'],
             [],
             '',
@@ -78,7 +78,7 @@ class CreditmemoNotifierTest extends \PHPUnit_Framework_TestCase
     public function testNotifySuccess()
     {
         $historyCollection = $this->getMock(
-            'Magento\Sales\Model\Resource\Order\Status\History\Collection',
+            'Magento\Sales\Model\ResourceModel\Order\Status\History\Collection',
             ['getUnnotifiedForInstance', 'save', 'setIsCustomerNotified'],
             [],
             '',

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Url\Helper;
@@ -14,8 +14,6 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $_SERVER['HTTP_HOST'] = 'example.com';
-        $_SERVER['REQUEST_URI'] = '/fancy_uri';
         $this->_helper = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
             'Magento\Framework\Url\Helper\Data'
         );
@@ -23,12 +21,12 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCurrentBase64Url()
     {
-        $this->assertEquals('aHR0cDovL2xvY2FsaG9zdDo4MQ,,', $this->_helper->getCurrentBase64Url());
+        $this->assertEquals('aHR0cDovL2xvY2FsaG9zdDo4MS8,', $this->_helper->getCurrentBase64Url());
     }
 
     public function testGetEncodedUrl()
     {
-        $this->assertEquals('aHR0cDovL2xvY2FsaG9zdDo4MQ,,', $this->_helper->getEncodedUrl());
+        $this->assertEquals('aHR0cDovL2xvY2FsaG9zdDo4MS8,', $this->_helper->getEncodedUrl());
         $this->assertEquals('aHR0cDovL2V4YW1wbGUuY29tLw,,', $this->_helper->getEncodedUrl('http://example.com/'));
     }
 }

@@ -1,25 +1,20 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Test\TestStep;
 
 use Magento\Cms\Test\Page\CmsIndex;
-use Magento\Customer\Test\Page\CustomerAccountLogout;
 use Magento\Mtf\TestStep\TestStepInterface;
+use Magento\Customer\Test\Page\CustomerAccountIndex;
 
 /**
  * Logout customer on frontend.
  */
 class LogoutCustomerOnFrontendStep implements TestStepInterface
 {
-    /**
-     * Logout page title.
-     */
-    const LOGOUT_PAGE_TITLE = 'You are now logged out';
-
     /**
      * Cms index page.
      *
@@ -28,21 +23,21 @@ class LogoutCustomerOnFrontendStep implements TestStepInterface
     protected $cmsIndex;
 
     /**
-     * Customer logout page.
+     * Customer account page.
      *
-     * @var CustomerAccountLogout
+     * @var CustomerAccountIndex
      */
-    protected $customerAccountLogout;
+    protected $customerAccount;
 
     /**
      * @constructor
      * @param CmsIndex $cmsIndex
-     * @param CustomerAccountLogout $customerAccountLogout
+     * @param CustomerAccountIndex $customerAccount
      */
-    public function __construct(CmsIndex $cmsIndex, CustomerAccountLogout $customerAccountLogout)
+    public function __construct(CmsIndex $cmsIndex, CustomerAccountIndex $customerAccount)
     {
         $this->cmsIndex = $cmsIndex;
-        $this->customerAccountLogout = $customerAccountLogout;
+        $this->customerAccount = $customerAccount;
     }
 
     /**
@@ -52,10 +47,10 @@ class LogoutCustomerOnFrontendStep implements TestStepInterface
      */
     public function run()
     {
-        $this->cmsIndex->open();
+        $this->customerAccount->open();
         $this->cmsIndex->getCmsPageBlock()->waitPageInit();
-        if ($this->cmsIndex->getLinksBlock()->isLinkVisible("Log Out")) {
-            $this->cmsIndex->getLinksBlock()->openLink("Log Out");
+        if ($this->cmsIndex->getTitleBlock()->getTitle() != 'Customer Login') {
+            $this->cmsIndex->getLinksBlock()->openLink('Sign Out');
             $this->cmsIndex->getCmsPageBlock()->waitUntilTextIsVisible('Home Page');
             $this->cmsIndex->getCmsPageBlock()->waitPageInit();
         }

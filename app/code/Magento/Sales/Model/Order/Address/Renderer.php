@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -11,7 +11,7 @@ use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Sales\Model\Order\Address;
 
 /**
- * Class Renderer using for formatting of order address
+ * Class Renderer used for formatting an order address
  */
 class Renderer
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Search\Controller\Adminhtml\Term;
@@ -24,7 +24,7 @@ class MassDelete extends TermController
                     $model = $this->_objectManager->create('Magento\Search\Model\Query')->load($searchId);
                     $model->delete();
                 }
-                $this->messageManager->addSuccess(__('Total of %1 record(s) were deleted', count($searchIds)));
+                $this->messageManager->addSuccess(__('Total of %1 record(s) were deleted.', count($searchIds)));
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
             }

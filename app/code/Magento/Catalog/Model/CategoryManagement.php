@@ -1,11 +1,13 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Model;
+
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 
 class CategoryManagement implements \Magento\Catalog\Api\CategoryManagementInterface
 {
@@ -22,13 +24,16 @@ class CategoryManagement implements \Magento\Catalog\Api\CategoryManagementInter
     /**
      * @param \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
      * @param Category\Tree $categoryTree
+     * @param CollectionFactory $categoriesFactory
      */
     public function __construct(
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
-        \Magento\Catalog\Model\Category\Tree $categoryTree
+        \Magento\Catalog\Model\Category\Tree $categoryTree,
+        \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoriesFactory
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->categoryTree = $categoryTree;
+        $this->categoriesFactory = $categoriesFactory;
     }
 
     /**
@@ -71,5 +76,16 @@ class CategoryManagement implements \Magento\Catalog\Api\CategoryManagementInter
             throw new \Magento\Framework\Exception\LocalizedException(__('Could not move category'));
         }
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCount()
+    {
+        $categories = $this->categoriesFactory->create();
+        /** @var \Magento\Catalog\Model\ResourceModel\Category\Collection $categories */
+        $categories->addAttributeToFilter('parent_id', ['gt' => 0]);
+        return $categories->getSize();
     }
 }

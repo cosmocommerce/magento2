@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -67,7 +67,7 @@ class AbstractFilter extends \Magento\Backend\Block\AbstractBlock implements
      */
     protected function _getHtmlName()
     {
-        return $this->getColumn()->getId();
+        return $this->escapeHtml($this->getColumn()->getId());
     }
 
     /**
@@ -77,7 +77,7 @@ class AbstractFilter extends \Magento\Backend\Block\AbstractBlock implements
      */
     protected function _getHtmlId()
     {
-        return $this->getColumn()->getHtmlId();
+        return $this->escapeHtml($this->getColumn()->getHtmlId());
     }
 
     /**
@@ -88,7 +88,7 @@ class AbstractFilter extends \Magento\Backend\Block\AbstractBlock implements
      */
     public function getEscapedValue($index = null)
     {
-        return htmlspecialchars((string)$this->getValue($index));
+        return $this->escapeHtml((string)$this->getValue($index));
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -49,8 +49,8 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
         $this->addTab(
             'front',
             [
-                'label' => __('Frontend Properties'),
-                'title' => __('Frontend Properties'),
+                'label' => __('Storefront Properties'),
+                'title' => __('Storefront Properties'),
                 'content' => $this->getChildHtml('front')
             ]
         );

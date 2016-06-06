@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute;
@@ -32,6 +32,7 @@ class Exception extends \Magento\Framework\Exception\LocalizedException
      *
      * @param string $attribute
      * @return $this
+     * @codeCoverageIgnore
      */
     public function setAttributeCode($attribute)
     {
@@ -44,6 +45,7 @@ class Exception extends \Magento\Framework\Exception\LocalizedException
      *
      * @param string $part
      * @return $this
+     * @codeCoverageIgnore
      */
     public function setPart($part)
     {
@@ -55,6 +57,7 @@ class Exception extends \Magento\Framework\Exception\LocalizedException
      * Retrieve Eav entity attribute
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getAttributeCode()
     {
@@ -65,6 +68,7 @@ class Exception extends \Magento\Framework\Exception\LocalizedException
      * Retrieve Eav entity attribute part
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getPart()
     {

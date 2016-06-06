@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -23,7 +23,7 @@ class ProductsListTest extends \PHPUnit_Framework_TestCase
     protected $productsList;
 
     /**
-     * @var \Magento\Catalog\Model\Resource\Product\CollectionFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $collectionFactory;
 
@@ -74,7 +74,8 @@ class ProductsListTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->collectionFactory = $this->getMockBuilder('Magento\Catalog\Model\Resource\Product\CollectionFactory')
+        $this->collectionFactory =
+            $this->getMockBuilder('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory')
             ->setMethods(['create'])
             ->disableOriginalConstructor()->getMock();
         $this->visibility = $this->getMockBuilder('Magento\Catalog\Model\Product\Visibility')
@@ -125,9 +126,21 @@ class ProductsListTest extends \PHPUnit_Framework_TestCase
         $this->httpContext->expects($this->once())->method('getValue')->willReturn('context_group');
         $this->productsList->setData('conditions', 'some_serialized_conditions');
 
-        $this->request->expects($this->once())->method('getParam')->with('np')->willReturn(1);
+        $this->productsList->setData('page_var_name', 'page_number');
+        $this->request->expects($this->once())->method('getParam')->with('page_number')->willReturn(1);
 
-        $cacheKey = ['CATALOG_PRODUCTS_LIST_WIDGET', 1, 'blank', 'context_group', 1, 5, 'some_serialized_conditions'];
+        $this->request->expects($this->once())->method('getParams')->willReturn('request_params');
+
+        $cacheKey = [
+            'CATALOG_PRODUCTS_LIST_WIDGET',
+            1,
+            'blank',
+            'context_group',
+            1,
+            5,
+            'some_serialized_conditions',
+            serialize('request_params')
+        ];
         $this->assertEquals($cacheKey, $this->productsList->getCacheKeyInfo());
     }
 
@@ -172,7 +185,7 @@ class ProductsListTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPagerHtml()
     {
-        $collection = $this->getMockBuilder('\Magento\Catalog\Model\Resource\Product\Collection')
+        $collection = $this->getMockBuilder('\Magento\Catalog\Model\ResourceModel\Product\Collection')
             ->setMethods(['getSize'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -220,7 +233,7 @@ class ProductsListTest extends \PHPUnit_Framework_TestCase
     {
         $this->visibility->expects($this->once())->method('getVisibleInCatalogIds')
             ->willReturn([Visibility::VISIBILITY_IN_CATALOG, Visibility::VISIBILITY_BOTH]);
-        $collection = $this->getMockBuilder('\Magento\Catalog\Model\Resource\Product\Collection')
+        $collection = $this->getMockBuilder('\Magento\Catalog\Model\ResourceModel\Product\Collection')
             ->setMethods([
                 'setVisibility',
                 'addMinimalPrice',
@@ -262,7 +275,6 @@ class ProductsListTest extends \PHPUnit_Framework_TestCase
 
         $this->rule->expects($this->once())->method('loadPost')->willReturnSelf();
         $this->rule->expects($this->once())->method('getConditions')->willReturn($conditions);
-
 
         if ($productsPerPage) {
             $this->productsList->setData('products_per_page', $productsPerPage);

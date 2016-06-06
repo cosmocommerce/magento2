@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Test\Unit\Controller\Adminhtml\Index;
@@ -249,10 +249,10 @@ class NewsletterTest extends \PHPUnit_Framework_TestCase
         $subscriberMock->expects($this->once())
             ->method('loadByCustomerId');
         $this->_objectManager
-            ->expects($this->at(1))
+            ->expects($this->any())
             ->method('create')
             ->with('Magento\Newsletter\Model\Subscriber')
-            ->will($this->returnValue($subscriberMock));
+            ->willReturn($subscriberMock);
 
         $this->assertInstanceOf(
             'Magento\Framework\View\Result\Layout',

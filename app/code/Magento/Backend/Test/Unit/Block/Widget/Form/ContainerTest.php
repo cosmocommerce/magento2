@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Test\Unit\Block\Widget\Form;
@@ -9,8 +9,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetDataObject()
     {
-        $form = new \Magento\Framework\Object();
-        $dataObject = new \Magento\Framework\Object();
+        $form = new \Magento\Framework\DataObject();
+        $dataObject = new \Magento\Framework\DataObject();
 
         // _prepateLayout() is blocked, because it is used by block to instantly add 'form' child
         $block = $this->getMock(

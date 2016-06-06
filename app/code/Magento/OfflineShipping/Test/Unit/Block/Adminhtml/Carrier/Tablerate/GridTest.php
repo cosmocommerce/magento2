@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\OfflineShipping\Test\Unit\Block\Adminhtml\Carrier\Tablerate;
@@ -54,7 +54,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->collectionFactoryMock =
-            $this->getMockBuilder('\Magento\OfflineShipping\Model\Resource\Carrier\Tablerate\CollectionFactory')
+            $this->getMockBuilder('\Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\CollectionFactory')
             ->disableOriginalConstructor()
             ->getMock();
 

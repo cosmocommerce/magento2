@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -70,7 +70,7 @@ class OauthUserContextTest extends \PHPUnit_Framework_TestCase
 
         $this->oauthRequestHelper = $this->getMockBuilder('Magento\Framework\Oauth\Helper\Request')
             ->disableOriginalConstructor()
-            ->setMethods(['prepareRequest'])
+            ->setMethods(['prepareRequest', 'getRequestUrl'])
             ->getMock();
 
         $this->oauthService = $this->getMockBuilder('Magento\Framework\Oauth\Oauth')

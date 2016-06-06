@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -34,7 +34,9 @@ class Import
      */
     public function afterImportSource(\Magento\ImportExport\Model\Import $subject, $import)
     {
-        $this->_indexerCategoryProductProcessor->markIndexerAsInvalid();
+        if (!$this->_indexerCategoryProductProcessor->isIndexerScheduled()) {
+            $this->_indexerCategoryProductProcessor->markIndexerAsInvalid();
+        }
         return $import;
     }
 }

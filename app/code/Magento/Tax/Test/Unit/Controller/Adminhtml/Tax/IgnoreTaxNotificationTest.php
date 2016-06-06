@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Test\Unit\Controller\Adminhtml\Tax;
@@ -46,7 +46,7 @@ class IgnoreTaxNotificationTest extends \PHPUnit_Framework_TestCase
             ->with(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT)
             ->willReturn($resultRedirect);
 
-        $config = $this->getMockBuilder('\Magento\Config\Model\Resource\Config')
+        $config = $this->getMockBuilder('\Magento\Config\Model\ResourceModel\Config')
             ->disableOriginalConstructor()
             ->setMethods(['saveConfig'])
             ->getMock();

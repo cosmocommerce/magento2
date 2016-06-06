@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\PageCache\Block\System\Config\Form\Field;
@@ -8,7 +8,7 @@ namespace Magento\PageCache\Block\System\Config\Form\Field;
 /**
  * @magentoAppArea adminhtml
  */
-class ExportTest extends \Magento\Backend\Utility\Controller
+class ExportTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * Check Varnish export buttons

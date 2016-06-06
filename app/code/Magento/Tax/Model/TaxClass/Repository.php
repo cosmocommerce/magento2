@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -9,7 +9,6 @@ namespace Magento\Tax\Model\TaxClass;
 
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroup;
-use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\CouldNotDeleteException;
@@ -18,8 +17,8 @@ use Magento\Framework\Exception\LocalizedException as ModelException;
 use Magento\Tax\Api\TaxClassManagementInterface;
 use Magento\Tax\Model\ClassModel;
 use Magento\Tax\Model\ClassModelRegistry;
-use Magento\Tax\Model\Resource\TaxClass\Collection as TaxClassCollection;
-use Magento\Tax\Model\Resource\TaxClass\CollectionFactory as TaxClassCollectionFactory;
+use Magento\Tax\Model\ResourceModel\TaxClass\Collection as TaxClassCollection;
+use Magento\Tax\Model\ResourceModel\TaxClass\CollectionFactory as TaxClassCollectionFactory;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -58,7 +57,7 @@ class Repository implements \Magento\Tax\Api\TaxClassRepositoryInterface
     protected $filterBuilder;
 
     /**
-     * @var \Magento\Tax\Model\Resource\TaxClass
+     * @var \Magento\Tax\Model\ResourceModel\TaxClass
      */
     protected $taxClassResource;
 
@@ -73,7 +72,7 @@ class Repository implements \Magento\Tax\Api\TaxClassRepositoryInterface
      * @param TaxClassCollectionFactory $taxClassCollectionFactory
      * @param \Magento\Tax\Api\Data\TaxClassSearchResultsInterfaceFactory $searchResultsFactory
      * @param ClassModelRegistry $classModelRegistry
-     * @param \Magento\Tax\Model\Resource\TaxClass $taxClassResource
+     * @param \Magento\Tax\Model\ResourceModel\TaxClass $taxClassResource
      * @param \Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface $joinProcessor
      */
     public function __construct(
@@ -82,7 +81,7 @@ class Repository implements \Magento\Tax\Api\TaxClassRepositoryInterface
         TaxClassCollectionFactory $taxClassCollectionFactory,
         \Magento\Tax\Api\Data\TaxClassSearchResultsInterfaceFactory $searchResultsFactory,
         ClassModelRegistry $classModelRegistry,
-        \Magento\Tax\Model\Resource\TaxClass $taxClassResource,
+        \Magento\Tax\Model\ResourceModel\TaxClass $taxClassResource,
         \Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface $joinProcessor
     ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -172,18 +171,18 @@ class Repository implements \Magento\Tax\Api\TaxClassRepositoryInterface
         $exception = new InputException();
 
         if (!\Zend_Validate::is(trim($taxClass->getClassName()), 'NotEmpty')) {
-            $exception->addError(__(InputException::REQUIRED_FIELD, ['fieldName' => ClassModel::KEY_NAME]));
+            $exception->addError(__('%fieldName is a required field.', ['fieldName' => ClassModel::KEY_NAME]));
         }
 
         $classType = $taxClass->getClassType();
         if (!\Zend_Validate::is(trim($classType), 'NotEmpty')) {
-            $exception->addError(__(InputException::REQUIRED_FIELD, ['fieldName' => ClassModel::KEY_TYPE]));
+            $exception->addError(__('%fieldName is a required field.', ['fieldName' => ClassModel::KEY_TYPE]));
         } elseif ($classType !== TaxClassManagementInterface::TYPE_CUSTOMER
             && $classType !== TaxClassManagementInterface::TYPE_PRODUCT
         ) {
             $exception->addError(
                 __(
-                    InputException::INVALID_FIELD_VALUE,
+                    'Invalid value of "%value" provided for the %fieldName field.',
                     ['fieldName' => ClassModel::KEY_TYPE, 'value' => $classType]
                 )
             );
@@ -214,7 +213,7 @@ class Repository implements \Magento\Tax\Api\TaxClassRepositoryInterface
             foreach ($searchCriteria->getSortOrders() as $sortOrder) {
                 $collection->addOrder(
                     $sortOrder->getField(),
-                    ($sortOrder->getDirection() == SearchCriteria::SORT_ASC) ? 'ASC' : 'DESC'
+                    ($sortOrder->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
                 );
             }
         }

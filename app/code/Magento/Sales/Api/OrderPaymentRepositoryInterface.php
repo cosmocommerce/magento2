@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Api;
@@ -18,10 +18,10 @@ interface OrderPaymentRepositoryInterface
     /**
      * Lists order payments that match specified search criteria.
      *
-     * @param \Magento\Framework\Api\SearchCriteria $criteria The search criteria.
+     * @param \Magento\Framework\Api\SearchCriteria $searchCriteria The search criteria.
      * @return \Magento\Sales\Api\Data\OrderPaymentSearchResultInterface Order payment search result interface.
      */
-    public function getList(\Magento\Framework\Api\SearchCriteria $criteria);
+    public function getList(\Magento\Framework\Api\SearchCriteria $searchCriteria);
 
     /**
      * Loads a specified order payment.
@@ -46,4 +46,11 @@ interface OrderPaymentRepositoryInterface
      * @return \Magento\Sales\Api\Data\OrderPaymentInterface Order payment interface.
      */
     public function save(\Magento\Sales\Api\Data\OrderPaymentInterface $entity);
+
+    /**
+     * Creates new Order Payment instance.
+     *
+     * @return \Magento\Sales\Api\Data\OrderPaymentInterface Transaction interface.
+     */
+    public function create();
 }

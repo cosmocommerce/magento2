@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Category;
@@ -9,7 +9,7 @@ namespace Magento\Catalog\Block\Category;
  * Class View
  * @package Magento\Catalog\Block\Category
  */
-class View extends \Magento\Framework\View\Element\Template implements \Magento\Framework\Object\IdentityInterface
+class View extends \Magento\Framework\View\Element\Template implements \Magento\Framework\DataObject\IdentityInterface
 {
     /**
      * Core registry

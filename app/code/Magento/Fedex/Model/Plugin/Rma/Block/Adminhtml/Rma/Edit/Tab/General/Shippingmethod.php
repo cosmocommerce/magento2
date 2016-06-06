@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Fedex\Model\Plugin\Rma\Block\Adminhtml\Rma\Edit\Tab\General;
@@ -24,11 +24,11 @@ class Shippingmethod
     }
 
     /**
-     * @param \Magento\Framework\Object $subject
+     * @param \Magento\Framework\DataObject $subject
      * @param bool $result
      * @return bool
      */
-    public function afterCanDisplayCustomValue(\Magento\Framework\Object $subject, $result)
+    public function afterCanDisplayCustomValue(\Magento\Framework\DataObject $subject, $result)
     {
         $carrierCode = $subject->getShipment()->getCarrierCode();
         if (!$carrierCode) {

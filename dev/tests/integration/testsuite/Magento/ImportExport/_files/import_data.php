@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -104,7 +104,7 @@ $bunches = [
 ];
 
 $importDataResource = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\ImportExport\Model\Resource\Import\Data'
+    'Magento\ImportExport\Model\ResourceModel\Import\Data'
 );
 
 foreach ($bunches as $bunch) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Review\Block\Adminhtml\Add;
@@ -63,7 +63,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
         $fieldset->addField('product_name', 'note', ['label' => __('Product'), 'text' => 'product_name']);
 
         $fieldset->addField(
-            'detailed_rating',
+            'detailed-rating',
             'note',
             [
                 'label' => __('Product Rating'),
@@ -93,7 +93,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
                 'select_stores',
                 'multiselect',
                 [
-                    'label' => __('Visible In'),
+                    'label' => __('Visibility'),
                     'required' => true,
                     'name' => 'select_stores[]',
                     'values' => $this->_systemStore->getStoreValuesForForm()

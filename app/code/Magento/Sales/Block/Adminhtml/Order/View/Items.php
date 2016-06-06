@@ -1,17 +1,26 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\View;
 
-use Magento\Sales\Model\Resource\Order\Item\Collection;
+use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 
 /**
  * Adminhtml order items grid
  */
 class Items extends \Magento\Sales\Block\Adminhtml\Items\AbstractItems
 {
+    /**
+     * @return array
+     */
+    public function getColumns()
+    {
+        $columns = array_key_exists('columns', $this->_data) ? $this->_data['columns'] : [];
+        return $columns;
+    }
+
     /**
      * Retrieve required options from parent
      *

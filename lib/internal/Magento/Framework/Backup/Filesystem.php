@@ -1,12 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 // @codingStandardsIgnoreFile
 
 namespace Magento\Framework\Backup;
+use Magento\Framework\Filesystem\DriverInterface;
 
 /**
  * Class to work with filesystem backups
@@ -109,14 +110,7 @@ class Filesystem extends AbstractBackup
                 new \Magento\Framework\Phrase('Not enough permissions to read files for backup')
             );
         }
-
-        $freeSpace = disk_free_space($this->getBackupsDir());
-
-        if (2 * $filesInfo['size'] > $freeSpace) {
-            throw new \Magento\Framework\Backup\Exception\NotEnoughFreeSpace(
-                new \Magento\Framework\Phrase('Not enough free space to create backup')
-            );
-        }
+        $this->validateAvailableDiscSpace($this->getBackupsDir(), $filesInfo['size']);
 
         $tarTmpPath = $this->_getTarTmpPath();
 
@@ -144,6 +138,28 @@ class Filesystem extends AbstractBackup
 
         $this->_lastOperationSucceed = true;
         return $this->_lastOperationSucceed;
+    }
+
+    /**
+     * Validate if disk space is available for creating backup
+     *
+     * @param string $backupDir
+     * @param int $size
+     * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function validateAvailableDiscSpace($backupDir, $size)
+    {
+        $freeSpace = disk_free_space($backupDir);
+        $requiredSpace = 2 * $size;
+        if ($requiredSpace > $freeSpace) {
+            throw new \Magento\Framework\Backup\Exception\NotEnoughFreeSpace(
+                new \Magento\Framework\Phrase(
+                'Warning: necessary space for backup is ' . (ceil($requiredSpace)/1024)
+                . 'MB, but your free disc space is ' . (ceil($freeSpace)/1024) . 'MB.'
+                )
+            );
+        }
     }
 
     /**
@@ -263,7 +279,7 @@ class Filesystem extends AbstractBackup
             }
 
             mkdir($backupsDir);
-            chmod($backupsDir, 0777);
+            chmod($backupsDir);
         }
 
         if (!is_writable($backupsDir)) {

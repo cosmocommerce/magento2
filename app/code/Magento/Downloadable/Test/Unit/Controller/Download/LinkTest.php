@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Downloadable\Test\Unit\Controller\Download;
@@ -275,8 +275,8 @@ class LinkTest extends \PHPUnit_Framework_TestCase
         $this->product->expects($this->once())->method('getName')->willReturn('product_name');
         $this->messageManager->expects($this->once())
             ->method('addNotice')
-            ->with('Please log in to download your product or purchase <a href="product_url">product_name</a>.');
-        $this->session->expects($this->once())->method('authenticate')->with($this->link)->willReturn(true);
+            ->with('Please sign in to download your product or purchase <a href="product_url">product_name</a>.');
+        $this->session->expects($this->once())->method('authenticate')->willReturn(true);
         $this->objectManager->expects($this->at(4))
             ->method('create')
             ->with('Magento\Framework\UrlInterface')

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Test\Unit\Model;
@@ -11,7 +11,7 @@ namespace Magento\SalesRule\Test\Unit\Model;
 class CouponTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Magento\SalesRule\Model\Resource\Coupon|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\SalesRule\Model\ResourceModel\Coupon|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $resourceMock;
 
@@ -30,7 +30,7 @@ class CouponTest extends \PHPUnit_Framework_TestCase
         $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
 
         $this->resourceMock = $this->getMock(
-            'Magento\SalesRule\Model\Resource\Coupon',
+            'Magento\SalesRule\Model\ResourceModel\Coupon',
             ['loadPrimaryByRule', 'load', '__wakeup', 'getIdFieldName'],
             [],
             '',

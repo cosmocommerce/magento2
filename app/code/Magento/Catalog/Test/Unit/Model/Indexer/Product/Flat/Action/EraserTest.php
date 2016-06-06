@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -33,7 +33,7 @@ class EraserTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $resource = $this->getMock('Magento\Framework\App\Resource', [], [], '', false);
+        $resource = $this->getMock('Magento\Framework\App\ResourceConnection', [], [], '', false);
         $this->connection = $this->getMock('Magento\Framework\DB\Adapter\AdapterInterface');
         $resource->expects($this->any())->method('getConnection')->will($this->returnValue($this->connection));
         $this->indexerHelper = $this->getMock(

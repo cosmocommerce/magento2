@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Quote\Test\Unit\Model;
@@ -16,6 +16,7 @@ class PaymentMethodManagementTest extends \PHPUnit_Framework_TestCase
      * @var \Magento\Framework\TestFramework\Unit\Helper\ObjectManager
      */
     protected $objectManager;
+    
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -111,7 +112,7 @@ class PaymentMethodManagementTest extends \PHPUnit_Framework_TestCase
         $cartId = 100;
         $paymentId = 200;
         $methodDataWithAdditionalData = ['method' => 'data', 'additional_data' => ['additional' => 'value']];
-        $methodData = ['method' => 'data', 'additional' => 'value'];
+        $methodData = $methodDataWithAdditionalData;
         $paymentMethod = 'checkmo';
 
         $quoteMock = $this->getMock(
@@ -152,7 +153,6 @@ class PaymentMethodManagementTest extends \PHPUnit_Framework_TestCase
             '',
             false
         );
-        $billingAddressMock->expects($this->once())->method('getCountryId')->willReturn(100);
         $billingAddressMock->expects($this->once())
             ->method('setPaymentMethod')
             ->with($paymentMethod)
@@ -160,7 +160,7 @@ class PaymentMethodManagementTest extends \PHPUnit_Framework_TestCase
 
         $quoteMock->expects($this->exactly(2))->method('getPayment')->willReturn($paymentMock);
         $quoteMock->expects($this->exactly(2))->method('isVirtual')->willReturn(true);
-        $quoteMock->expects($this->exactly(2))->method('getBillingAddress')->willReturn($billingAddressMock);
+        $quoteMock->expects($this->once())->method('getBillingAddress')->willReturn($billingAddressMock);
 
         $methodInstance = $this->getMockForAbstractClass('Magento\Payment\Model\MethodInterface');
         $paymentMock->expects($this->once())->method('getMethodInstance')->willReturn($methodInstance);
@@ -176,49 +176,6 @@ class PaymentMethodManagementTest extends \PHPUnit_Framework_TestCase
 
         $paymentMock->expects($this->once())->method('getId')->willReturn($paymentId);
         $this->assertEquals($paymentId, $this->model->set($cartId, $methodMock));
-    }
-
-    /**
-     * @expectedException \Magento\Framework\Exception\State\InvalidTransitionException
-     * @expectedExceptionMessage Billing address is not set
-     */
-    public function testSetVirtualProductThrowsExceptionIfBillingAddressNotSet()
-    {
-        $cartId = 100;
-        $methodData = ['method' => 'data'];
-
-        $quoteMock = $this->getMock(
-            'Magento\Quote\Model\Quote',
-            ['getPayment', 'isVirtual', 'getBillingAddress'],
-            [],
-            '',
-            false
-        );
-        $this->quoteRepositoryMock->expects($this->once())->method('get')->with($cartId)->willReturn($quoteMock);
-
-        $methodMock = $this->getMock('Magento\Quote\Model\Quote\Payment', ['setChecks', 'getData'], [], '', false);
-        $methodMock->expects($this->once())
-            ->method('setChecks')
-            ->with([
-                \Magento\Payment\Model\Method\AbstractMethod::CHECK_USE_CHECKOUT,
-                \Magento\Payment\Model\Method\AbstractMethod::CHECK_USE_FOR_COUNTRY,
-                \Magento\Payment\Model\Method\AbstractMethod::CHECK_USE_FOR_CURRENCY,
-                \Magento\Payment\Model\Method\AbstractMethod::CHECK_ORDER_TOTAL_MIN_MAX,
-            ])
-            ->willReturnSelf();
-        $methodMock->expects($this->once())->method('getData')->willReturn($methodData);
-
-        $paymentMock = $this->getMock('Magento\Quote\Model\Quote\Payment', ['importData', 'getMethod'], [], '', false);
-        $paymentMock->expects($this->once())->method('importData')->with($methodData)->willReturnSelf();
-
-        $billingAddressMock = $this->getMock('Magento\Quote\Model\Quote\Address', ['getCountryId'], [], '', false);
-        $billingAddressMock->expects($this->once())->method('getCountryId')->willReturn(null);
-
-        $quoteMock->expects($this->once())->method('getPayment')->willReturn($paymentMock);
-        $quoteMock->expects($this->once())->method('isVirtual')->willReturn(true);
-        $quoteMock->expects($this->once())->method('getBillingAddress')->willReturn($billingAddressMock);
-
-        $this->model->set($cartId, $methodMock);
     }
 
     /**
@@ -269,7 +226,6 @@ class PaymentMethodManagementTest extends \PHPUnit_Framework_TestCase
             '',
             false
         );
-        $billingAddressMock->expects($this->once())->method('getCountryId')->willReturn(100);
         $billingAddressMock->expects($this->once())
             ->method('setPaymentMethod')
             ->with($paymentMethod)
@@ -277,7 +233,7 @@ class PaymentMethodManagementTest extends \PHPUnit_Framework_TestCase
 
         $quoteMock->expects($this->once())->method('getPayment')->willReturn($paymentMock);
         $quoteMock->expects($this->exactly(2))->method('isVirtual')->willReturn(true);
-        $quoteMock->expects($this->exactly(2))->method('getBillingAddress')->willReturn($billingAddressMock);
+        $quoteMock->expects($this->once())->method('getBillingAddress')->willReturn($billingAddressMock);
 
         $methodInstance = $this->getMockForAbstractClass('Magento\Payment\Model\MethodInterface');
         $paymentMock->expects($this->once())->method('getMethodInstance')->willReturn($methodInstance);

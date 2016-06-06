@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -51,12 +51,6 @@ class InstallSchema implements InstallSchemaInterface
             255,
             ['nullable' => true],
             'Theme Path'
-        )->addColumn(
-            'theme_version',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            255,
-            ['nullable' => false],
-            'Theme Version'
         )->addColumn(
             'theme_title',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,

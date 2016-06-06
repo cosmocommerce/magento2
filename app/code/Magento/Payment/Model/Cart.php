@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Model;
@@ -411,11 +411,11 @@ class Cart
      * @param int $qty
      * @param float $amount
      * @param null|string $identifier
-     * @return \Magento\Framework\Object
+     * @return \Magento\Framework\DataObject
      */
     protected function _createItemFromData($name, $qty, $amount, $identifier = null)
     {
-        $item = new \Magento\Framework\Object(['name' => $name, 'qty' => $qty, 'amount' => (double)$amount]);
+        $item = new \Magento\Framework\DataObject(['name' => $name, 'qty' => $qty, 'amount' => (double)$amount]);
 
         if ($identifier) {
             $item->setData('id', $identifier);

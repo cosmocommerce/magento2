@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Adapter\Mysql;
 
-use Magento\Framework\App\Resource;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 
 class ConditionManager
@@ -15,14 +15,14 @@ class ConditionManager
     /**
      * @var AdapterInterface
      */
-    private $adapter;
+    private $connection;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\App\ResourceConnection $resource
      */
-    public function __construct(Resource $resource)
+    public function __construct(ResourceConnection $resource)
     {
-        $this->adapter = $resource->getConnection(Resource::DEFAULT_READ_RESOURCE);
+        $this->connection = $resource->getConnection();
     }
 
     /**
@@ -59,9 +59,9 @@ class ConditionManager
     {
         return sprintf(
             is_array($value) ? self::CONDITION_PATTERN_ARRAY : self::CONDITION_PATTERN_SIMPLE,
-            $this->adapter->quoteIdentifier($field),
+            $this->connection->quoteIdentifier($field),
             $operator,
-            $this->adapter->quote($value)
+            $this->connection->quote($value)
         );
     }
 }

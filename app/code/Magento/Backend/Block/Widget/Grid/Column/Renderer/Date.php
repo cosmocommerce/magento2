@@ -1,9 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Widget\Grid\Column\Renderer;
+
+use Magento\Framework\Stdlib\DateTime\DateTimeFormatterInterface;
 
 /**
  * Backend grid item renderer date
@@ -23,18 +25,29 @@ class Date extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRe
     protected static $_format = null;
 
     /**
+     * @var DateTimeFormatterInterface
+     */
+    protected $dateTimeFormatter;
+
+    /**
      * @param \Magento\Backend\Block\Context $context
+     * @param DateTimeFormatterInterface $dateTimeFormatter
      * @param array $data
      */
-    public function __construct(\Magento\Backend\Block\Context $context, array $data = [])
-    {
+    public function __construct(
+        \Magento\Backend\Block\Context $context,
+        DateTimeFormatterInterface $dateTimeFormatter,
+        array $data = []
+    ) {
         parent::__construct($context, $data);
+        $this->dateTimeFormatter = $dateTimeFormatter;
     }
 
     /**
      * Retrieve date format
      *
      * @return string
+     * @deprecated
      */
     protected function _getFormat()
     {
@@ -57,14 +70,24 @@ class Date extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRe
     /**
      * Renders grid column
      *
-     * @param   \Magento\Framework\Object $row
+     * @param   \Magento\Framework\DataObject $row
      * @return  string
      */
-    public function render(\Magento\Framework\Object $row)
+    public function render(\Magento\Framework\DataObject $row)
     {
-        if ($data = $row->getData($this->getColumn()->getIndex())) {
-            $format = $this->_getFormat();
-            return \IntlDateFormatter::formatObject($this->_localeDate->date(new \DateTime($data)), $format);
+        $format = $this->getColumn()->getFormat();
+        $date = $this->_getValue($row);
+        if ($date) {
+            if (!($date instanceof \DateTimeInterface)) {
+                $date = new \DateTime($date);
+            }
+            return $this->_localeDate->formatDateTime(
+                $date,
+                $format ?: \IntlDateFormatter::MEDIUM,
+                \IntlDateFormatter::NONE,
+                null,
+                $this->getColumn()->getTimezone() === false ? 'UTC' : null
+            );
         }
         return $this->getColumn()->getDefault();
     }

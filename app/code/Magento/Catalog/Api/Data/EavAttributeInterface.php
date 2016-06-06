@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Api\Data;
@@ -20,6 +20,12 @@ interface EavAttributeInterface extends \Magento\Eav\Api\Data\AttributeInterface
     const IS_FILTERABLE = 'is_filterable';
 
     const IS_FILTERABLE_IN_SEARCH = 'is_filterable_in_search';
+
+    const IS_USED_IN_GRID = 'is_used_in_grid';
+
+    const IS_VISIBLE_IN_GRID = 'is_visible_in_grid';
+
+    const IS_FILTERABLE_IN_GRID = 'is_filterable_in_grid';
 
     const POSITION = 'position';
 
@@ -111,6 +117,27 @@ interface EavAttributeInterface extends \Magento\Eav\Api\Data\AttributeInterface
      * @return bool|null
      */
     public function getIsFilterableInSearch();
+
+    /**
+     * Whether it is used in catalog product grid
+     *
+     * @return bool|null
+     */
+    public function getIsUsedInGrid();
+
+    /**
+     * Whether it is visible in catalog product grid
+     *
+     * @return bool|null
+     */
+    public function getIsVisibleInGrid();
+
+    /**
+     * Whether it is filterable in catalog product grid
+     *
+     * @return bool|null
+     */
+    public function getIsFilterableInGrid();
 
     /**
      * Set whether it is used in search results layered navigation

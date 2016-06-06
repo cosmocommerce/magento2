@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Api\Data;
@@ -28,13 +28,13 @@ interface OrderAddressInterface extends \Magento\Framework\Api\ExtensibleDataInt
      */
     const CUSTOMER_ADDRESS_ID = 'customer_address_id';
     /*
-     * Quote address ID.
-     */
-    const QUOTE_ADDRESS_ID = 'quote_address_id';
-    /*
      * Region ID.
      */
     const REGION_ID = 'region_id';
+    /**
+     * Region code.
+     */
+    const KEY_REGION_CODE = 'region_code';
     /*
      * Customer ID.
      */
@@ -234,18 +234,18 @@ interface OrderAddressInterface extends \Magento\Framework\Api\ExtensibleDataInt
     public function getPrefix();
 
     /**
-     * Gets the quote address ID for the order address.
-     *
-     * @return int|null Quote address ID.
-     */
-    public function getQuoteAddressId();
-
-    /**
      * Gets the region for the order address.
      *
      * @return string|null Region.
      */
     public function getRegion();
+
+    /**
+     * Gets the region code for the order address
+     *
+     * @return string|null Region code.
+     */
+    public function getRegionCode();
 
     /**
      * Gets the region ID for the order address.
@@ -325,14 +325,6 @@ interface OrderAddressInterface extends \Magento\Framework\Api\ExtensibleDataInt
      * @return $this
      */
     public function setCustomerAddressId($id);
-
-    /**
-     * Sets the quote address ID for the order address.
-     *
-     * @param int $id
-     * @return $this
-     */
-    public function setQuoteAddressId($id);
 
     /**
      * Sets the region ID for the order address.
@@ -493,6 +485,14 @@ interface OrderAddressInterface extends \Magento\Framework\Api\ExtensibleDataInt
      * @return $this
      */
     public function setVatRequestId($id);
+
+    /**
+     * Set region code
+     *
+     * @param string $regionCode
+     * @return $this
+     */
+    public function setRegionCode($regionCode);
 
     /**
      * Sets the VAT request date for the order address.

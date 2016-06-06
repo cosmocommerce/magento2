@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,7 +18,7 @@ class AssertAddressDeletedFrontend extends AbstractConstraint
     /**
      * Expected message
      */
-    const EXPECTED_MESSAGE = 'You have no additional address entries in your address book.';
+    const EXPECTED_MESSAGE = 'You have no other address entries in your address book.';
 
     /**
      * Asserts that Asserts that 'Additional Address Entries' contains expected message

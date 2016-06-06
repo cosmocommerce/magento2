@@ -1,14 +1,18 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ConfigurableProduct\Controller\Adminhtml;
 
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Registry;
+use Magento\TestFramework\ObjectManager;
+
 /**
  * @magentoAppArea adminhtml
  */
-class ProductTest extends \Magento\Backend\Utility\Controller
+class ProductTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * @magentoDataFixture Magento/ConfigurableProduct/_files/product_configurable.php
@@ -25,12 +29,13 @@ class ProductTest extends \Magento\Backend\Utility\Controller
 
         $this->dispatch('backend/catalog/product/save');
 
-        /** @var $objectManager \Magento\TestFramework\ObjectManager */
+        /** @var $objectManager ObjectManager */
         $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
 
-        /** @var $product \Magento\Catalog\Model\Product */
-        $product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
-        $this->assertEquals($associatedProductIds, $product->getAssociatedProductIds());
+        /** @var $product Product */
+        $product = $objectManager->get(Registry::class)->registry('current_product');
+
+        self::assertEquals($associatedProductIds, $product->getExtensionAttributes()->getConfigurableProductLinks());
     }
 
     /**

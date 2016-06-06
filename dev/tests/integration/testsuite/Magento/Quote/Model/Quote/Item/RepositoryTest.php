@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Quote\Model\Quote\Item;
@@ -20,8 +20,8 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
             'email' => 'admin@example.com'
         ];
 
-        /** @var \Magento\Quote\Model\Quote\Item\Repository $quoteItemRepository */
-        $quoteItemRepository = Bootstrap::getObjectManager()->create('Magento\Quote\Model\Quote\Item\Repository');
+        /** @var \Magento\Quote\Api\CartItemRepositoryInterface $quoteItemRepository */
+        $quoteItemRepository = Bootstrap::getObjectManager()->create('\Magento\Quote\Api\CartItemRepositoryInterface');
         /** @var \Magento\Quote\Model\Quote $quote */
         $quote = Bootstrap::getObjectManager()->create('Magento\Quote\Model\Quote');
         $quoteId = $quote->load('test01', 'reserved_order_id')->getId();

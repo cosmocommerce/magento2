@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Model\Order\Pdf;
@@ -23,7 +23,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
         // Setup most constructor dependencies
         $paymentData = $this->getMock('Magento\Payment\Helper\Data', [], [], '', false);
         $addressRenderer = $this->getMock('Magento\Sales\Model\Order\Address\Renderer', [], [], '', false);
-        $string = $this->getMock('Magento\Framework\Stdlib\String', [], [], '', false);
+        $string = $this->getMock('Magento\Framework\Stdlib\StringUtils', [], [], '', false);
         $scopeConfig = $this->getMock('Magento\Framework\App\Config\ScopeConfigInterface');
         $translate = $this->getMock('Magento\Framework\Translate\Inline\StateInterface', [], [], '', false);
         $filesystem = $this->getMock('Magento\Framework\Filesystem', [], [], '', false);

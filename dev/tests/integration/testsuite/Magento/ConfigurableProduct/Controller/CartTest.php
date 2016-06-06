@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -32,7 +32,7 @@ class CartTest extends \Magento\TestFramework\TestCase\AbstractController
         $this->assertSessionMessages($this->isEmpty(), \Magento\Framework\Message\MessageInterface::TYPE_ERROR);
 
         $this->assertSelectCount(
-            'button[type="button"][title="Update Cart"]',
+            'button[type="submit"][title="Update Cart"]',
             1,
             $response->getBody(),
             'Response for configurable product doesn\'t contain "Update Cart" button'

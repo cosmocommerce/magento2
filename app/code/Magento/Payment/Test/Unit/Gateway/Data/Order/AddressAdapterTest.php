@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Test\Unit\Gateway\Data\Order;
@@ -32,8 +32,8 @@ class AddressAdapterTest extends \PHPUnit_Framework_TestCase
     public function testGetRegion()
     {
         $expected = 'California';
-        $this->orderAddressMock->expects($this->once())->method('getRegion')->willReturn($expected);
-        $this->assertEquals($expected, $this->model->getRegion());
+        $this->orderAddressMock->expects($this->once())->method('getRegionCode')->willReturn($expected);
+        $this->assertEquals($expected, $this->model->getRegionCode());
     }
 
     public function testGetCountryId()

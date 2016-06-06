@@ -2,7 +2,7 @@
 /**
  * test Magento\Customer\Model\Metadata\Form\Text
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Test\Unit\Model\Metadata\Form;
@@ -11,13 +11,13 @@ use Magento\Customer\Model\Metadata\Form\Text;
 
 class TextTest extends AbstractFormTestCase
 {
-    /** @var \Magento\Framework\Stdlib\String */
+    /** @var \Magento\Framework\Stdlib\StringUtils */
     protected $stringHelper;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->stringHelper = new \Magento\Framework\Stdlib\String();
+        $this->stringHelper = new \Magento\Framework\Stdlib\StringUtils();
     }
 
     /**

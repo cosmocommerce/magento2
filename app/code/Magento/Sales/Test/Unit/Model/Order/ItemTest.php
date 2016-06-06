@@ -1,12 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Sales\Test\Unit\Model\Order;
 
-use Magento\Sales\Model\Resource\OrderFactory;
+use Magento\Sales\Model\ResourceModel\OrderFactory;
 use \Magento\Sales\Model\Order;
 
 /**

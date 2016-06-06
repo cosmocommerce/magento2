@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -14,7 +14,7 @@ use Magento\Mtf\Constraint\AbstractConstraint;
  */
 class AssertCartPriceRuleSuccessSaveMessage extends AbstractConstraint
 {
-    const SUCCESS_MESSAGE = 'The rule has been saved.';
+    const SUCCESS_MESSAGE = 'You saved the rule.';
 
     /**
      * Assert that success message is displayed after sales rule save.
@@ -24,7 +24,7 @@ class AssertCartPriceRuleSuccessSaveMessage extends AbstractConstraint
      */
     public function processAssert(PromoQuoteIndex $promoQuoteIndex)
     {
-        $actualMessage = $promoQuoteIndex->getMessagesBlock()->getSuccessMessages();
+        $actualMessage = $promoQuoteIndex->getMessagesBlock()->getSuccessMessage();
         \PHPUnit_Framework_Assert::assertEquals(
             self::SUCCESS_MESSAGE,
             $actualMessage,

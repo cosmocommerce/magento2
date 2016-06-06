@@ -2,7 +2,7 @@
 /**
  * ID column renderer, also contains image URL in hidden field
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ConfigurableProduct\Block\Product\Configurable\AssociatedSelector\Renderer;
@@ -31,10 +31,10 @@ class Id extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRend
     /**
      * Render grid row
      *
-     * @param \Magento\Framework\Object $row
+     * @param \Magento\Framework\DataObject $row
      * @return string
      */
-    public function render(\Magento\Framework\Object $row)
+    public function render(\Magento\Framework\DataObject $row)
     {
         $imageUrl = $row->getImage() && $row->getImage() != 'no_selection' ? $this->escapeHtml(
             $this->_productHelper->getImageUrl($row)

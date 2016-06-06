@@ -1,11 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Filesystem\Directory;
 
 use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Filesystem\DriverInterface;
 
 class Write extends Read implements WriteInterface
 {
@@ -66,7 +67,7 @@ class Write extends Read implements WriteInterface
         $absolutePath = $this->driver->getAbsolutePath($this->path, $path);
         if (!$this->driver->isFile($absolutePath)) {
             throw new FileSystemException(
-                new \Magento\Framework\Phrase('The "%1" file doesn\'t exist or not a file', [$absolutePath])
+                new \Magento\Framework\Phrase('The file "%1" doesn\'t exist or not a file', [$absolutePath])
             );
         }
     }
@@ -188,6 +189,21 @@ class Write extends Read implements WriteInterface
     {
         $absolutePath = $this->driver->getAbsolutePath($this->path, $path);
         return $this->driver->changePermissions($absolutePath, $permissions);
+    }
+
+    /**
+     * Recursively change permissions of given path
+     *
+     * @param string $path
+     * @param int $dirPermissions
+     * @param int $filePermissions
+     * @return bool
+     * @throws FileSystemException
+     */
+    public function changePermissionsRecursively($path, $dirPermissions, $filePermissions)
+    {
+        $absolutePath = $this->driver->getAbsolutePath($this->path, $path);
+        return $this->driver->changePermissionsRecursively($absolutePath, $dirPermissions, $filePermissions);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -19,8 +19,8 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
             'Magento\Wishlist\Block\Customer\Wishlist\Item\Options'
         );
         $this->assertEmpty($block->getTemplate());
-        $product = new \Magento\Framework\Object(['type_id' => 'test']);
-        $item = new \Magento\Framework\Object(['product' => $product]);
+        $product = new \Magento\Framework\DataObject(['type_id' => 'test']);
+        $item = new \Magento\Framework\DataObject(['product' => $product]);
         $block->setItem($item);
         $this->assertNotEmpty($block->getTemplate());
         $block->setTemplate('template');

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -15,7 +15,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected $_builder;
 
-    public function setUp()
+    protected function setUp()
     {
         $expressionMock = $this->getMock('\Magento\Rule\Model\Condition\Sql\Expression', [], [], '', false);
         $expressionFactory = $this->getMock(
@@ -44,7 +44,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             false
         );
         $combine = $this->getMock('\Magento\Rule\Model\Condition\Combine', ['getConditions'], [], '', false);
-        $resource = $this->getMock('Magento\Framework\DB\Adapter\Pdo\Mysql', ['getReadConnection'], [], '', false);
+        $resource = $this->getMock('Magento\Framework\DB\Adapter\Pdo\Mysql', ['getConnection'], [], '', false);
         $select = $this->getMock('\Magento\Framework\DB\Select', ['where'], [], '', false);
         $select->expects($this->never())
             ->method('where');
@@ -60,7 +60,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($select));
 
         $resource->expects($this->once())
-            ->method('getReadConnection')
+            ->method('getConnection')
             ->will($this->returnValue($connection));
 
         $combine->expects($this->any())

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -36,8 +36,8 @@ class Create extends \Magento\Sales\Test\Block\Adminhtml\Order\Create
             'Magento\GiftMessage\Test\Block\Adminhtml\Order\Create\Items',
             ['element' => $this->_rootElement->find($this->itemsBlock)]
         );
-        foreach ($products as $key => $product) {
-            $giftMessageItem = $giftMessage->getItems()[$key];
+        foreach ($giftMessage->getItems() as $key => $giftMessageItem) {
+            $product = $products[$key];
             $items->getItemProduct($product)->fillGiftMessageForm($giftMessageItem);
         }
     }

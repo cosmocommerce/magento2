@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ProductAlert\Helper;
@@ -97,7 +97,7 @@ class Data extends \Magento\Framework\Url\Helper\Data
             'productalert/add/' . $type,
             [
                 'product_id' => $this->getProduct()->getId(),
-                \Magento\Framework\App\Action\Action::PARAM_NAME_URL_ENCODED => $this->getEncodedUrl()
+                \Magento\Framework\App\ActionInterface::PARAM_NAME_URL_ENCODED => $this->getEncodedUrl()
             ]
         );
     }

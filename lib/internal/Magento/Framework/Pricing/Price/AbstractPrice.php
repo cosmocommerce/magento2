@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,7 +8,7 @@ namespace Magento\Framework\Pricing\Price;
 
 use Magento\Framework\Pricing\Adjustment\CalculatorInterface;
 use Magento\Framework\Pricing\Amount\AmountInterface;
-use Magento\Framework\Pricing\Object\SaleableInterface;
+use Magento\Framework\Pricing\SaleableInterface;
 use Magento\Framework\Pricing\PriceInfoInterface;
 
 /**
@@ -95,15 +95,15 @@ abstract class AbstractPrice implements PriceInterface
      */
     public function getAmount()
     {
-        if (null === $this->amount) {
-            $this->amount = $this->calculator->getAmount($this->getValue(), $this->getProduct());
+        if (!isset($this->amount[$this->getValue()])) {
+            $this->amount[$this->getValue()] = $this->calculator->getAmount($this->getValue(), $this->getProduct());
         }
-        return $this->amount;
+        return $this->amount[$this->getValue()];
     }
 
     /**
      * @param float $amount
-     * @param null|bool|string $exclude
+     * @param null|bool|string|array $exclude
      * @param null|array $context
      * @return AmountInterface|bool|float
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Design\Theme;
@@ -24,7 +24,7 @@ class LabelTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLabelsCollection()
     {
-        /** @var $expectedCollection \Magento\Theme\Model\Resource\Theme\Collection */
+        /** @var $expectedCollection \Magento\Theme\Model\ResourceModel\Theme\Collection */
         $expectedCollection = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
             'Magento\Framework\View\Design\Theme\Label\ListInterface'
         );

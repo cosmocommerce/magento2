@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -35,6 +35,13 @@ class ProductItem extends Block
      * @var string
      */
     protected $addToCard = "button.action.tocart";
+
+    /**
+     * Product base image.
+     *
+     * @var string
+     */
+    protected $baseImage = '.product-image-photo';
 
     /**
      * Check whether block is visible.
@@ -97,5 +104,16 @@ class ProductItem extends Block
             'Magento\Catalog\Test\Block\Product\Price',
             ['element' => $this->_rootElement->find($this->priceBox)]
         );
+    }
+
+    /**
+     * Get base image source link.
+     *
+     * @return string
+     */
+    public function getBaseImageSource()
+    {
+        $baseImage = $this->_rootElement->find($this->baseImage);
+        return $baseImage->isVisible() ? $baseImage->getAttribute('src') : '';
     }
 }

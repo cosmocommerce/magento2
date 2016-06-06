@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,7 +18,7 @@ use Magento\Customer\Test\Fixture\Customer;
  * Steps:
  * 1. Login as a customer
  * 2. Navigate to catalog page
- * 3. Add created product to Wishlist according to dataSet
+ * 3. Add created product to Wishlist according to dataset
  * 4. Perform all assertions
  *
  * @group Wishlist_(CS)

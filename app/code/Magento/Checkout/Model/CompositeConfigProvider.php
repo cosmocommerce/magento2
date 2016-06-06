@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Model;
@@ -14,6 +14,7 @@ class CompositeConfigProvider implements ConfigProviderInterface
 
     /**
      * @param ConfigProviderInterface[] $configProviders
+     * @codeCoverageIgnore
      */
     public function __construct(
         array $configProviders

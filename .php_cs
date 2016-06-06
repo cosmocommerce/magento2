@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -17,10 +17,8 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->exclude('dev/tests/integration/var')
     ->exclude('lib/internal/Cm')
     ->exclude('lib/internal/Credis')
-    ->exclude('lib/internal/JSMin')
     ->exclude('lib/internal/Less')
     ->exclude('lib/internal/LinLibertineFont')
-    ->exclude('lib/internal/phpseclib')
     ->exclude('pub/media')
     ->exclude('pub/static')
     ->exclude('setup/vendor')

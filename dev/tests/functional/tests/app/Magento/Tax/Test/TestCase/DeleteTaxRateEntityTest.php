@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -81,5 +81,6 @@ class DeleteTaxRateEntityTest extends Injectable
         $this->taxRateIndex->open();
         $this->taxRateIndex->getTaxRateGrid()->searchAndOpen($filter);
         $this->taxRateNew->getFormPageActions()->delete();
+        $this->taxRateNew->getModalBlock()->acceptAlert();
     }
 }

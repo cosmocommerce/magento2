@@ -2,7 +2,7 @@
 /**
  * Product inventory data validator
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Model\Quote\Item;
@@ -110,7 +110,7 @@ class QuantityValidator
                     'stock',
                     'cataloginventory',
                     \Magento\CatalogInventory\Helper\Data::ERROR_QTY,
-                    __('Some of the products are currently out of stock.')
+                    __('Some of the products are out of stock.')
                 );
                 return;
             } else {

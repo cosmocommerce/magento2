@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Data\Test\Unit\Collection\Db\FetchStrategy;
@@ -11,16 +11,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     {
         $expectedResult = new \stdClass();
         $bindParams = ['param_one' => 'value_one', 'param_two' => 'value_two'];
-        $adapter = $this->getMockForAbstractClass(
-            'Zend_Db_Adapter_Abstract',
-            [],
-            '',
-            false,
-            true,
-            true,
-            ['fetchAll']
-        );
-        $select = new \Zend_Db_Select($adapter);
+        $adapter = $this->getMock('Magento\Framework\DB\Adapter\Pdo\Mysql', ['fetchAll'], [], '', false);
+        $renderer = $this->getMock('Magento\Framework\DB\Select\SelectRenderer', [], [], '', false);
+        $select = new \Magento\Framework\DB\Select($adapter, $renderer);
         $adapter->expects(
             $this->once()
         )->method(

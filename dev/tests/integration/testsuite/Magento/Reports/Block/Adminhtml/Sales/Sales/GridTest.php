@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Block\Adminhtml\Sales\Sales;
@@ -24,7 +24,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
             'Magento\Reports\Block\Adminhtml\Sales\Sales\Grid'
         );
 
-        $filterData = new \Magento\Framework\Object();
+        $filterData = new \Magento\Framework\DataObject();
         if ($reportType) {
             $filterData->setReportType($reportType);
         }
@@ -71,7 +71,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
     public function testGetCountTotals($from, $to, $expectedResult)
     {
         $block = $this->_createBlock();
-        $filterData = new \Magento\Framework\Object();
+        $filterData = new \Magento\Framework\DataObject();
 
         $filterData->setReportType('updated_at_order');
         $filterData->setPeriodType('day');

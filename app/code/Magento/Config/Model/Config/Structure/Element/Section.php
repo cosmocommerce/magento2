@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Config\Model\Config\Structure\Element;
@@ -16,15 +16,17 @@ class Section extends AbstractComposite
 
     /**
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Framework\Module\Manager $moduleManager
      * @param Iterator $childrenIterator
      * @param \Magento\Framework\AuthorizationInterface $authorization
      */
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Framework\Module\Manager $moduleManager,
         Iterator $childrenIterator,
         \Magento\Framework\AuthorizationInterface $authorization
     ) {
-        parent::__construct($storeManager, $childrenIterator);
+        parent::__construct($storeManager, $moduleManager, $childrenIterator);
         $this->_authorization = $authorization;
     }
 

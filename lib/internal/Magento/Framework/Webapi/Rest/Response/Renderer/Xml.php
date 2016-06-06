@@ -2,7 +2,7 @@
 /**
  *  XML Renderer allows to format array or object as valid XML document.
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Webapi\Rest\Response\Renderer;
@@ -67,7 +67,7 @@ class Xml implements \Magento\Framework\Webapi\Rest\Response\RendererInterface
      *
      * This method is recursive.
      *
-     * @param array|\Magento\Framework\Object $data
+     * @param array|\Magento\Framework\DataObject $data
      * @param bool $isRoot
      * @return array
      * @throws \InvalidArgumentException
@@ -78,7 +78,7 @@ class Xml implements \Magento\Framework\Webapi\Rest\Response\RendererInterface
             if ($isRoot) {
                 return $this->_formatValue($data);
             }
-        } elseif ($data instanceof \Magento\Framework\Object) {
+        } elseif ($data instanceof \Magento\Framework\DataObject) {
             $data = $data->toArray();
         } else {
             $data = (array)$data;

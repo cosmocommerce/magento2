@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Data\Test\Unit;
@@ -12,7 +12,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     protected $_model;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->_model = new \Magento\Framework\Data\Collection(
             $this->getMock('Magento\Framework\Data\Collection\EntityFactory', [], [], '', false)
@@ -21,8 +21,8 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testRemoveAllItems()
     {
-        $this->_model->addItem(new \Magento\Framework\Object());
-        $this->_model->addItem(new \Magento\Framework\Object());
+        $this->_model->addItem(new \Magento\Framework\DataObject());
+        $this->_model->addItem(new \Magento\Framework\DataObject());
         $this->assertCount(2, $this->_model->getItems());
         $this->_model->removeAllItems();
         $this->assertEmpty($this->_model->getItems());
@@ -36,8 +36,8 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Magento\Framework\Data\Collection', $this->_model->loadWithFilter());
         $this->assertEmpty($this->_model->getItems());
-        $this->_model->addItem(new \Magento\Framework\Object());
-        $this->_model->addItem(new \Magento\Framework\Object());
+        $this->_model->addItem(new \Magento\Framework\DataObject());
+        $this->_model->addItem(new \Magento\Framework\DataObject());
         $this->assertCount(2, $this->_model->loadWithFilter()->getItems());
     }
 
@@ -55,12 +55,12 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function setItemObjectClassDataProvider()
     {
-        return [['Magento\Framework\Url'], ['Magento\Framework\Object']];
+        return [['Magento\Framework\Url'], ['Magento\Framework\DataObject']];
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Incorrect_ClassName does not extend \Magento\Framework\Object
+     * @expectedExceptionMessage Incorrect_ClassName does not extend \Magento\Framework\DataObject
      */
     public function testSetItemObjectClassException()
     {
@@ -103,8 +103,14 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testPossibleFlowWithItem()
     {
-        $firstItemMock = $this->getMock('Magento\Framework\Object', ['getId', 'getData', 'toArray'], [], '', false);
-        $secondItemMock = $this->getMock('Magento\Framework\Object', ['getId', 'getData', 'toArray'], [], '', false);
+        $firstItemMock = $this->getMock('Magento\Framework\DataObject', ['getId', 'getData', 'toArray'], [], '', false);
+        $secondItemMock = $this->getMock(
+            'Magento\Framework\DataObject',
+            ['getId', 'getData', 'toArray'],
+            [],
+            '',
+            false
+        );
         $requiredFields = ['required_field_one', 'required_field_two'];
         $arrItems = [
             'totalRecords' => 1,

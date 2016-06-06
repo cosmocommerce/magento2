@@ -1,11 +1,10 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Adminhtml\Index;
 
-use Magento\Customer\Controller\RegistryConstants;
 use Magento\Framework\Controller\ResultFactory;
 
 class Delete extends \Magento\Customer\Controller\Adminhtml\Index
@@ -17,8 +16,15 @@ class Delete extends \Magento\Customer\Controller\Adminhtml\Index
      */
     public function execute()
     {
-        $this->_initCustomer();
-        $customerId = $this->_coreRegistry->registry(RegistryConstants::CURRENT_CUSTOMER_ID);
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $formKeyIsValid = $this->_formKeyValidator->validate($this->getRequest());
+        $isPost = $this->getRequest()->isPost();
+        if (!$formKeyIsValid || !$isPost) {
+            $this->messageManager->addError(__('Customer could not be deleted.'));
+            return $resultRedirect->setPath('customer/index');
+        }
+
+        $customerId = $this->initCurrentCustomer();
         if (!empty($customerId)) {
             try {
                 $this->_customerRepository->deleteById($customerId);

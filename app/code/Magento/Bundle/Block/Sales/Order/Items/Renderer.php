@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Block\Sales\Order\Items;
@@ -122,10 +122,10 @@ class Renderer extends \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer
     /**
      * Getting all available children for Invoice, Shipment or CreditMemo item
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return array
      */
-    public function getChilds($item)
+    public function getChildren($item)
     {
         $itemsArray = [];
 

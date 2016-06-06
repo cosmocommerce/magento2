@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Review\Block;
@@ -8,7 +8,7 @@ namespace Magento\Review\Block;
 use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\Context;
 use Magento\Customer\Model\Url;
-use Magento\Review\Model\Resource\Rating\Collection as RatingCollection;
+use Magento\Review\Model\ResourceModel\Rating\Collection as RatingCollection;
 
 /**
  * Review form block
@@ -158,7 +158,13 @@ class Form extends \Magento\Framework\View\Element\Template
      */
     public function getAction()
     {
-        return $this->getUrl('review/product/post', ['id' => $this->getProductId()]);
+        return $this->getUrl(
+            'review/product/post',
+            [
+                '_secure' => $this->getRequest()->isSecure(),
+                'id' => $this->getProductId(),
+            ]
+        );
     }
 
     /**

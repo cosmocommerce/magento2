@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Captcha\Test\Unit\Model;
@@ -118,7 +118,7 @@ class DefaultTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->_resLogFactory = $this->getMock(
-            'Magento\Captcha\Model\Resource\LogFactory',
+            'Magento\Captcha\Model\ResourceModel\LogFactory',
             ['create'],
             [],
             '',
@@ -297,12 +297,12 @@ class DefaultTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get stub for resource model
-     * @return \Magento\Captcha\Model\Resource\Log
+     * @return \Magento\Captcha\Model\ResourceModel\Log
      */
     protected function _getResourceModelStub()
     {
         $resourceModel = $this->getMock(
-            'Magento\Captcha\Model\Resource\Log',
+            'Magento\Captcha\Model\ResourceModel\Log',
             ['countAttemptsByRemoteAddress', 'countAttemptsByUserLogin', 'logAttempt', '__wakeup'],
             [],
             '',

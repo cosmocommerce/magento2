@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Ui\Test\Unit\Component\MassAction\Columns;
@@ -32,7 +32,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->objectManager = new ObjectManager($this);
 
@@ -45,6 +45,10 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             true,
             []
         );
+        $processor = $this->getMockBuilder('Magento\Framework\View\Element\UiComponent\Processor')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->contextMock->expects($this->any())->method('getProcessor')->willReturn($processor);
 
         $this->column = $this->objectManager->getObject(
             'Magento\Ui\Component\MassAction\Columns\Column',

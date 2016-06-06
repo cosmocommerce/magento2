@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Ui\Component\Listing\Column;
@@ -18,7 +18,9 @@ class BlockActions extends Column
     /**
      * Url path
      */
-    const URL_PATH = 'cms/block/edit';
+    const URL_PATH_EDIT = 'cms/block/edit';
+    const URL_PATH_DELETE = 'cms/block/delete';
+    const URL_PATH_DETAILS = 'cms/block/details';
 
     /**
      * @var UrlInterface
@@ -46,24 +48,48 @@ class BlockActions extends Column
     }
 
     /**
+     * @param array $items
+     * @return array
+     */
+    /**
      * Prepare Data Source
      *
      * @param array $dataSource
-     * @return void
+     * @return array
      */
-    public function prepareDataSource(array & $dataSource)
+    public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if (isset($item['block_id'])) {
                     $item[$this->getData('name')] = [
                         'edit' => [
-                            'href' => $this->urlBuilder->getUrl(static::URL_PATH, ['block_id' => $item['block_id']]),
-                            'label' => __('Edit'),
+                            'href' => $this->urlBuilder->getUrl(
+                                static::URL_PATH_EDIT,
+                                [
+                                    'block_id' => $item['block_id']
+                                ]
+                            ),
+                            'label' => __('Edit')
+                        ],
+                        'delete' => [
+                            'href' => $this->urlBuilder->getUrl(
+                                static::URL_PATH_DELETE,
+                                [
+                                    'block_id' => $item['block_id']
+                                ]
+                            ),
+                            'label' => __('Delete'),
+                            'confirm' => [
+                                'title' => __('Delete "${ $.$data.title }"'),
+                                'message' => __('Are you sure you wan\'t to delete a "${ $.$data.title }" record?')
+                            ]
                         ]
                     ];
                 }
             }
         }
+
+        return $dataSource;
     }
 }

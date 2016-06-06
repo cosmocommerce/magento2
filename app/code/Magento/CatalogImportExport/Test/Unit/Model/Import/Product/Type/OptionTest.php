@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogImportExport\Test\Unit\Model\Import\Product\Type;
@@ -11,17 +11,12 @@ namespace Magento\CatalogImportExport\Test\Unit\Model\Import\Product\Type;
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class OptionTest extends \PHPUnit_Framework_TestCase
+class OptionTest extends \Magento\ImportExport\Test\Unit\Model\Import\AbstractImportTestCase
 {
     /**
      * Path to csv file to import
      */
     const PATH_TO_CSV_FILE = '/_files/product_with_custom_options.csv';
-
-    /**
-     * @var \Magento\Framework\TestFramework\Unit\Helper\ObjectManager
-     */
-    protected $_helper;
 
     /**
      * Test store parametes
@@ -50,21 +45,21 @@ class OptionTest extends \PHPUnit_Framework_TestCase
      *
      * @var \Magento\CatalogImportExport\Model\Import\Product\Option
      */
-    protected $_model;
+    protected $model;
 
     /**
      * Test model mock
      *
      * @var \Magento\CatalogImportExport\Model\Import\Product\Option
      */
-    protected $_modelMock;
+    protected $modelMock;
 
     /**
      * Parent product entity
      *
      * @var \Magento\CatalogImportExport\Model\Import\Product
      */
-    protected $_productEntity;
+    protected $productEntity;
 
     /**
      * Array of expected (after import) option titles
@@ -209,11 +204,22 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     protected $_iteratorPageSize = 100;
 
     /**
+     * @var \Magento\ImportExport\Model\Import\ErrorProcessing\ProcessingErrorAggregatorInterface
+     */
+    protected $errorAggregator;
+
+    /**
+     * @var \Magento\Framework\EntityManager\MetadataPool
+     */
+    protected $metadataPoolMock;
+
+    /**
      * Init entity adapter model
      */
     protected function setUp()
     {
-        $this->_helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        parent::setUp();
+
         $addExpectations = false;
         $deleteBehavior = false;
         $testName = $this->getName(true);
@@ -227,26 +233,43 @@ class OptionTest extends \PHPUnit_Framework_TestCase
             $doubleOptions = true;
         }
 
-        $catalogDataMock = $this->getMock('Magento\Catalog\Helper\Data', ['__construct'], [], '', false);
+        $catalogDataMock = $this->getMock(\Magento\Catalog\Helper\Data::class, ['__construct'], [], '', false);
 
-        $scopeConfig = $this->getMock('Magento\Framework\App\Config\ScopeConfigInterface');
+        $scopeConfig = $this->getMock(\Magento\Framework\App\Config\ScopeConfigInterface::class);
 
-        $modelClassName = '\Magento\CatalogImportExport\Model\Import\Product\Option';
+        $timezoneInterface = $this->getMock(\Magento\Framework\Stdlib\DateTime\TimezoneInterface::class);
+        $date = new \DateTime();
+        $timezoneInterface->expects($this->any())->method('date')->willReturn($date);
+        $this->metadataPoolMock = $this->getMock(
+            \Magento\Framework\EntityManager\MetadataPool::class,
+            [],
+            [],
+            '',
+            false
+        );
+        $entityMetadataMock = $this->getMock(\Magento\Framework\EntityManager\EntityMetadata::class, [], [], '', false);
+        $this->metadataPoolMock->expects($this->any())
+            ->method('getMetadata')
+            ->with(\Magento\Catalog\Api\Data\ProductInterface::class)
+            ->willReturn($entityMetadataMock);
+        $entityMetadataMock->expects($this->any())
+            ->method('getLinkField')
+            ->willReturn('entity_id');
         $modelClassArgs = [
-            $this->getMock('Magento\ImportExport\Model\Resource\Import\Data', [], [], '', false),
-            $this->getMock('Magento\Framework\App\Resource', [], [], '', false),
-            $this->getMock('Magento\ImportExport\Model\Resource\Helper', [], [], '', false),
-            $this->getMock('Magento\Store\Model\StoreManagerInterface', [], [], '', false),
-            $this->getMock('Magento\Catalog\Model\ProductFactory', [], [], '', false),
+            $this->getMock(\Magento\ImportExport\Model\ResourceModel\Import\Data::class, [], [], '', false),
+            $this->getMock(\Magento\Framework\App\ResourceConnection::class, [], [], '', false),
+            $this->getMock(\Magento\ImportExport\Model\ResourceModel\Helper::class, [], [], '', false),
+            $this->getMock(\Magento\Store\Model\StoreManagerInterface::class, [], [], '', false),
+            $this->getMock(\Magento\Catalog\Model\ProductFactory::class, [], [], '', false),
             $this->getMock(
-                'Magento\Catalog\Model\Resource\Product\Option\CollectionFactory',
+                \Magento\Catalog\Model\ResourceModel\Product\Option\CollectionFactory::class,
                 [],
                 [],
                 '',
                 false
             ),
             $this->getMock(
-                'Magento\ImportExport\Model\Resource\CollectionByPagesIteratorFactory',
+                \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory::class,
                 [],
                 [],
                 '',
@@ -254,18 +277,29 @@ class OptionTest extends \PHPUnit_Framework_TestCase
             ),
             $catalogDataMock,
             $scopeConfig,
-            new \Magento\Framework\Stdlib\DateTime(),
+            $timezoneInterface,
+            $this->getMock(
+                \Magento\ImportExport\Model\Import\ErrorProcessing\ProcessingErrorAggregatorInterface::class,
+                [],
+                [],
+                '',
+                false
+            ),
             $this->_getModelDependencies($addExpectations, $deleteBehavior, $doubleOptions)
         ];
 
+        $modelClassName = \Magento\CatalogImportExport\Model\Import\Product\Option::class;
         $class = new \ReflectionClass($modelClassName);
-        $this->_model = $class->newInstanceArgs($modelClassArgs);
+        $this->model = $class->newInstanceArgs($modelClassArgs);
         // Create model mock with rewritten _getMultiRowFormat method to support test data with the old format.
-        $this->_modelMock = $this->
-            getMockBuilder($modelClassName)->
-            setConstructorArgs($modelClassArgs)->
-            setMethods(['_getMultiRowFormat'])->
-            getMock();
+        $this->modelMock = $this->getMockBuilder($modelClassName)
+            ->setConstructorArgs($modelClassArgs)
+            ->setMethods(['_getMultiRowFormat'])
+            ->getMock();
+        $reflection = new \ReflectionClass(\Magento\CatalogImportExport\Model\Import\Product\Option::class);
+        $reflectionProperty = $reflection->getProperty('metadataPool');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($this->modelMock, $this->metadataPoolMock);
     }
 
     /**
@@ -273,12 +307,12 @@ class OptionTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        unset($this->_model);
-        unset($this->_productEntity);
+        unset($this->model);
+        unset($this->productEntity);
     }
 
     /**
-     * Create mocks for all $this->_model dependencies
+     * Create mocks for all $this->model dependencies
      *
      * @param bool $addExpectations
      * @param bool $deleteBehavior
@@ -332,7 +366,8 @@ class OptionTest extends \PHPUnit_Framework_TestCase
             'tables' => $this->_tables,
             'resource_helper' => $resourceHelper,
             'is_price_global' => true,
-            'stores' => $this->_testStores
+            'stores' => $this->_testStores,
+            'metadata_pool' => $this->metadataPoolMock
         ];
         $sourceData = $this->_getSourceDataMocks($addExpectations, $doubleOptions);
 
@@ -379,13 +414,18 @@ class OptionTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->_productEntity = $this->getMock(
-            'Magento\CatalogImportExport\Model\Import\Product',
-            null,
+        $this->productEntity = $this->getMock(
+            \Magento\CatalogImportExport\Model\Import\Product::class,
+            ['getErrorAggregator'],
             [],
             '',
             false
         );
+        $this->productEntity->method('getErrorAggregator')->willReturn($this->getErrorAggregatorObject());
+        $reflection = new \ReflectionClass(\Magento\CatalogImportExport\Model\Import\Product::class);
+        $reflectionProperty = $reflection->getProperty('metadataPool');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($this->productEntity, $this->metadataPoolMock);
 
         $productModelMock = $this->getMock('stdClass', ['getProductEntitiesInfo']);
         $productModelMock->expects(
@@ -397,18 +437,18 @@ class OptionTest extends \PHPUnit_Framework_TestCase
         );
 
         $fetchStrategy = $this->getMockForAbstractClass(
-            'Magento\Framework\Data\Collection\Db\FetchStrategyInterface',
+            \Magento\Framework\Data\Collection\Db\FetchStrategyInterface::class,
             ['fetchAll']
         );
-        $logger = $this->getMock('Psr\Log\LoggerInterface');
-        $entityFactory = $this->getMock('Magento\Framework\Data\Collection\EntityFactory', [], [], '', false);
+        $logger = $this->getMock(\Psr\Log\LoggerInterface::class);
+        $entityFactory = $this->getMock(\Magento\Framework\Data\Collection\EntityFactory::class, [], [], '', false);
 
-        $optionCollection = $this->getMockBuilder('Magento\Framework\Data\Collection\AbstractDb')
+        $optionCollection = $this->getMockBuilder(\Magento\Framework\Data\Collection\AbstractDb::class)
             ->setConstructorArgs([$entityFactory, $logger, $fetchStrategy])
             ->setMethods(['reset', 'addProductToFilter', 'getSelect', 'getNewEmptyItem'])
             ->getMockForAbstractClass();
 
-        $select = $this->getMock('Zend_Db_Select', ['join', 'where'], [], '', false);
+        $select = $this->getMock(\Magento\Framework\DB\Select::class, ['join', 'where'], [], '', false);
         $select->expects($this->any())->method('join')->will($this->returnSelf());
         $select->expects($this->any())->method('where')->will($this->returnSelf());
 
@@ -446,7 +486,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
         $data = [
             'data_source_model' => $dataSourceModel,
             'product_model' => $productModelMock,
-            'product_entity' => $this->_productEntity,
+            'product_entity' => $this->productEntity,
             'option_collection' => $optionCollection,
             'collection_by_pages_iterator' => $collectionIterator,
             'page_size' => $this->_iteratorPageSize
@@ -479,7 +519,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
      */
     public function getNewOptionMock()
     {
-        return $this->getMock('Magento\Catalog\Model\Product\Option', ['__wakeup'], [], '', false);
+        return $this->getMock(\Magento\Catalog\Model\Product\Option::class, ['__wakeup'], [], '', false);
     }
 
     /**
@@ -579,7 +619,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetEntityTypeCode()
     {
-        $this->assertEquals('product_options', $this->_model->getEntityTypeCode());
+        $this->assertEquals('product_options', $this->model->getEntityTypeCode());
     }
 
     /**
@@ -595,7 +635,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
      */
     public function testImportDataAppendBehavior()
     {
-        $this->_model->importData();
+        $this->model->importData();
     }
 
     /**
@@ -604,8 +644,8 @@ class OptionTest extends \PHPUnit_Framework_TestCase
      */
     public function testImportDataDeleteBehavior()
     {
-        $this->_model->setParameters(['behavior' => \Magento\ImportExport\Model\Import::BEHAVIOR_DELETE]);
-        $this->_model->importData();
+        $this->model->setParameters(['behavior' => \Magento\ImportExport\Model\Import::BEHAVIOR_DELETE]);
+        $this->model->importData();
     }
 
     /**
@@ -657,7 +697,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
      */
     private function _bypassModelMethodGetMultiRowFormat($rowData)
     {
-        $this->_modelMock->expects($this->any())
+        $this->modelMock->expects($this->any())
                         ->method('_getMultiRowFormat')
                         ->will($this->returnValue([$rowData]));
     }
@@ -671,7 +711,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     {
         $rowData = include __DIR__ . '/_files/row_data_no_custom_option.php';
         $this->_bypassModelMethodGetMultiRowFormat($rowData);
-        $this->assertFalse($this->_modelMock->validateRow($rowData, 0));
+        $this->assertFalse($this->modelMock->validateRow($rowData, 0));
     }
 
     /**
@@ -694,13 +734,13 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     public function testValidateRow(array $rowData, array $errors)
     {
         $this->_bypassModelMethodGetMultiRowFormat($rowData);
-
         if (empty($errors)) {
-            $this->assertTrue($this->_modelMock->validateRow($rowData, 0));
+            $this->assertTrue($this->modelMock->validateRow($rowData, 0));
         } else {
-            $this->assertFalse($this->_modelMock->validateRow($rowData, 0));
+            $this->assertFalse($this->modelMock->validateRow($rowData, 0));
         }
-        $this->assertAttributeEquals($errors, '_errors', $this->_productEntity);
+        $resultErrors = $this->productEntity->getErrorAggregator()->getRowsGroupedByErrorCode([], [], false);
+        $this->assertEquals($errors, $resultErrors);
     }
 
     /**
@@ -727,21 +767,22 @@ class OptionTest extends \PHPUnit_Framework_TestCase
         $this->_testStores = ['admin' => 0];
         $this->setUp();
         if ($behavior) {
-            $this->_modelMock->setParameters(['behavior' => \Magento\ImportExport\Model\Import::BEHAVIOR_APPEND]);
+            $this->modelMock->setParameters(['behavior' => \Magento\ImportExport\Model\Import::BEHAVIOR_APPEND]);
         }
 
         $this->_bypassModelMethodGetMultiRowFormat($rowData);
 
         for ($i = 0; $i < $numberOfValidations; $i++) {
-            $this->_modelMock->validateRow($rowData, $i);
+            $this->modelMock->validateRow($rowData, $i);
         }
 
         if (empty($errors)) {
-            $this->assertTrue($this->_modelMock->validateAmbiguousData());
+            $this->assertTrue($this->modelMock->validateAmbiguousData());
         } else {
-            $this->assertFalse($this->_modelMock->validateAmbiguousData());
+            $this->assertFalse($this->modelMock->validateAmbiguousData());
         }
-        $this->assertAttributeEquals($errors, '_errors', $this->_productEntity);
+        $resultErrors = $this->productEntity->getErrorAggregator()->getRowsGroupedByErrorCode([], [], false);
+        $this->assertEquals($errors, $resultErrors);
     }
 
     /**
@@ -760,73 +801,55 @@ class OptionTest extends \PHPUnit_Framework_TestCase
             'main_invalid_store' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_invalid_store.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_STORE => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_STORE => [1]
                 ]
             ],
             'main_incorrect_type' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_incorrect_type.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_TYPE => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_TYPE => [1]
                 ]
             ],
             'main_no_title' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_no_title.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_EMPTY_TITLE => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_EMPTY_TITLE => [1]
                 ]
             ],
             'main_empty_title' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_empty_title.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_EMPTY_TITLE => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_EMPTY_TITLE => [1]
                 ]
             ],
             'main_invalid_price' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_invalid_price.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_PRICE => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_PRICE => [1]
                 ]
             ],
             'main_invalid_max_characters' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_invalid_max_characters.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_MAX_CHARACTERS => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_MAX_CHARACTERS => [1]
                 ]
             ],
             'main_max_characters_less_zero' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_max_characters_less_zero.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_MAX_CHARACTERS => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_MAX_CHARACTERS => [1]
                 ]
             ],
             'main_invalid_sort_order' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_invalid_sort_order.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_SORT_ORDER => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_SORT_ORDER => [1]
                 ]
             ],
             'main_sort_order_less_zero' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_sort_order_less_zero.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_SORT_ORDER => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_SORT_ORDER => [1]
                 ]
             ],
             'secondary_valid' => [
@@ -836,33 +859,25 @@ class OptionTest extends \PHPUnit_Framework_TestCase
             'secondary_invalid_store' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_secondary_invalid_store.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_STORE => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_STORE => [1]
                 ]
             ],
             'secondary_incorrect_price' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_secondary_incorrect_price.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_ROW_PRICE => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_ROW_PRICE => [1]
                 ]
             ],
             'secondary_incorrect_row_sort' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_secondary_incorrect_row_sort.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_ROW_SORT => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_ROW_SORT => [1]
                 ]
             ],
             'secondary_row_sort_less_zero' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_secondary_row_sort_less_zero.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_ROW_SORT => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_INVALID_ROW_SORT => [1]
                 ]
             ]
         ];
@@ -879,10 +894,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
             'ambiguity_several_input_rows' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_main_valid.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_AMBIGUOUS_NEW_NAMES => [
-                        [1, null],
-                        [2, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_AMBIGUOUS_NEW_NAMES => [2, 2]
                 ],
                 '$behavior' => null,
                 '$numberOfValidations' => 2
@@ -890,18 +902,14 @@ class OptionTest extends \PHPUnit_Framework_TestCase
             'ambiguity_different_type' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_ambiguity_different_type.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_AMBIGUOUS_TYPES => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_AMBIGUOUS_TYPES => [1]
                 ],
                 '$behavior' => \Magento\ImportExport\Model\Import::BEHAVIOR_APPEND
             ],
             'ambiguity_several_db_rows' => [
                 '$rowData' => include __DIR__ . '/_files/row_data_ambiguity_several_db_rows.php',
                 '$errors' => [
-                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_AMBIGUOUS_OLD_NAMES => [
-                        [1, null]
-                    ]
+                    \Magento\CatalogImportExport\Model\Import\Product\Option::ERROR_AMBIGUOUS_OLD_NAMES => [1]
                 ],
                 '$behavior' => \Magento\ImportExport\Model\Import::BEHAVIOR_APPEND
             ]
@@ -925,38 +933,50 @@ class OptionTest extends \PHPUnit_Framework_TestCase
         $productModel = $this->getMock('stdClass', ['getProductEntitiesInfo']);
         $productModel->expects($this->any())->method('getProductEntitiesInfo')->will($this->returnValue([]));
 
-        $productEntity = $this->getMock(
-            '\Magento\CatalogImportExport\Model\Import\Product',
+        /** @var \Magento\CatalogImportExport\Model\Import\Product $productEntityMock */
+        $productEntityMock = $this->getMock(
+            \Magento\CatalogImportExport\Model\Import\Product::class,
             [],
             [],
             '',
             false
         );
+        $reflection = new \ReflectionClass(\Magento\CatalogImportExport\Model\Import\Product::class);
+        $reflectionProperty = $reflection->getProperty('metadataPool');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($productEntityMock, $this->metadataPoolMock);
 
-        $model = $this->_helper->getObject(
-            'Magento\CatalogImportExport\Model\Import\Product\Option',
+        /** @var \Magento\CatalogImportExport\Model\Import\Product\Option $model */
+        $model = $this->objectManagerHelper->getObject(
+            \Magento\CatalogImportExport\Model\Import\Product\Option::class,
             [
                 'data' => [
                     'data_source_model' => $modelData,
                     'product_model' => $productModel,
-                    'option_collection' => $this->_helper->getObject('stdClass'),
-                    'product_entity' => $productEntity,
-                    'collection_by_pages_iterator' => $this->_helper->getObject('stdClass'),
+                    'option_collection' => $this->objectManagerHelper->getObject('stdClass'),
+                    'product_entity' => $productEntityMock,
+                    'collection_by_pages_iterator' => $this->objectManagerHelper->getObject('stdClass'),
                     'page_size' => 5000,
-                    'stores' => []
+                    'stores' => [],
+                    'metadata_pool' => $this->metadataPoolMock
                 ]
             ]
         );
+        $reflection = new \ReflectionClass(\Magento\CatalogImportExport\Model\Import\Product\Option::class);
+        $reflectionProperty = $reflection->getProperty('metadataPool');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($model, $this->metadataPoolMock);
+
         $this->assertTrue($model->importData());
     }
 
     public function testClearProductsSkuToId()
     {
-        $this->setPropertyValue($this->_modelMock, '_productsSkuToId', 'value');
+        $this->setPropertyValue($this->modelMock, '_productsSkuToId', 'value');
 
-        $this->_modelMock->clearProductsSkuToId();
+        $this->modelMock->clearProductsSkuToId();
 
-        $productsSkuToId = $this->getPropertyValue($this->_modelMock, '_productsSkuToId');
+        $productsSkuToId = $this->getPropertyValue($this->modelMock, '_productsSkuToId');
 
         $this->assertNull($productsSkuToId);
     }
@@ -967,6 +987,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
      * @param object $object
      * @param string $property
      * @param mixed $value
+     * @return object
      */
     protected function setPropertyValue(&$object, $property, $value)
     {
@@ -983,6 +1004,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
      *
      * @param object $object
      * @param string $property
+     * @return mixed
      */
     protected function getPropertyValue(&$object, $property)
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -193,7 +193,7 @@ class Form extends \Magento\UrlRewrite\Block\Edit\Form
         } elseif ($category->getId()) {
             $entityStores = (array)$category->getStoreIds();
             $message = __(
-                'We can\'t set up a URL rewrite because the category you chose is not associated with a website.'
+                'Please assign a website to the selected category.'
             );
             if (!$entityStores) {
                 throw new \Magento\Framework\Exception\LocalizedException($message);

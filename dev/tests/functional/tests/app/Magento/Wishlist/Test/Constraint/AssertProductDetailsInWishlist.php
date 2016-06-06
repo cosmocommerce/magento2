@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,12 +12,12 @@ use Magento\Mtf\Fixture\FixtureFactory;
 use Magento\Mtf\Fixture\InjectableFixture;
 
 /**
- * Assert that the correct option details are displayed on the "View Details" tool tip.
+ * Assert that the correct option details are displayed on the "See Details" tooltip.
  */
 class AssertProductDetailsInWishlist extends AbstractAssertWishlistProductDetails
 {
     /**
-     * Assert that the correct option details are displayed on the "View Details" tool tip.
+     * Assert that the correct option details are displayed on the "See Details" tooltip.
      *
      * @param CmsIndex $cmsIndex
      * @param WishlistIndex $wishlistIndex

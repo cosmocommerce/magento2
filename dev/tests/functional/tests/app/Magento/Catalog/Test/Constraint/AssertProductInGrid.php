@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -11,13 +11,12 @@ use Magento\Mtf\Constraint\AbstractConstraint;
 use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
- * Class AssertProductInGrid
  * Assert that product is present in products grid.
  */
 class AssertProductInGrid extends AbstractConstraint
 {
     /**
-     * Product fixture
+     * Product fixture.
      *
      * @var FixtureInterface $product
      */
@@ -27,15 +26,16 @@ class AssertProductInGrid extends AbstractConstraint
      * Assert that product is present in products grid and can be found by sku, type, status and attribute set.
      *
      * @param FixtureInterface $product
-     * @param CatalogProductIndex $productGrid
+     * @param CatalogProductIndex $productIndex
      * @return void
      */
-    public function processAssert(FixtureInterface $product, CatalogProductIndex $productGrid)
+    public function processAssert(FixtureInterface $product, CatalogProductIndex $productIndex)
     {
         $this->product = $product;
-        $productGrid->open();
+        $productIndex->open();
+        $productIndex->getProductGrid()->resetFilter();
         \PHPUnit_Framework_Assert::assertTrue(
-            $productGrid->getProductGrid()->isRowVisible($this->prepareFilter()),
+            $productIndex->getProductGrid()->isRowVisible($this->prepareFilter()),
             'Product \'' . $this->product->getName() . '\' is absent in Products grid.'
         );
     }
@@ -47,7 +47,7 @@ class AssertProductInGrid extends AbstractConstraint
      */
     protected function prepareFilter()
     {
-        $productStatus = ($this->product->getStatus() === null || $this->product->getStatus() === 'Product online')
+        $productStatus = ($this->product->getStatus() === null || $this->product->getStatus() === 'Yes')
             ? 'Enabled'
             : 'Disabled';
         $filter = [
@@ -63,7 +63,7 @@ class AssertProductInGrid extends AbstractConstraint
     }
 
     /**
-     * Get product type
+     * Get product type.
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\MediaStorage\Test\Unit\Model\File\Storage;
@@ -50,7 +50,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         )->method(
             'getDirectoryWrite'
         )->with(
-            DirectoryList::PUB
+            DirectoryList::ROOT
         )->will(
             $this->returnValue($directory)
         );

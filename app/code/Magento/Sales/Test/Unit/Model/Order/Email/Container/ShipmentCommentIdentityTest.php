@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Model\Order\Email\Container;
@@ -36,13 +36,7 @@ class ShipmentCommentIdentityTest extends \PHPUnit_Framework_TestCase
         $this->scopeConfigInterfaceMock = $this->getMock(
             '\Magento\Framework\App\Config\ScopeConfigInterface'
         );
-        $this->storeManagerMock = $this->getMock(
-            '\Magento\Store\Model\Storage\DefaultStorage',
-            [],
-            [],
-            '',
-            false
-        );
+        $this->storeManagerMock = $this->getMock('Magento\Store\Model\StoreManagerInterface');
 
         $this->storeMock = $this->getMock(
             '\Magento\Store\Model\Store',

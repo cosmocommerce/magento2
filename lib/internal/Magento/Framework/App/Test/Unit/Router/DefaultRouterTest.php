@@ -2,7 +2,7 @@
 /**
  * RouterList model test class
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Test\Unit\Router;
@@ -20,8 +20,7 @@ class DefaultRouterTest extends \PHPUnit_Framework_TestCase
         $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $actionFactory = $this->getMock('Magento\Framework\App\ActionFactory', [], [], '', false);
         $actionFactory->expects($this->once())->method('create')->with(
-            'Magento\Framework\App\Action\Forward',
-            ['request' => $request]
+            'Magento\Framework\App\Action\Forward'
         )->will(
             $this->returnValue(
                 $this->getMockForAbstractClass('Magento\Framework\App\Action\AbstractAction', [], '', false)

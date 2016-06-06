@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -10,6 +10,8 @@ namespace Magento\Eav\Test\Unit\Model;
 
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Eav\Model\EavCustomAttributeTypeLocator;
+use Magento\Eav\Model\EavCustomAttributeTypeLocator\SimpleType as SimpleTypeLocator;
+use Magento\Eav\Model\EavCustomAttributeTypeLocator\ComplexType as ComplexTypeLocator;
 
 /**
  * Unit test class for \Magento\Eav\Model\EavCustomAttributeTypeLocator
@@ -43,7 +45,7 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
      * @param string $attributeCode
      * @param string $serviceClass
      * @param array $attributeRepositoryResponse
-     * @param \Magento\Framework\Stdlib\String $stringUtility,
+     * @param \Magento\Framework\Stdlib\StringUtils $stringUtility,
      * @param array $serviceEntityTypeMapData
      * @param array $serviceBackendModelDataInterfaceMapData
      * @param string $expected
@@ -62,14 +64,27 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('get')
             ->willReturn($attributeRepositoryResponse);
-
-
+        
         $this->eavCustomAttributeTypeLocator = new EavCustomAttributeTypeLocator(
             $this->attributeRepository,
             $stringUtility,
             $serviceEntityTypeMapData,
             $serviceBackendModelDataInterfaceMapData
         );
+
+        $simpleTypeLocator = new SimpleTypeLocator();
+        // Todo: \Magento\Framework\TestFramework\Unit\Helper\ObjectManager to do this automatically (MAGETWO-49793)
+        $reflection = new \ReflectionClass(get_class($this->eavCustomAttributeTypeLocator));
+        $reflectionProperty = $reflection->getProperty('simpleTypeLocator');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($this->eavCustomAttributeTypeLocator, $simpleTypeLocator);
+
+        $complexTypeLocator = new ComplexTypeLocator($stringUtility);
+        // Todo: \Magento\Framework\TestFramework\Unit\Helper\ObjectManager to do this automatically (MAGETWO-49793)
+        $reflection = new \ReflectionClass(get_class($this->eavCustomAttributeTypeLocator));
+        $reflectionProperty = $reflection->getProperty('complexTypeLocator');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($this->eavCustomAttributeTypeLocator, $complexTypeLocator);
 
         $type = $this->eavCustomAttributeTypeLocator->getType($attributeCode, $serviceClass);
 
@@ -91,7 +106,7 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
         ];
 
         $attribute = $this->getMock(
-            'Magento\Catalog\Model\Resource\Eav\Attribute',
+            'Magento\Catalog\Model\ResourceModel\Eav\Attribute',
             ['getBackendModel'],
             [],
             '',
@@ -103,7 +118,7 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
             ->willReturn($mediaBackEndModelClass);
 
         $attributeNoBackendModel = $this->getMock(
-            'Magento\Catalog\Model\Resource\Eav\Attribute',
+            'Magento\Catalog\Model\ResourceModel\Eav\Attribute',
             ['getBackendModel', 'getFrontendInput'],
             [],
             '',
@@ -118,7 +133,7 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
             ->method('getFrontendInput')
             ->willReturn('image');
 
-        $stringUtility = new \Magento\Framework\Stdlib\String();
+        $stringUtility = new \Magento\Framework\Stdlib\StringUtils();
 
         return [
             [
@@ -137,7 +152,7 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
                 'stringUtility' => $stringUtility,
                 'serviceEntityTypeMapData' => [$serviceInterface => $eavEntityType],
                 'serviceBackendModelDataInterfaceMapData' => $serviceBackendModelDataInterfaceMapData,
-                'expected' => null
+                'expected' => 'mixed'
             ],
             [
                 'attributeCode' => 'media_galley',
@@ -146,7 +161,7 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
                 'stringUtility' => $stringUtility,
                 'serviceEntityTypeMapData' => [$serviceInterface => $eavEntityType],
                 'serviceBackendModelDataInterfaceMapData' => $serviceBackendModelDataInterfaceMapData,
-                'expected' => null
+                'expected' => 'mixed'
             ],
             [
                 'attributeCode' => 'media_galley',
@@ -155,7 +170,7 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
                 'stringUtility' => $stringUtility,
                 'serviceEntityTypeMapData' => [],
                 'serviceBackendModelDataInterfaceMapData' => [],
-                'expected' => null
+                'expected' => 'mixed'
             ],
             [
                 'attributeCode' => 'media_galley',
@@ -164,7 +179,7 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
                 'stringUtility' => $stringUtility,
                 'serviceEntityTypeMapData' => [$serviceInterface => $eavEntityType],
                 'serviceBackendModelDataInterfaceMapData' => [],
-                'expected' => null
+                'expected' => 'mixed'
             ],
             [
                 'attributeCode' => 'image',
@@ -184,9 +199,29 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    public function testGetTypeIfAttributeDoesNotExist()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('get')
+            ->willReturn(new \Magento\Framework\Exception\NoSuchEntityException());
+
+        $this->eavCustomAttributeTypeLocator = new EavCustomAttributeTypeLocator(
+            $this->attributeRepository,
+            new \Magento\Framework\Stdlib\StringUtils(),
+            [],
+            []
+        );
+
+        $this->assertEquals(
+            'mixed',
+            $this->eavCustomAttributeTypeLocator->getType('media_galley', 'Magento\Catalog\Api\Data\ProductInterface')
+        );
+    }
+
     public function testGetAllServiceDataInterfaceEmpty()
     {
-        $stringUtility = new \Magento\Framework\Stdlib\String();
+        $stringUtility = new \Magento\Framework\Stdlib\StringUtils();
         $this->eavCustomAttributeTypeLocator = new EavCustomAttributeTypeLocator(
             $this->attributeRepository,
             $stringUtility
@@ -201,7 +236,7 @@ class EavCustomAttributeTypeLocatorTest extends \PHPUnit_Framework_TestCase
             'ServiceB' => ['BackendB' => 'ServiceDataInterfaceB', 'BackendC' => 'ServiceDataInterfaceC'],
             'ServiceC' => ['BackendD' => 'ServiceDataInterfaceD']
         ];
-        $stringUtility = new \Magento\Framework\Stdlib\String();
+        $stringUtility = new \Magento\Framework\Stdlib\StringUtils();
         $this->eavCustomAttributeTypeLocator = new EavCustomAttributeTypeLocator(
             $this->attributeRepository, $stringUtility, [], $serviceBackendModelDataInterfaceMapData
         );

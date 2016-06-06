@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Widget\Block\Adminhtml\Widget\Instance\Edit\Chooser;
@@ -58,7 +58,7 @@ class DesignAbstractionTest extends \PHPUnit_Framework_TestCase
         $this->_block = new DesignAbstraction(
             $objectManager->get('Magento\Framework\View\Element\Template\Context'),
             $processorFactoryMock,
-            $objectManager->get('Magento\Theme\Model\Resource\Theme\CollectionFactory'),
+            $objectManager->get('Magento\Theme\Model\ResourceModel\Theme\CollectionFactory'),
             $appState,
             [
                 'name' => 'design_abstractions',

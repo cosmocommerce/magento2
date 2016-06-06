@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -33,6 +33,6 @@ class ResourceFactoryTest extends \PHPUnit_Framework_TestCase
         $resource = $this->resourceFactory->create(
             $this->getMock('Magento\Framework\App\DeploymentConfig', [], [], '', false)
         );
-        $this->assertInstanceOf('Magento\Framework\App\Resource', $resource);
+        $this->assertInstanceOf('Magento\Framework\App\ResourceConnection', $resource);
     }
 }

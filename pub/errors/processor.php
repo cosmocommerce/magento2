@@ -1,9 +1,10 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Error;
+use Magento\Framework\Filesystem\DriverInterface;
 
 /**
  * Error processor
@@ -300,7 +301,7 @@ class Processor
     {
         $documentRoot = '';
         if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-            $documentRoot = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
+            $documentRoot = rtrim(realpath($_SERVER['DOCUMENT_ROOT']), '/');
         }
         return dirname($documentRoot . $this->_scriptName) . '/';
     }
@@ -457,7 +458,6 @@ class Processor
         }
 
         @file_put_contents($this->_reportFile, serialize($reportData));
-        @chmod($this->_reportFile, 0777);
 
         if (isset($reportData['skin']) && self::DEFAULT_SKIN != $reportData['skin']) {
             $this->_setSkin($reportData['skin']);
@@ -511,7 +511,7 @@ class Processor
                     . "IP Address: {$this->_getClientIp()}\n"
                     . "First Name: {$this->postData['firstName']}\n"
                     . "Last Name: {$this->postData['lastName']}\n"
-                    . "E-mail Address: {$this->postData['email']}\n";
+                    . "Email Address: {$this->postData['email']}\n";
                 if ($this->postData['telephone']) {
                     $msg .= "Telephone: {$this->postData['telephone']}\n";
                 }

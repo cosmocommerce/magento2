@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Indexer;
@@ -29,17 +29,17 @@ abstract class AbstractFlatState
      */
     protected $isAvailable;
 
-    /** @var \Magento\Indexer\Model\IndexerRegistry */
+    /** @var \Magento\Framework\Indexer\IndexerRegistry */
     protected $indexerRegistry;
 
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Indexer\Model\IndexerRegistry $indexerRegistry
+     * @param \Magento\Framework\Indexer\IndexerRegistry $indexerRegistry
      * @param bool $isAvailable
      */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Indexer\Model\IndexerRegistry $indexerRegistry,
+        \Magento\Framework\Indexer\IndexerRegistry $indexerRegistry,
         $isAvailable = false
     ) {
         $this->scopeConfig = $scopeConfig;

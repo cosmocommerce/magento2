@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Config\Test\Unit\Model\Config\Structure\Element;
@@ -21,6 +21,11 @@ class AbstractCompositeTest extends \PHPUnit_Framework_TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $_iteratorMock;
+
+    /**
+     * @var \Magento\Framework\Module\Manager | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $moduleManagerMock;
 
     /**
      * Test element data
@@ -44,10 +49,10 @@ class AbstractCompositeTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->_storeManagerMock = $this->getMock('Magento\Store\Model\StoreManager', [], [], '', false);
-
+        $this->moduleManagerMock = $this->getMock('Magento\Framework\Module\Manager', [], [], '', false);
         $this->_model = $this->getMockForAbstractClass(
             'Magento\Config\Model\Config\Structure\Element\AbstractComposite',
-            [$this->_storeManagerMock, $this->_iteratorMock]
+            [$this->_storeManagerMock, $this->moduleManagerMock, $this->_iteratorMock]
         );
     }
 

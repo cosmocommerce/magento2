@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Pricing\Price;
@@ -11,7 +11,7 @@ use Magento\Catalog\Pricing\Price as CatalogPrice;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Pricing\Adjustment\CalculatorInterface;
 use Magento\Framework\Pricing\Amount\AmountInterface;
-use Magento\Framework\Pricing\Object\SaleableInterface;
+use Magento\Framework\Pricing\SaleableInterface;
 use Magento\Framework\Pricing\Price\AbstractPrice;
 
 /**
@@ -68,7 +68,7 @@ class BundleSelectionPrice extends AbstractPrice
      * @param ManagerInterface $eventManager
      * @param DiscountCalculator $discountCalculator
      * @param bool $useRegularPrice
-     * @param string $excludeAdjustment
+     * @param array $excludeAdjustment
      */
     public function __construct(
         Product $saleableItem,
@@ -142,14 +142,18 @@ class BundleSelectionPrice extends AbstractPrice
      */
     public function getAmount()
     {
-        if (null === $this->amount) {
+        if (!isset($this->amount[$this->getValue()])) {
             $exclude = null;
             if ($this->getProduct()->getTypeId() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
                 $exclude = $this->excludeAdjustment;
             }
-            $this->amount = $this->calculator->getAmount($this->getValue(), $this->getProduct(), $exclude);
+            $this->amount[$this->getValue()] = $this->calculator->getAmount(
+                $this->getValue(),
+                $this->getProduct(),
+                $exclude
+            );
         }
-        return $this->amount;
+        return $this->amount[$this->getValue()];
     }
 
     /**

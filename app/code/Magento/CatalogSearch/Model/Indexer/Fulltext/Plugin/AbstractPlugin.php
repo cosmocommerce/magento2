@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogSearch\Model\Indexer\Fulltext\Plugin;
@@ -9,14 +9,14 @@ use Magento\CatalogSearch\Model\Indexer\Fulltext;
 
 abstract class AbstractPlugin
 {
-    /** @var \Magento\Indexer\Model\IndexerRegistry */
+    /** @var \Magento\Framework\Indexer\IndexerRegistry */
     protected $indexerRegistry;
 
     /**
-     * @param \Magento\Indexer\Model\IndexerRegistry $indexerRegistry
+     * @param \Magento\Framework\Indexer\IndexerRegistry $indexerRegistry
      */
     public function __construct(
-        \Magento\Indexer\Model\IndexerRegistry $indexerRegistry
+        \Magento\Framework\Indexer\IndexerRegistry $indexerRegistry
     ) {
         $this->indexerRegistry = $indexerRegistry;
     }

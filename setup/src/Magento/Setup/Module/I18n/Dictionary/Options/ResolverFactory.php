@@ -1,9 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Setup\Module\I18n\Dictionary\Options;
+
+use Magento\Framework\Component\ComponentRegistrar;
 
 /**
  * Options resolver factory
@@ -36,7 +38,7 @@ class ResolverFactory
      */
     public function create($directory, $withContext)
     {
-        $resolver = new $this->resolverClass($directory, $withContext);
+        $resolver = new $this->resolverClass(new ComponentRegistrar(), $directory, $withContext);
         if (!$resolver instanceof ResolverInterface) {
             throw new \InvalidArgumentException($this->resolverClass . ' doesn\'t implement ResolverInterface');
         }

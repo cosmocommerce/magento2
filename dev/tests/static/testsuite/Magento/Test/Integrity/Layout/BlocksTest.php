@@ -2,7 +2,7 @@
 /**
  * Test layout declaration and usage of block elements
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\Layout;
@@ -96,7 +96,12 @@ class BlocksTest extends \PHPUnit_Framework_TestCase
     public function getChildBlockDataProvider()
     {
         $result = [];
-        foreach (Files::init()->getPhpFiles(true, false, true, false, false) as $file) {
+        $collectedFiles = Files::init()->getPhpFiles(
+            Files::INCLUDE_APP_CODE
+            | Files::INCLUDE_TEMPLATES
+            | Files::INCLUDE_NON_CLASSES
+        );
+        foreach ($collectedFiles as $file) {
             $aliases = \Magento\Framework\App\Utility\Classes::getAllMatches(
                 file_get_contents($file),
                 '/\->getChildBlock\(\'([^\']+)\'\)/x'

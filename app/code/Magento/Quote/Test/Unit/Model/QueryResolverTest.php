@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -25,7 +25,7 @@ class QueryResolverTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->configMock = $this->getMock('Magento\Framework\App\Resource\ConfigInterface');
+        $this->configMock = $this->getMock('Magento\Framework\App\ResourceConnection\ConfigInterface');
         $this->cacheMock = $this->getMock('Magento\Framework\Config\CacheInterface');
         $this->quoteResolver = new \Magento\Quote\Model\QueryResolver(
             $this->configMock,

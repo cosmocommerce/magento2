@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -16,8 +16,8 @@ class TaxRuleCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateTaxRuleCollectionItem()
     {
-        /** @var \Magento\Tax\Model\Resource\Calculation\Rule\Collection $collection */
-        $collection = Bootstrap::getObjectManager()->get('Magento\Tax\Model\Resource\Calculation\Rule\Collection');
+        /** @var \Magento\Tax\Model\ResourceModel\Calculation\Rule\Collection $collection */
+        $collection = Bootstrap::getObjectManager()->get('Magento\Tax\Model\ResourceModel\Calculation\Rule\Collection');
         $dbTaxRulesQty = $collection->count();
 
         /** @var \Magento\Tax\Model\Calculation\Rule $firstTaxRuleFixture */

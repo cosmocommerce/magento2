@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -82,7 +82,7 @@ class TaxWithCrossBorderTest extends Injectable
     public function __inject()
     {
         // TODO: Move test set up to "__prepare" method after fix bug MAGETWO-29331
-        $taxRule = $this->fixtureFactory->createByCode('taxRule', ['dataSet' => 'cross_border_tax_rule']);
+        $taxRule = $this->fixtureFactory->createByCode('taxRule', ['dataset' => 'cross_border_tax_rule']);
         $taxRule->persist();
     }
 
@@ -96,7 +96,7 @@ class TaxWithCrossBorderTest extends Injectable
         $customersData = ['johndoe_unique_TX', 'johndoe_unique'];
         $customers = [];
         foreach ($customersData as $customerData) {
-            $customer = $this->fixtureFactory->createByCode('customer', ['dataSet' => $customerData]);
+            $customer = $this->fixtureFactory->createByCode('customer', ['dataset' => $customerData]);
             $customer->persist();
             $customers[] = $customer;
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -16,7 +16,7 @@ use Magento\Mtf\TestStep\TestStepInterface;
 class CreateProductStep implements TestStepInterface
 {
     /**
-     * Product fixture from dataSet.
+     * Product fixture from dataset.
      *
      * @var string
      */
@@ -49,12 +49,12 @@ class CreateProductStep implements TestStepInterface
      */
     public function run()
     {
-        list($fixtureClass, $dataSet) = explode('::', $this->product);
+        list($fixtureClass, $dataset) = explode('::', $this->product);
         /** @var FixtureInterface $product */
-        $product = $this->fixtureFactory->createByCode(trim($fixtureClass), ['dataSet' => trim($dataSet)]);
+        $product = $this->fixtureFactory->createByCode(trim($fixtureClass), ['dataset' => trim($dataset)]);
         if ($product->hasData('id') === false) {
             $product->persist();
         }
-         return ['product' => $product];
+        return ['product' => $product];
     }
 }

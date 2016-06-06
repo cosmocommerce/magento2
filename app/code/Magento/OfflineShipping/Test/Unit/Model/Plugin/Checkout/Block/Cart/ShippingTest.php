@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\OfflineShipping\Test\Unit\Model\Plugin\Checkout\Block\Cart;
@@ -39,8 +39,8 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
      */
     public function testAfterGetStateActive($scopeConfigMockReturnValue, $result, $assertResult)
     {
-        /** @var \Magento\Checkout\Block\Cart\Shipping $subjectMock */
-        $subjectMock = $this->getMockBuilder('Magento\Checkout\Block\Cart\Shipping')
+        /** @var \Magento\Checkout\Block\Cart\LayoutProcessor $subjectMock */
+        $subjectMock = $this->getMockBuilder('\Magento\Checkout\Block\Cart\LayoutProcessor')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -48,7 +48,7 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
             ->method('getValue')
             ->willReturn($scopeConfigMockReturnValue);
 
-        $this->assertEquals($assertResult, $this->model->afterGetStateActive($subjectMock, $result));
+        $this->assertEquals($assertResult, $this->model->afterIsStateActive($subjectMock, $result));
     }
 
     public function afterGetStateActiveDataProvider()

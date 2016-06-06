@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\OfflinePayments\Test\Unit\Model;
@@ -41,7 +41,7 @@ class PurchaseorderTest extends \PHPUnit_Framework_TestCase
 
     public function testAssignData()
     {
-        $data = new \Magento\Framework\Object([
+        $data = new \Magento\Framework\DataObject([
             'po_number' => '12345'
         ]);
 

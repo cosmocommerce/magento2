@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Product\Compare;
@@ -17,7 +17,7 @@ class Clear extends \Magento\Catalog\Controller\Product\Compare
      */
     public function execute()
     {
-        /** @var \Magento\Catalog\Model\Resource\Product\Compare\Item\Collection $items */
+        /** @var \Magento\Catalog\Model\ResourceModel\Product\Compare\Item\Collection $items */
         $items = $this->_itemCollectionFactory->create();
 
         if ($this->_customerSession->isLoggedIn()) {

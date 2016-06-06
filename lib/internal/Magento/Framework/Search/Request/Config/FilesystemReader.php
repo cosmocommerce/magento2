@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Request\Config;
@@ -13,11 +13,15 @@ class FilesystemReader extends \Magento\Framework\Config\Reader\Filesystem
      * @var array
      */
     protected $_idAttributes = [
-        '/requests/request' => '@name',
-        '/requests/request/queries/query' => '@name',
-        '/requests/request/filters/filter' => '@name',
-        '/requests/request/aggregation/bucket' => '@name',
-        '/requests/request/dimensions/dimension' => '@name',
+        '/requests/request' => 'query',
+        '/requests/request/queries/query' => 'name',
+        '/requests/request/queries/query/queryReference' => 'ref',
+        '/requests/request/queries/query/match' => 'field',
+        '/requests/request/queries/query/filterReference' => 'ref',
+        '/requests/request/filters/filter' => 'name',
+        '/requests/request/filters/filter/filterReference' => 'ref',
+        '/requests/request/aggregations/bucket' => 'name',
+        '/requests/request/dimensions/dimension' => 'name',
     ];
 
     /**

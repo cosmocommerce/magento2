@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Wishlist\Test\Unit\Controller\Index;
@@ -386,9 +386,9 @@ class SendTest extends \PHPUnit_Framework_TestCase
                 '',
                 'This wish list can be shared 1 more times.'
             ],
-            ['test text', 100, 'wrongEmailAddress', 1, 0, '', 'Please input a valid email address.'],
-            ['test text', 100, 'user1@example.com, wrongEmailAddress', 2, 0, '', 'Please input a valid email address.'],
-            ['test text', 100, 'wrongEmailAddress, user2@example.com', 2, 0, '', 'Please input a valid email address.'],
+            ['test text', 100, 'wrongEmailAddress', 1, 0, '', 'Please enter a valid email address.'],
+            ['test text', 100, 'user1@example.com, wrongEmailAddress', 2, 0, '', 'Please enter a valid email address.'],
+            ['test text', 100, 'wrongEmailAddress, user2@example.com', 2, 0, '', 'Please enter a valid email address.'],
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -31,12 +31,12 @@ class CompositeTest extends \PHPUnit_Framework_TestCase
 
     public function testFilterAndSortDeclaredComponents()
     {
-        $firstComponent = new \Magento\Framework\Object();
-        $secondComponent = new \Magento\Framework\Object();
-        $thirdComponent = new \Magento\Framework\Object();
+        $firstComponent = new \Magento\Framework\DataObject();
+        $secondComponent = new \Magento\Framework\DataObject();
+        $thirdComponent = new \Magento\Framework\DataObject();
         $contexts = [
             [
-                'type' => new \Magento\Framework\Object(),
+                'type' => new \Magento\Framework\DataObject(),
             ],
             [
                 'sortOrder' => 50,

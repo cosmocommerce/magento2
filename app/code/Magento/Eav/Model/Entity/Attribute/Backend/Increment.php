@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute\Backend;
@@ -15,7 +15,7 @@ class Increment extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBack
     /**
      * Set new increment id
      *
-     * @param \Magento\Framework\Object $object
+     * @param \Magento\Framework\DataObject $object
      * @return $this
      */
     public function beforeSave($object)

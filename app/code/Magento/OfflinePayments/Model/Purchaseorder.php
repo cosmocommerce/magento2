@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\OfflinePayments\Model;
@@ -41,15 +41,12 @@ class Purchaseorder extends \Magento\Payment\Model\Method\AbstractMethod
     /**
      * Assign data to info model instance
      *
-     * @param \Magento\Framework\Object|mixed $data
+     * @param \Magento\Framework\DataObject|mixed $data
      * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function assignData($data)
+    public function assignData(\Magento\Framework\DataObject $data)
     {
-        if (!$data instanceof \Magento\Framework\Object) {
-            $data = new \Magento\Framework\Object($data);
-        }
-
         $this->getInfoInstance()->setPoNumber($data->getPoNumber());
         return $this;
     }

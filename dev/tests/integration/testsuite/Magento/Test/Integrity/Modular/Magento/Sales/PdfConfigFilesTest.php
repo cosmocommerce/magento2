@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\Modular\Magento\Sales;
@@ -19,7 +19,10 @@ class PdfConfigFilesTest extends \PHPUnit_Framework_TestCase
         );
         $schemaFile = $schemaLocator->getPerFileSchema();
 
-        $dom = new \Magento\Framework\Config\Dom(file_get_contents($file));
+        $validationStateMock = $this->getMock('\Magento\Framework\Config\ValidationStateInterface', [], [], '', false);
+        $validationStateMock->method('isValidationRequired')
+            ->willReturn(true);
+        $dom = new \Magento\Framework\Config\Dom(file_get_contents($file), $validationStateMock);
         $result = $dom->validate($schemaFile, $errors);
         $this->assertTrue($result, print_r($errors, true));
     }
@@ -35,7 +38,7 @@ class PdfConfigFilesTest extends \PHPUnit_Framework_TestCase
     public function testMergedFormat()
     {
         $validationState = $this->getMock('Magento\Framework\Config\ValidationStateInterface');
-        $validationState->expects($this->any())->method('isValidated')->will($this->returnValue(true));
+        $validationState->expects($this->any())->method('isValidationRequired')->will($this->returnValue(true));
 
         /** @var \Magento\Sales\Model\Order\Pdf\Config\Reader $reader */
         $reader = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(

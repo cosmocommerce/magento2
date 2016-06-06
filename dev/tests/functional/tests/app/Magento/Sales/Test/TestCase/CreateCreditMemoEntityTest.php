@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -21,7 +21,7 @@ use Magento\Mtf\TestCase\Injectable;
  * Steps:
  * 1. Go to Sales > Orders > find out placed order and open.
  * 2. Click 'Credit Memo' button.
- * 3. Fill data from dataSet.
+ * 3. Fill data from dataset.
  * 4. On order's page click 'Refund offline' button.
  * 5. Perform all assertions.
  *
@@ -33,7 +33,6 @@ class CreateCreditMemoEntityTest extends Injectable
     /* tags */
     const MVP = 'yes';
     const DOMAIN = 'CS';
-    const STABLE = 'no'; // Backend customer form load
     /* end tags */
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -10,8 +10,7 @@ use Magento\Bundle\Test\Fixture\BundleProduct;
 use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
- * Class Item
- * Data for verify cart item block on checkout page
+ * Data for verify cart item block on checkout page.
  *
  * Data keys:
  *  - product (fixture data for verify)
@@ -54,7 +53,7 @@ class Item extends \Magento\Catalog\Test\Fixture\Cart\Item
             $bundleOptions = $bundleSelection['bundle_options'][$attributeKey];
             $value = $bundleSelectionAttribute[$optionKey]->getName();
             $qty = $bundleOptions['assigned_products'][$optionKey]['data']['selection_qty'];
-            $price = $product->getPriceType() == 'Dynamic'
+            $price = $product->getPriceType() == 'Yes'
                 ? number_format($bundleSelectionAttribute[$optionKey]->getPrice(), 2)
                 : number_format($bundleOptions['assigned_products'][$optionKey]['data']['selection_price_value'], 2);
             $optionData = [
@@ -66,38 +65,5 @@ class Item extends \Magento\Catalog\Test\Fixture\Cart\Item
         }
 
         $this->data['options'] += $checkoutBundleOptions;
-    }
-
-    /**
-     * Persist fixture
-     *
-     * @return void
-     */
-    public function persist()
-    {
-        //
-    }
-
-    /**
-     * Return prepared data set
-     *
-     * @param string $key [optional]
-     * @return mixed
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function getData($key = null)
-    {
-        return $this->data;
-    }
-
-    /**
-     * Return data set configuration settings
-     *
-     * @return string
-     */
-    public function getDataConfig()
-    {
-        //
     }
 }

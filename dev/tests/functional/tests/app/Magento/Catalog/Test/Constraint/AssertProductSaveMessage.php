@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -28,7 +28,6 @@ class AssertProductSaveMessage extends AbstractConstraint
     public function processAssert(CatalogProductEdit $productPage)
     {
         $actualMessages = $productPage->getMessagesBlock()->getSuccessMessages();
-        $actualMessages = is_array($actualMessages) ? $actualMessages : [$actualMessages];
         \PHPUnit_Framework_Assert::assertContains(
             self::SUCCESS_MESSAGE,
             $actualMessages,

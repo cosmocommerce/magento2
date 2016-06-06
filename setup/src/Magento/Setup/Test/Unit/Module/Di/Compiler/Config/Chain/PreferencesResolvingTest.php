@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -57,6 +57,9 @@ class PreferencesResolvingTest extends \PHPUnit_Framework_TestCase
                 'value_null' => [
                     '_vn_' => true,
                 ],
+                'virtual_preferece' => [
+                    '_i_' => 'Type\DependencyInterface2'
+                ]
             ],
             'ComplexClass' => [
                 'type_dependency_configured' => [
@@ -123,6 +126,9 @@ class PreferencesResolvingTest extends \PHPUnit_Framework_TestCase
                 'value_null' => [
                     '_vn_' => true,
                 ],
+                'virtual_preferece' => [
+                    '_i_' => 'Type\DependencyVirtual3'
+                ]
             ],
             'ComplexClass' => [
                 'type_dependency_configured' => [
@@ -178,6 +184,9 @@ class PreferencesResolvingTest extends \PHPUnit_Framework_TestCase
             'Type\Dependency\ConfiguredInterface' => 'Type\Dependency\Configured',
             'Type\Dependency\Shared\ConfiguredInterface' => 'Type\Dependency\Shared\ConfiguredPreference',
             'Type\Dependency\Shared\Configured' => 'Type\Dependency\Shared\ConfiguredPreference',
+            'Type\DependencyInterface2' => 'Type\DependencyVirtual',
+            'Type\DependencyVirtual' => 'Type\DependencyVirtual2',
+            'Type\DependencyVirtual2' => 'Type\DependencyVirtual3'
         ];
     }
 }

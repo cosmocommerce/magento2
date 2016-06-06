@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,8 +12,8 @@ use Magento\Backend\Test\Page\Adminhtml\Dashboard;
 /**
  * Steps:
  * 1. Log in to backend.
- * 2. Navigate throught menu to the page.
- * 6. Perform asserts.
+ * 2. Navigate through menu to the page.
+ * 3. Perform asserts.
  *
  * @ZephyrId MAGETWO-34874
  */

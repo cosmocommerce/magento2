@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\HTTP\PhpEnvironment;
@@ -65,5 +65,17 @@ class RemoteAddress
         }
 
         return $ipToLong ? ip2long($this->remoteAddress) : $this->remoteAddress;
+    }
+
+    /**
+     * Returns internet host name corresponding to remote server
+     *
+     * @return string|null
+     */
+    public function getRemoteHost()
+    {
+        return $this->getRemoteAddress()
+            ? gethostbyaddr($this->getRemoteAddress())
+            : null;
     }
 }

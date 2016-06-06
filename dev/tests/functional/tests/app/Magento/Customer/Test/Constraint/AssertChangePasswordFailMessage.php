@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,7 +18,7 @@ class AssertChangePasswordFailMessage extends AbstractConstraint
     /**
      * Fail message
      */
-    const FAIL_MESSAGE = "Password doesn't match for this account.";
+    const FAIL_MESSAGE = 'The password doesn\'t match this account.';
 
     /**
      * Assert that fail message is present
@@ -30,7 +30,7 @@ class AssertChangePasswordFailMessage extends AbstractConstraint
     {
         \PHPUnit_Framework_Assert::assertEquals(
             self::FAIL_MESSAGE,
-            $customerAccountEdit->getMessages()->getErrorMessages()
+            $customerAccountEdit->getMessages()->getErrorMessage()
         );
     }
 

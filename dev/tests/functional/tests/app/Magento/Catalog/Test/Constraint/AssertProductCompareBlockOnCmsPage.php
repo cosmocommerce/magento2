@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -32,7 +32,7 @@ class AssertProductCompareBlockOnCmsPage extends AbstractConstraint
         FixtureFactory $fixtureFactory,
         BrowserInterface $browser
     ) {
-        $newCmsPage = $fixtureFactory->createByCode('cmsPage', ['dataSet' => '3_column_template']);
+        $newCmsPage = $fixtureFactory->createByCode('cmsPage', ['dataset' => '3_column_template']);
         $newCmsPage->persist();
         $browser->open($_ENV['app_frontend_url'] . $newCmsPage->getIdentifier());
         foreach ($products as &$product) {

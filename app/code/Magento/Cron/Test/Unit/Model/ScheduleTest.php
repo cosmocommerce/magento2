@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Cron\Test\Unit\Model;
@@ -17,11 +17,11 @@ class ScheduleTest extends \PHPUnit_Framework_TestCase
 
     protected $resourceJobMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
 
-        $this->resourceJobMock = $this->getMockBuilder('Magento\Cron\Model\Resource\Schedule')
+        $this->resourceJobMock = $this->getMockBuilder('Magento\Cron\Model\ResourceModel\Schedule')
             ->disableOriginalConstructor()
             ->setMethods(['trySetJobStatusAtomic', '__wakeup', 'getIdFieldName'])
             ->getMockForAbstractClass();

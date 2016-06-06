@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\Create\Sidebar;
@@ -90,7 +90,7 @@ class Wishlist extends \Magento\Sales\Block\Adminhtml\Order\Create\Sidebar\Abstr
     /**
      * Retrieve identifier of block item
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return int
      */
     public function getIdentifierId($item)

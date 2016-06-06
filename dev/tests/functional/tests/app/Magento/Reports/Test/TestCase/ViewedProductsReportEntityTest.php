@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,7 +13,6 @@ use Magento\Reports\Test\Page\Adminhtml\ProductReportView;
 use Magento\Catalog\Test\Page\Adminhtml\CatalogProductIndex;
 
 /**
- * Test Flow:
  * Preconditions:
  * 1. Create products
  * 2. Open product page on frontend
@@ -34,7 +33,6 @@ class ViewedProductsReportEntityTest extends Injectable
     /* tags */
     const MVP = 'no';
     const DOMAIN = 'MX';
-    const STABLE = 'no';
     /* end tags */
 
     /**
@@ -102,7 +100,7 @@ class ViewedProductsReportEntityTest extends Injectable
         $productsList = $this->prepareProducts($products);
         $this->openProducts($productsList, $total);
         $this->productReportView->open();
-        $this->productReportView->getMessagesBlock()->clickLinkInMessages('notice', 'here');
+        $this->productReportView->getMessagesBlock()->clickLinkInMessage('notice', 'here');
 
         // Steps
         $this->productReportView->getFilterBlock()->viewsReport($viewsReport);
@@ -122,7 +120,7 @@ class ViewedProductsReportEntityTest extends Injectable
         $products = [];
         foreach ($productsData as $productConfig) {
             $product = explode('::', $productConfig);
-            $productFixture = $this->fixtureFactory->createByCode($product[0], ['dataSet' => $product[1]]);
+            $productFixture = $this->fixtureFactory->createByCode($product[0], ['dataset' => $product[1]]);
             $productFixture->persist();
             $products[] = $productFixture;
         }

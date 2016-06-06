@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -84,8 +84,8 @@ class GenerateFixturesCommand extends Command
             /** @var $config \Magento\Indexer\Model\Config */
             $config = $fixtureModel->getObjectManager()->get('Magento\Indexer\Model\Config');
             $indexerListIds = $config->getIndexers();
-            /** @var $indexerRegistry \Magento\Indexer\Model\IndexerRegistry */
-            $indexerRegistry = $fixtureModel->getObjectManager()->create('Magento\Indexer\Model\IndexerRegistry');
+            /** @var $indexerRegistry \Magento\Framework\Indexer\IndexerRegistry */
+            $indexerRegistry = $fixtureModel->getObjectManager()->create('Magento\Framework\Indexer\IndexerRegistry');
             $indexersState = [];
             foreach ($indexerListIds as $indexerId) {
                 $indexer = $indexerRegistry->get($indexerId['indexer_id']);
@@ -111,13 +111,15 @@ class GenerateFixturesCommand extends Command
             if (!$input->getOption(self::SKIP_REINDEX_OPTION)) {
                 $fixtureModel->reindex($output);
             }
-            
+
             $totalEndTime = microtime(true);
             $totalResultTime = $totalEndTime - $totalStartTime;
 
             $output->writeln('<info>Total execution time: ' . gmdate('H:i:s', $totalResultTime) . '</info>');
         } catch (\Exception $e) {
-             $output->writeln('<error>' . $e->getMessage() . '</error>');
+            $output->writeln('<error>' . $e->getMessage() . '</error>');
+            // we must have an exit code higher than zero to indicate something was wrong
+            return \Magento\Framework\Console\Cli::RETURN_FAILURE;
         }
     }
 }

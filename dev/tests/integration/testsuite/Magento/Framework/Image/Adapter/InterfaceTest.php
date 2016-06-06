@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Image\Adapter;
@@ -548,12 +548,13 @@ class InterfaceTest extends \PHPUnit_Framework_TestCase
     public function testCreatePngFromString($pixel1, $expectedColor1, $pixel2, $expectedColor2, $adapterType)
     {
         $adapter = $this->_getAdapter($adapterType);
-        /** @var \Magento\Framework\Filesystem $filesystem */
-        $filesystem = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
-            'Magento\Framework\Filesystem'
+
+        /** @var \Magento\Framework\Filesystem\Directory\ReadFactory readFactory */
+        $readFactory = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
+            'Magento\Framework\Filesystem\Directory\ReadFactory'
         );
-        $path = $filesystem->getDirectoryRead(DirectoryList::LIB_INTERNAL)
-            ->getAbsolutePath('LinLibertineFont/LinLibertine_Re-4.4.1.ttf');
+        $reader = $readFactory->create(BP);
+        $path = $reader->getAbsolutePath('lib/internal/LinLibertineFont/LinLibertine_Re-4.4.1.ttf');
         $adapter->createPngFromString('T', $path);
         $adapter->refreshImageDimensions();
 

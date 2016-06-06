@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\AbstractController;
@@ -53,7 +53,7 @@ abstract class PrintInvoice extends \Magento\Framework\App\Action\Action
     {
         $invoiceId = (int)$this->getRequest()->getParam('invoice_id');
         if ($invoiceId) {
-            $invoice = $this->_objectManager->create('Magento\Sales\Model\Order\Invoice')->load($invoiceId);
+            $invoice = $this->_objectManager->create('Magento\Sales\Api\InvoiceRepositoryInterface')->get($invoiceId);
             $order = $invoice->getOrder();
         } else {
             $orderId = (int)$this->getRequest()->getParam('order_id');

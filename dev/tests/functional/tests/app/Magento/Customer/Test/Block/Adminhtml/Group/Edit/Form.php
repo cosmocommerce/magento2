@@ -1,20 +1,15 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Test\Block\Adminhtml\Group\Edit;
 
-use Magento\Backend\Test\Block\Widget\Form as AbstractForm;
-
 /**
- * Class Form
- * Customer group edit form
- *
- * @package Magento\Customer\Test\Block\Adminhtml\Group\Edit
+ * Customer group edit form.
  */
-class Form extends AbstractForm
+class Form extends \Magento\Mtf\Block\Form
 {
     //
 }

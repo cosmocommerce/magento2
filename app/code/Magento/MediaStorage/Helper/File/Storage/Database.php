@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -24,7 +24,7 @@ class Database extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Storage resource model
-     * @var null|\Magento\MediaStorage\Model\Resource\File\Storage\Database
+     * @var null|\Magento\MediaStorage\Model\ResourceModel\File\Storage\Database
      */
     protected $_resourceModel = null;
 
@@ -121,7 +121,7 @@ class Database extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get storage model
      *
-     * @return \Magento\MediaStorage\Model\Resource\File\Storage\Database
+     * @return \Magento\MediaStorage\Model\ResourceModel\File\Storage\Database
      */
     public function getResourceStorageModel()
     {

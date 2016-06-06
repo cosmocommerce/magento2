@@ -1,12 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Quote\Setup;
 
 use Magento\Eav\Model\Entity\Setup\Context;
-use Magento\Eav\Model\Resource\Entity\Attribute\Group\CollectionFactory;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\Group\CollectionFactory;
 use Magento\Eav\Setup\EavSetup;
 use Magento\Framework\App\CacheInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;

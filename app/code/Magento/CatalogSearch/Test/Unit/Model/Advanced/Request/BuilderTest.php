@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogSearch\Test\Unit\Model\Advanced\Request;
@@ -182,7 +182,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         ];
         $this->requestBuilder->bindRequestValue('from_to', ['from' => 10, 'to' => 20]);
         $this->requestBuilder->bindRequestValue('not_array', 130);
-        $this->requestBuilder->bindRequestValue('like', ['like' => '%search_text%']);
+        $this->requestBuilder->bindRequestValue('like', ['like' => 'search_text']);
         $this->requestBuilder->bindRequestValue('in', ['in' => 23]);
         $this->requestBuilder->bindRequestValue('in_set', ['in_set' => [12, 23, 34, 45]]);
         $this->requestBuilder->setRequestName($requestName);

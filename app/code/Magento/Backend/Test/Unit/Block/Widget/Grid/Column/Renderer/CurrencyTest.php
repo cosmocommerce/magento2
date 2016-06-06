@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Test\Unit\Block\Widget\Grid\Column\Renderer;
@@ -43,7 +43,7 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
     protected $_currencyMock;
 
     /**
-     * @var \Magento\Framework\Object
+     * @var \Magento\Framework\DataObject
      */
     protected $_row;
 
@@ -80,7 +80,7 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
         );
         $currencyFactoryMock->expects($this->any())->method('create')->will($this->returnValue($this->_currencyMock));
 
-        $this->_row = new \Magento\Framework\Object(['columnIndex' => '10']);
+        $this->_row = new \Magento\Framework\DataObject(['columnIndex' => '10']);
 
         $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->_blockCurrency = $helper->getObject(

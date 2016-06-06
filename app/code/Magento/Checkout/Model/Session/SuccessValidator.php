@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Model\Session;
@@ -17,6 +17,7 @@ class SuccessValidator
 
     /**
      * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @codeCoverageIgnore
      */
     public function __construct(
         \Magento\Checkout\Model\Session $checkoutSession

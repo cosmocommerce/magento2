@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Test\Unit\Model\Plugin;
@@ -22,7 +22,7 @@ class LayerTest extends \PHPUnit_Framework_TestCase
      */
     protected $_stockHelperMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->_scopeConfigMock = $this->getMock('\Magento\Framework\App\Config\ScopeConfigInterface');
         $this->_stockHelperMock = $this->getMock(
@@ -53,9 +53,9 @@ class LayerTest extends \PHPUnit_Framework_TestCase
         )->will(
             $this->returnValue(true)
         );
-        /** @var \Magento\Catalog\Model\Resource\Product\Collection $collectionMock */
+        /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $collectionMock */
         $collectionMock = $this->getMock(
-            '\Magento\Catalog\Model\Resource\Product\Collection',
+            '\Magento\Catalog\Model\ResourceModel\Product\Collection',
             [],
             [],
             '',
@@ -83,7 +83,7 @@ class LayerTest extends \PHPUnit_Framework_TestCase
         );
 
         $collectionMock = $this->getMock(
-            '\Magento\Catalog\Model\Resource\Product\Collection',
+            '\Magento\Catalog\Model\ResourceModel\Product\Collection',
             [],
             [],
             '',

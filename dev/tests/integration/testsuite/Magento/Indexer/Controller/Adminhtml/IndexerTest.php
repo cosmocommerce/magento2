@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Indexer\Controller\Adminhtml;
@@ -8,7 +8,7 @@ namespace Magento\Indexer\Controller\Adminhtml;
 /**
  * @magentoAppArea adminhtml
  */
-class IndexerTest extends \Magento\Backend\Utility\Controller
+class IndexerTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * Assert that current page is index management page and that it has indexers mode selector

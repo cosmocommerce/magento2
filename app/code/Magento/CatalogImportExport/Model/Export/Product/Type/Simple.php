@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogImportExport\Model\Export\Product\Type;
@@ -32,7 +32,10 @@ class Simple extends \Magento\CatalogImportExport\Model\Export\Product\Type\Abst
     protected $_disabledAttrs = [
         'old_id',
         'tier_price',
-        'group_price',
         'category_ids',
+        'has_options',
+        'is_returnable',
+        'required_options',
+        'quantity_and_stock_status'
     ];
 }

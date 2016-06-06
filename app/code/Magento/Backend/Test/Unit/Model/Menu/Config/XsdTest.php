@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Test\Unit\Model\Menu\Config;
@@ -14,13 +14,17 @@ class XsdTest extends \PHPUnit_Framework_TestCase
     protected $_xsdSchema;
 
     /**
-     * @var \Magento\TestFramework\Utility\XsdValidator
+     * @var \Magento\Framework\TestFramework\Unit\Utility\XsdValidator()
      */
     protected $_xsdValidator;
 
     protected function setUp()
     {
-        $this->_xsdSchema = BP . '/app/code/Magento/Backend/etc/menu.xsd';
+        if (!function_exists('libxml_set_external_entity_loader')) {
+            $this->markTestSkipped('Skipped on HHVM. Will be fixed in MAGETWO-45033');
+        }
+        $urnResolver = new \Magento\Framework\Config\Dom\UrnResolver();
+        $this->_xsdSchema = $urnResolver->getRealPath('urn:magento:module:Magento_Backend:etc/menu.xsd');
         $this->_xsdValidator = new \Magento\Framework\TestFramework\Unit\Utility\XsdValidator();
     }
 

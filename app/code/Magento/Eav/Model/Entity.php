@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model;
@@ -28,10 +28,11 @@ class Entity extends \Magento\Eav\Model\Entity\AbstractEntity
     /**
      * @param Entity\Context $context
      * @param array $data
+     * @codeCoverageIgnore
      */
     public function __construct(\Magento\Eav\Model\Entity\Context $context, $data = [])
     {
         parent::__construct($context, $data);
-        $this->setConnection($this->_resource->getConnection('eav_read'));
+        $this->setConnection($this->_resource->getConnection('eav'));
     }
 }

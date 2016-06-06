@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Factory\Dynamic;
@@ -64,8 +64,6 @@ class Developer extends \Magento\Framework\ObjectManager\Factory\AbstractFactory
      * @param array $arguments
      * @return object
      * @throws \Exception
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function create($requestedType, array $arguments = [])
     {

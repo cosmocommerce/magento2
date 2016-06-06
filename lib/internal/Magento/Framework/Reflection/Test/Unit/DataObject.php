@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Reflection\Test\Unit;
@@ -19,6 +19,11 @@ class DataObject
      * @var bool
      */
     protected $isActive;
+
+    /**
+     * @var string
+     */
+    private $name;
 
     /**
      * @return string
@@ -53,6 +58,16 @@ class DataObject
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
+        return $this;
+    }
+
+    /**
+     * @param null|string $name Name of the attribute
+     * @return $this
+     */
+    public function setName($name = null)
+    {
+        $this->name = $name;
         return $this;
     }
 }

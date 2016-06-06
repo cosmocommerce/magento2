@@ -1,27 +1,45 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 define([
     'mageUtils',
     'moment',
-    './sortable'
-], function (utils, moment, Sortable) {
+    './column'
+], function (utils, moment, Column) {
     'use strict';
 
-    return Sortable.extend({
+    return Column.extend({
         defaults: {
-            dateFormat: 'MMM D, YYYY h:mm:ss A'
+            dateFormat: 'MMM d, YYYY h:mm:ss A'
         },
 
-        initProperties: function () {
+        /**
+         * Overrides base method to normalize date format.
+         *
+         * @returns {DateColumn} Chainable.
+         */
+        initConfig: function () {
+            this._super();
+
             this.dateFormat = utils.normalizeDate(this.dateFormat);
 
-            return this._super();
+            return this;
         },
 
-        getLabel: function (data) {
-            return moment(data).isValid() ? moment(data).format(this.dateFormat) : '';
+        /**
+         * Formats incoming date based on the 'dateFormat' property.
+         *
+         * @returns {String} Formatted date.
+         */
+        getLabel: function (value, format) {
+            var date = moment(this._super());
+
+            date = date.isValid() ?
+                date.format(format || this.dateFormat) :
+                '';
+
+            return date;
         }
     });
 });

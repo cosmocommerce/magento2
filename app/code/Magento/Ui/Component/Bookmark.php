@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Ui\Component;
@@ -75,12 +75,11 @@ class Bookmark extends AbstractComponent
             $bookmarks = $this->bookmarkManagement->loadByNamespace($namespace);
             /** @var \Magento\Ui\Api\Data\BookmarkInterface $bookmark */
             foreach ($bookmarks->getItems() as $bookmark) {
-                $config['activeIndex'] = ($bookmark->isCurrent() ? $bookmark->getIdentifier() : 'default');
-                if ($bookmark->getIdentifier() == 'current') {
-                    $config['current'] = $bookmark->getConfig();
-                } else {
-                    $config['views'][$bookmark->getIdentifier()] = $bookmark->getConfig();
+                if ($bookmark->isCurrent()) {
+                    $config['activeIndex'] = $bookmark->getIdentifier();
                 }
+
+                $config = array_merge_recursive($config, $bookmark->getConfig());
             }
         }
 

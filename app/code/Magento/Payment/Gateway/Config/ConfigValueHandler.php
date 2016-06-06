@@ -1,11 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Gateway\Config;
 
 use Magento\Payment\Gateway\ConfigInterface;
+use Magento\Payment\Gateway\Helper\SubjectReader;
 
 class ConfigValueHandler implements ValueHandlerInterface
 {
@@ -26,13 +27,13 @@ class ConfigValueHandler implements ValueHandlerInterface
     /**
      * Retrieve method configured value
      *
-     * @param string $field
+     * @param array $subject
      * @param int|null $storeId
      *
      * @return mixed
      */
-    public function handle($field, $storeId = null)
+    public function handle(array $subject, $storeId = null)
     {
-        return $this->configInterface->getValue($field, $storeId);
+        return $this->configInterface->getValue(SubjectReader::readField($subject), $storeId);
     }
 }

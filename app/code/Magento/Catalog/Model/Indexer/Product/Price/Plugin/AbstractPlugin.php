@@ -1,19 +1,19 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Indexer\Product\Price\Plugin;
 
 abstract class AbstractPlugin
 {
-    /** @var \Magento\Indexer\Model\IndexerRegistry */
+    /** @var \Magento\Framework\Indexer\IndexerRegistry */
     protected $indexerRegistry;
 
     /**
-     * @param \Magento\Indexer\Model\IndexerRegistry $indexerRegistry
+     * @param \Magento\Framework\Indexer\IndexerRegistry $indexerRegistry
      */
-    public function __construct(\Magento\Indexer\Model\IndexerRegistry $indexerRegistry)
+    public function __construct(\Magento\Framework\Indexer\IndexerRegistry $indexerRegistry)
     {
         $this->indexerRegistry = $indexerRegistry;
     }

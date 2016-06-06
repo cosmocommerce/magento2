@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search;
@@ -24,6 +24,7 @@ class AbstractKeyValuePair
     /**
      * @param string $name
      * @param mixed $value
+     * @codeCoverageIgnore
      */
     public function __construct($name, $value)
     {
@@ -35,6 +36,7 @@ class AbstractKeyValuePair
      * Get field name
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -44,7 +46,8 @@ class AbstractKeyValuePair
     /**
      * Get field values
      *
-     * @return mixed
+     * @return mixed Return data in raw-formt. Must be escaped for using in sql
+     * @codeCoverageIgnore
      */
     public function getValue()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Model\Rss;
@@ -131,7 +131,7 @@ class NewOrderTest extends \PHPUnit_Framework_TestCase
         $order->expects($this->once())->method('getIncrementId')->will($this->returnValue('100000001'));
         $order->expects($this->once())->method('getCreatedAt')->will($this->returnValue(time()));
 
-        $collection = $this->getMockBuilder('\Magento\Sales\Model\Resource\Order\Collection')
+        $collection = $this->getMockBuilder('\Magento\Sales\Model\ResourceModel\Order\Collection')
             ->setMethods(['addAttributeToFilter', 'addAttributeToSort', 'getIterator'])
             ->disableOriginalConstructor()->getMock();
         $collection->expects($this->once())->method('addAttributeToFilter')->will($this->returnSelf());

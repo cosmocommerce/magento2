@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Quote\Api;
@@ -23,7 +23,7 @@ class GuestCartTotalRepositoryTest extends WebapiAbstract
     /**
      * @var SearchCriteriaBuilder
      */
-    private $searchBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * @var FilterBuilder
@@ -33,7 +33,7 @@ class GuestCartTotalRepositoryTest extends WebapiAbstract
     protected function setUp()
     {
         $this->objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
-        $this->searchBuilder = $this->objectManager->create(
+        $this->searchCriteriaBuilder = $this->objectManager->create(
             'Magento\Framework\Api\SearchCriteriaBuilder'
         );
         $this->filterBuilder = $this->objectManager->create(

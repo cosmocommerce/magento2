@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -36,6 +36,11 @@ class Config
      * Constant body attribute class
      */
     const BODY_ATTRIBUTE_CLASS = 'class';
+
+    /**
+     * Constant html language attribute
+     */
+    const HTML_ATTRIBUTE_LANG = 'lang';
 
     /**
      * Allowed group of types
@@ -86,6 +91,11 @@ class Config
     protected $favicon;
 
     /**
+     * @var \Magento\Framework\Locale\ResolverInterface
+     */
+    protected $localeResolver;
+
+    /**
      * @var \Magento\Framework\View\Layout\BuilderInterface
      */
     protected $builder;
@@ -108,24 +118,53 @@ class Config
     ];
 
     /**
+     * @var \Magento\Framework\App\State
+     */
+    private $areaResolver;
+
+    /**
+     * This getter serves as a workaround to add this dependency to this class without breaking constructor structure.
+     *
+     * @return \Magento\Framework\App\State
+     *
+     * @deprecated
+     */
+    private function getAreaResolver()
+    {
+        if ($this->areaResolver === null) {
+            $this->areaResolver = \Magento\Framework\App\ObjectManager::getInstance()
+                ->get('Magento\Framework\App\State');
+        }
+        return $this->areaResolver;
+    }
+
+    /**
      * @param \Magento\Framework\View\Asset\Repository $assetRepo
      * @param \Magento\Framework\View\Asset\GroupedCollection $pageAssets
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Framework\View\Page\FaviconInterface $favicon
      * @param Title $title
+     * @param \Magento\Framework\Locale\ResolverInterface $localeResolver
      */
     public function __construct(
         View\Asset\Repository $assetRepo,
         View\Asset\GroupedCollection $pageAssets,
         App\Config\ScopeConfigInterface $scopeConfig,
         View\Page\FaviconInterface $favicon,
-        Title $title
+        Title $title,
+        \Magento\Framework\Locale\ResolverInterface $localeResolver
     ) {
         $this->assetRepo = $assetRepo;
         $this->pageAssets = $pageAssets;
         $this->scopeConfig = $scopeConfig;
         $this->favicon = $favicon;
         $this->title = $title;
+        $this->localeResolver = $localeResolver;
+        $this->setElementAttribute(
+            self::ELEMENT_TYPE_HTML,
+            self::HTML_ATTRIBUTE_LANG,
+            str_replace('_', '-', $this->localeResolver->getLocale())
+        );
     }
 
     /**
@@ -151,8 +190,6 @@ class Config
 
     /**
      * TODO Will be eliminated in MAGETWO-28359
-     *
-     * @deprecated
      * @return void
      */
     public function publicBuild()
@@ -179,7 +216,7 @@ class Config
     public function setMetadata($name, $content)
     {
         $this->build();
-        $this->metadata[$name] = $content;
+        $this->metadata[$name] = htmlentities($content);
     }
 
     /**
@@ -208,7 +245,7 @@ class Config
     public function getContentType()
     {
         $this->build();
-        if (empty($this->metadata['content_type'])) {
+        if (strtolower($this->metadata['content_type']) === 'auto') {
             $this->metadata['content_type'] = $this->getMediaType() . '; charset=' . $this->getCharset();
         }
         return $this->metadata['content_type'];
@@ -334,6 +371,9 @@ class Config
      */
     public function getRobots()
     {
+        if ($this->getAreaResolver()->getAreaCode() !== 'frontend') {
+            return 'NOINDEX,NOFOLLOW';
+        }
         $this->build();
         if (empty($this->metadata['robots'])) {
             $this->metadata['robots'] = $this->scopeConfig->getValue(

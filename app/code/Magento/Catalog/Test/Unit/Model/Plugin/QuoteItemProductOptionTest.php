@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Model\Plugin;
@@ -42,7 +42,7 @@ class QuoteItemProductOptionTest extends \PHPUnit_Framework_TestCase
     {
         $this->quoteItemMock->expects($this->exactly(2))->method('getOptions')->will($this->returnValue([]));
 
-        $orderItem = $this->model->aroundConvert($this->subjectMock, $this->closureMock, $this->quoteItemMock, []);
+        $orderItem = $this->model->aroundConvert($this->subjectMock, $this->closureMock, $this->quoteItemMock);
         $this->assertSame($this->orderItemMock, $orderItem);
     }
 
@@ -74,7 +74,7 @@ class QuoteItemProductOptionTest extends \PHPUnit_Framework_TestCase
 
         $this->quoteItemMock->expects($this->once())->method('getProduct')->will($this->returnValue($productMock));
 
-        $orderItem = $this->model->aroundConvert($this->subjectMock, $this->closureMock, $this->quoteItemMock, []);
+        $orderItem = $this->model->aroundConvert($this->subjectMock, $this->closureMock, $this->quoteItemMock);
         $this->assertSame($this->orderItemMock, $orderItem);
     }
 }

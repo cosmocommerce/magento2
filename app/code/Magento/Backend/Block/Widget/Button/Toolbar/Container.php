@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -9,8 +9,8 @@ namespace Magento\Backend\Block\Widget\Button\Toolbar;
 use Magento\Backend\Block\Widget\Button\ContextInterface;
 
 /**
- * @method \Magento\Backend\Block\Widget\Button\Item getButtonItem
- * @method ContextInterface getContext
+ * @method \Magento\Backend\Block\Widget\Button\Item getButtonItem()
+ * @method ContextInterface getContext()
  * @method ContextInterface setContext(ContextInterface $context)
  */
 class Container extends \Magento\Framework\View\Element\AbstractBlock

@@ -1,14 +1,14 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Model;
 
 use Magento\Framework\App\DesignInterface;
 use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\Model\Resource\AbstractResource;
-use Magento\Framework\Object\IdentityInterface;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\DataObject\IdentityInterface;
 
 /**
  * Design settings change model
@@ -85,7 +85,7 @@ class Design extends AbstractModel implements IdentityInterface, DesignInterface
      */
     protected function _construct()
     {
-        $this->_init('Magento\Theme\Model\Resource\Design');
+        $this->_init('Magento\Theme\Model\ResourceModel\Design');
     }
 
     /**

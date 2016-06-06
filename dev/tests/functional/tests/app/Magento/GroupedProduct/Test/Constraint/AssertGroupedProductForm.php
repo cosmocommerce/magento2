@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -44,7 +44,7 @@ class AssertGroupedProductForm extends AssertProductForm
     }
 
     /**
-     * Prepare Grouped Options array from preset
+     * Prepare Grouped Options array from dataset
      *
      * @param array $fields
      * @return array

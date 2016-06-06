@@ -2,7 +2,7 @@
 /**
  * Unit test for session \Magento\Customer\Model\Session
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Test\Unit\Model;
@@ -40,6 +40,11 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     protected $customerRepositoryMock;
 
     /**
+     * @var \Magento\Framework\App\Response\Http|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $responseMock;
+
+    /**
      * @var \Magento\Customer\Model\Session
      */
     protected $_model;
@@ -68,6 +73,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
             false
         );
         $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        $this->responseMock = $this->getMock('Magento\Framework\App\Response\Http', [], [], '', false);
         $this->_model = $helper->getObject(
             'Magento\Customer\Model\Session',
             [
@@ -77,6 +83,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
                 'httpContext' => $this->_httpContextMock,
                 'urlFactory' => $this->urlFactoryMock,
                 'customerRepository' => $this->customerRepositoryMock,
+                'response' => $this->responseMock,
             ]
         );
     }
@@ -138,18 +145,12 @@ class SessionTest extends \PHPUnit_Framework_TestCase
             ->method('create')
             ->will($this->returnValue($urlMock));
 
-        $responseMock = $this->getMock('Magento\Framework\App\Response\Http', [], [], '', false);
-        $responseMock->expects($this->once())
+        $this->responseMock->expects($this->once())
             ->method('setRedirect')
             ->with('')
             ->will($this->returnValue(''));
 
-        $actionMock = $this->getMock('Magento\Framework\App\Action\Action', [], [], '', false);
-        $actionMock->expects($this->once())
-            ->method('getResponse')
-            ->will($this->returnValue($responseMock));
-
-        $this->assertFalse($this->_model->authenticate($actionMock));
+        $this->assertFalse($this->_model->authenticate());
     }
 
     public function testLoginById()

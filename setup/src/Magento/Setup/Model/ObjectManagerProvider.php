@@ -1,11 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Setup\Model;
 
+use Magento\Framework\ObjectManagerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Magento\Setup\Mvc\Bootstrap\InitParamListener;
 use Magento\Framework\App\Bootstrap;
@@ -26,29 +27,22 @@ class ObjectManagerProvider
     private $serviceLocator;
 
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     private $objectManager;
 
     /**
-     * @var DeploymentConfig
-     */
-    private $deploymentConfig;
-
-    /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @param DeploymentConfig $deploymentConfig
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator, DeploymentConfig $deploymentConfig)
+    public function __construct(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-        $this->deploymentConfig = $deploymentConfig;
     }
 
     /**
      * Retrieve object manager.
      *
-     * @return \Magento\Framework\ObjectManagerInterface
+     * @return ObjectManagerInterface
      * @throws \Magento\Setup\Exception
      */
     public function get()
@@ -70,7 +64,18 @@ class ObjectManagerProvider
     {
         $this->objectManager = null;
     }
-    
+
+    /**
+     * Sets object manager
+     *
+     * @param ObjectManagerInterface $objectManager
+     * @return void
+     */
+    public function setObjectManager(ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
     /**
      * Returns ObjectManagerFactory
      *

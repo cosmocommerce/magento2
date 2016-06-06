@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Tax\Model\Rate;
 
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\Convert\Object as Converter;
+use Magento\Framework\Convert\DataObject as Converter;
 use Magento\Tax\Api\TaxRateRepositoryInterface;
 use Magento\Tax\Model\Calculation\Rate;
 

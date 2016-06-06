@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\MediaStorage\Model\File\Storage;
@@ -31,7 +31,7 @@ class Config
      *
      * @var DirectoryWrite
      */
-    protected $pubDirectory;
+    protected $rootDirectory;
 
     /**
      * @param \Magento\MediaStorage\Model\File\Storage $storage
@@ -44,7 +44,7 @@ class Config
         $cacheFile
     ) {
         $this->config = $storage->getScriptConfig();
-        $this->pubDirectory = $filesystem->getDirectoryWrite(DirectoryList::PUB);
+        $this->rootDirectory = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->cacheFilePath = $cacheFile;
     }
 
@@ -76,7 +76,7 @@ class Config
     public function save()
     {
         /** @var Write $file */
-        $file = $this->pubDirectory->openFile($this->pubDirectory->getRelativePath($this->cacheFilePath), 'w');
+        $file = $this->rootDirectory->openFile($this->rootDirectory->getRelativePath($this->cacheFilePath), 'w');
         try {
             $file->lock();
             $file->write(json_encode($this->config));

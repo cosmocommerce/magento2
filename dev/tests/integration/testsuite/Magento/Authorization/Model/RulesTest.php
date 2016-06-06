@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Authorization\Model;
@@ -65,8 +65,8 @@ class RulesTest extends \PHPUnit_Framework_TestCase
      */
     protected function _checkExistingPermissions($expectedDefaultPermissions)
     {
-        $adapter = $this->_model->getResource()->getReadConnection();
-        $ruleSelect = $adapter->select()->from($this->_model->getResource()->getMainTable());
+        $connection = $this->_model->getResource()->getConnection();
+        $ruleSelect = $connection->select()->from($this->_model->getResource()->getMainTable());
 
         $rules = $ruleSelect->query()->fetchAll();
         $this->assertEquals(1, count($rules));

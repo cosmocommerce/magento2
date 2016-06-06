@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -34,14 +34,19 @@ class AbstractProductTest extends \PHPUnit_Framework_TestCase
     protected $stockRegistryMock;
 
     /**
+     * @var \Magento\Catalog\Block\Product\ImageBuilder|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $imageBuilder;
+
+    /**
      * Set up mocks and tested class
      * Child class is used as the tested class is declared abstract
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->productContextMock = $this->getMock(
             'Magento\Catalog\Block\Product\Context',
-            ['getLayout', 'getStockRegistry'],
+            ['getLayout', 'getStockRegistry', 'getImageBuilder'],
             [],
             '',
             false
@@ -58,12 +63,19 @@ class AbstractProductTest extends \PHPUnit_Framework_TestCase
             ['getStockItem']
         );
 
+        $this->imageBuilder = $this->getMockBuilder('Magento\Catalog\Block\Product\ImageBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->productContextMock->expects($this->once())
             ->method('getStockRegistry')
             ->will($this->returnValue($this->stockRegistryMock));
         $this->productContextMock->expects($this->once())
             ->method('getLayout')
             ->will($this->returnValue($this->layoutMock));
+        $this->productContextMock->expects($this->once())
+            ->method('getImageBuilder')
+            ->will($this->returnValue($this->imageBuilder));
 
         $this->block = new \Magento\Catalog\Block\Product\View\Type\Simple(
             $this->productContextMock,
@@ -193,5 +205,40 @@ class AbstractProductTest extends \PHPUnit_Framework_TestCase
                 'result' => null
             ]
         ];
+    }
+
+    public function testGetImage()
+    {
+        $imageId = 'test_image_id';
+        $attributes = [];
+
+        $productMock = $this->getMockBuilder('Magento\Catalog\Model\Product')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $imageMock = $this->getMockBuilder('Magento\Catalog\Block\Product\Image')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->imageBuilder->expects($this->once())
+            ->method('setProduct')
+            ->with($productMock)
+            ->willReturnSelf();
+        $this->imageBuilder->expects($this->once())
+            ->method('setImageId')
+            ->with($imageId)
+            ->willReturnSelf();
+        $this->imageBuilder->expects($this->once())
+            ->method('setAttributes')
+            ->with($attributes)
+            ->willReturnSelf();
+        $this->imageBuilder->expects($this->once())
+            ->method('create')
+            ->willReturn($imageMock);
+
+        $this->assertInstanceOf(
+            'Magento\Catalog\Block\Product\Image',
+            $this->block->getImage($productMock, $imageId, $attributes)
+        );
     }
 }

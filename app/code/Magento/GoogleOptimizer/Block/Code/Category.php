@@ -2,7 +2,7 @@
 /**
  * Google Optimizer Category Block
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -10,7 +10,7 @@
 
 namespace Magento\GoogleOptimizer\Block\Code;
 
-class Category extends \Magento\GoogleOptimizer\Block\AbstractCode implements \Magento\Framework\Object\IdentityInterface
+class Category extends \Magento\GoogleOptimizer\Block\AbstractCode implements \Magento\Framework\DataObject\IdentityInterface
 {
     /**
      * @var string Entity name in registry

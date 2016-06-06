@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,7 +13,7 @@ use Magento\Mtf\Fixture\FixtureFactory;
  * Class TaxRate
  *
  * Data keys:
- *  - dataSet
+ *  - dataset
  */
 class TaxRate extends DataSource
 {
@@ -33,11 +33,11 @@ class TaxRate extends DataSource
     public function __construct(FixtureFactory $fixtureFactory, array $params, array $data = [])
     {
         $this->params = $params;
-        if (isset($data['dataSet'])) {
-            $dataSets = $data['dataSet'];
-            foreach ($dataSets as $dataSet) {
+        if (isset($data['dataset'])) {
+            $datasets = $data['dataset'];
+            foreach ($datasets as $dataset) {
                 /** @var \Magento\Tax\Test\Fixture\TaxRate $taxRate */
-                $taxRate = $fixtureFactory->createByCode('taxRate', ['dataSet' => $dataSet]);
+                $taxRate = $fixtureFactory->createByCode('taxRate', ['dataset' => $dataset]);
                 $this->fixture[] = $taxRate;
                 $this->data[] = $taxRate->getCode();
             }

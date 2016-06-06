@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,7 +12,6 @@ use Magento\Reports\Test\Page\Adminhtml\CustomerAccounts;
 use Magento\Mtf\TestCase\Injectable;
 
 /**
- * Test Flow:
  * Preconditions:
  * 1. Delete all existing customers.
  * 2. Create customer.

@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Newsletter\Block\Adminhtml;
 
-use Magento\Newsletter\Model\Resource\Problem\Collection;
+use Magento\Newsletter\Model\ResourceModel\Problem\Collection;
 
 /**
  * Newsletter problem block template.
@@ -20,7 +20,7 @@ class Problem extends \Magento\Backend\Block\Template
     protected $_template = 'problem/list.phtml';
 
     /**
-     * @var \Magento\Newsletter\Model\Resource\Problem\Collection
+     * @var \Magento\Newsletter\Model\ResourceModel\Problem\Collection
      */
     protected $_problemCollection;
 

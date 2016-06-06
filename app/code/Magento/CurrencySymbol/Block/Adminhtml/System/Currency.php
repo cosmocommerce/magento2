@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -37,6 +37,14 @@ class Currency extends \Magento\Backend\Block\Template
             ]
         );
 
+        $onClick = "setLocation('" . $this->getUrl('adminhtml/system_config/edit/section/currency') . "')";
+
+        $this->getToolbar()->addChild(
+            'options_button',
+            'Magento\Backend\Block\Widget\Button',
+            ['label' => __('Options'), 'onclick' => $onClick]
+        );
+
         $this->getToolbar()->addChild(
             'reset_button',
             'Magento\Backend\Block\Widget\Button',
@@ -60,6 +68,7 @@ class Currency extends \Magento\Backend\Block\Template
      * Get header
      *
      * @return \Magento\Framework\Phrase
+     * @codeCoverageIgnore
      */
     public function getHeader()
     {
@@ -70,6 +79,7 @@ class Currency extends \Magento\Backend\Block\Template
      * Get save button html
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getSaveButtonHtml()
     {
@@ -80,6 +90,7 @@ class Currency extends \Magento\Backend\Block\Template
      * Get reset button html
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getResetButtonHtml()
     {
@@ -90,6 +101,7 @@ class Currency extends \Magento\Backend\Block\Template
      * Get import button html
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getImportButtonHtml()
     {
@@ -100,6 +112,7 @@ class Currency extends \Magento\Backend\Block\Template
      * Get services html
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getServicesHtml()
     {
@@ -110,6 +123,7 @@ class Currency extends \Magento\Backend\Block\Template
      * Get rates matrix html
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getRatesMatrixHtml()
     {
@@ -120,6 +134,7 @@ class Currency extends \Magento\Backend\Block\Template
      * Get import form action url
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getImportFormAction()
     {

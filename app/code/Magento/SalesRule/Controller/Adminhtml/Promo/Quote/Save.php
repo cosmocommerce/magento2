@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Controller\Adminhtml\Promo\Quote;
@@ -42,7 +42,7 @@ class Save extends \Magento\SalesRule\Controller\Adminhtml\Promo\Quote
 
                 $session = $this->_objectManager->get('Magento\Backend\Model\Session');
 
-                $validateResult = $model->validateData(new \Magento\Framework\Object($data));
+                $validateResult = $model->validateData(new \Magento\Framework\DataObject($data));
                 if ($validateResult !== true) {
                     foreach ($validateResult as $errorMessage) {
                         $this->messageManager->addError($errorMessage);
@@ -69,13 +69,15 @@ class Save extends \Magento\SalesRule\Controller\Adminhtml\Promo\Quote
                 unset($data['rule']);
                 $model->loadPost($data);
 
-                $useAutoGeneration = (int)(!empty($data['use_auto_generation']));
+                $useAutoGeneration = (int)(
+                    !empty($data['use_auto_generation']) && $data['use_auto_generation'] !== 'false'
+                );
                 $model->setUseAutoGeneration($useAutoGeneration);
 
                 $session->setPageData($model->getData());
 
                 $model->save();
-                $this->messageManager->addSuccess(__('The rule has been saved.'));
+                $this->messageManager->addSuccess(__('You saved the rule.'));
                 $session->setPageData(false);
                 if ($this->getRequest()->getParam('back')) {
                     $this->_redirect('sales_rule/*/edit', ['id' => $model->getId()]);
@@ -94,7 +96,7 @@ class Save extends \Magento\SalesRule\Controller\Adminhtml\Promo\Quote
                 return;
             } catch (\Exception $e) {
                 $this->messageManager->addError(
-                    __('An error occurred while saving the rule data. Please review the log and try again.')
+                    __('Something went wrong while saving the rule data. Please review the error log.')
                 );
                 $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
                 $this->_objectManager->get('Magento\Backend\Model\Session')->setPageData($data);

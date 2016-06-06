@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -40,14 +40,17 @@ class AssertCatalogPriceRuleAppliedCatalogPage extends AbstractConstraint
                 '\Magento\Customer\Test\TestStep\LoginCustomerOnFrontendStep',
                 ['customer' => $customer]
             )->run();
+        } else {
+            $this->objectManager->create('\Magento\Customer\Test\TestStep\LogoutCustomerOnFrontendStep')->run();
         }
+
         $cmsIndexPage->open();
         foreach ($products as $key => $product) {
             $categoryName = $product->getCategoryIds()[0];
             $cmsIndexPage->getTopmenu()->selectCategoryByName($categoryName);
             $priceBlock = $catalogCategoryViewPage->getListProductBlock()->getProductItem($product)->getPriceBlock();
-            $actualPrice['regular'] = $priceBlock->getOldPrice();
-            $actualPrice['special'] = $priceBlock->getSpecialPrice();
+            $actualPrice['regular'] = (float)$priceBlock->getOldPrice();
+            $actualPrice['special'] = (float)$priceBlock->getSpecialPrice();
             $actualPrice['discount_amount'] = $actualPrice['regular'] - $actualPrice['special'];
             $diff = $this->verifyData($actualPrice, $productPrice[$key]);
             \PHPUnit_Framework_Assert::assertTrue(

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogSearch\Block;
@@ -24,7 +24,7 @@ class TermTest extends \PHPUnit_Framework_TestCase
     public function testGetSearchUrl()
     {
         $query = uniqid();
-        $obj = new \Magento\Framework\Object(['name' => $query]);
+        $obj = new \Magento\Framework\DataObject(['name' => $query]);
         $this->assertStringEndsWith("/catalogsearch/result/?q={$query}", $this->_block->getSearchUrl($obj));
     }
 }

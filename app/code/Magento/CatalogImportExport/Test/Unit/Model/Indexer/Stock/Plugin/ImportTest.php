@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogImportExport\Test\Unit\Model\Indexer\Stock\Plugin;
@@ -15,14 +15,15 @@ class ImportTest extends \PHPUnit_Framework_TestCase
          */
         $processorMock = $this->getMock(
             'Magento\CatalogInventory\Model\Indexer\Stock\Processor',
-            ['markIndexerAsInvalid'],
+            ['markIndexerAsInvalid', 'isIndexerScheduled'],
             [],
             '',
             false
         );
 
         $subjectMock = $this->getMock('Magento\ImportExport\Model\Import', [], [], '', false);
-        $processorMock->expects($this->once())->method('markIndexerAsInvalid');
+        $processorMock->expects($this->any())->method('markIndexerAsInvalid');
+        $processorMock->expects($this->any())->method('isIndexerScheduled')->willReturn(false);
 
         $someData = [1, 2, 3];
 

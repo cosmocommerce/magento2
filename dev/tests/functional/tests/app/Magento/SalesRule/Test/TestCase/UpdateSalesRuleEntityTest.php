@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -65,7 +65,7 @@ class UpdateSalesRuleEntityTest extends Injectable
     {
         $productForSalesRule1 = $fixtureFactory->createByCode(
             'catalogProductSimple',
-            ['dataSet' => 'simple_for_salesrule_1']
+            ['dataset' => 'simple_for_salesrule_1']
         );
         $productForSalesRule1->persist();
         return [
@@ -127,5 +127,6 @@ class UpdateSalesRuleEntityTest extends Injectable
         $this->promoQuoteIndex->open();
         $this->promoQuoteIndex->getPromoQuoteGrid()->searchAndOpen($filter);
         $this->promoQuoteEdit->getFormPageActions()->delete();
+        $this->promoQuoteEdit->getModalBlock()->acceptAlert();
     }
 }

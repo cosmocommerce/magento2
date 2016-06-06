@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Downloadable\Controller;
@@ -12,7 +12,7 @@ use Magento\Downloadable\Helper\Download as DownloadHelper;
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Download extends \Magento\Framework\App\Action\Action
+abstract class Download extends \Magento\Framework\App\Action\Action
 {
     /**
      * Prepare response to output resource contents

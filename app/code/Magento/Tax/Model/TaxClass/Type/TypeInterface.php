@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -21,7 +21,7 @@ interface TypeInterface
     /**
      * Get Collection of Tax Rules that are assigned to this tax class
      *
-     * @return \Magento\Framework\Model\Resource\Db\Collection\AbstractCollection
+     * @return \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
      */
     public function getAssignedToRules();
 

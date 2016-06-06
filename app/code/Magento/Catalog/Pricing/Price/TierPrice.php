@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -160,10 +160,20 @@ class TierPrice extends AbstractPrice implements TierPriceInterface, BasePricePr
     protected function filterTierPrices(array $priceList)
     {
         $qtyCache = [];
-        foreach ($priceList as $priceKey => $price) {
+        $allCustomersGroupId = $this->groupManagement->getAllCustomersGroup()->getId();
+        foreach ($priceList as $priceKey => &$price) {
+            if ($price['price'] >= $this->priceInfo->getPrice(FinalPrice::PRICE_CODE)->getValue()) {
+                unset($priceList[$priceKey]);
+                continue;
+            }
+
+            if (isset($price['price_qty']) && $price['price_qty'] == 1) {
+                unset($priceList[$priceKey]);
+                continue;
+            }
             /* filter price by customer group */
             if ($price['cust_group'] != $this->customerGroup &&
-                $price['cust_group'] != $this->groupManagement->getAllCustomersGroup()->getId()) {
+                $price['cust_group'] != $allCustomersGroupId) {
                 unset($priceList[$priceKey]);
                 continue;
             }
@@ -199,7 +209,7 @@ class TierPrice extends AbstractPrice implements TierPriceInterface, BasePricePr
     public function getSavePercent(AmountInterface $amount)
     {
         return ceil(
-            100 - ((100 / $this->priceInfo->getPrice(RegularPrice::PRICE_CODE)->getAmount()->getBaseAmount())
+            100 - ((100 / $this->priceInfo->getPrice(FinalPrice::PRICE_CODE)->getValue())
                 * $amount->getBaseAmount())
         );
     }
@@ -223,11 +233,11 @@ class TierPrice extends AbstractPrice implements TierPriceInterface, BasePricePr
      */
     protected function canApplyTierPrice(array $currentTierPrice, $prevPriceGroup, $prevQty)
     {
-        $custGroupAllId = $this->groupManagement->getAllCustomersGroup()->getId();
+        $custGroupAllId = (int)$this->groupManagement->getAllCustomersGroup()->getId();
         // Tier price can be applied, if:
         // tier price is for current customer group or is for all groups
-        if ($currentTierPrice['cust_group'] !== $this->customerGroup
-            && $currentTierPrice['cust_group'] !== $custGroupAllId
+        if ((int)$currentTierPrice['cust_group'] !== $this->customerGroup
+            && (int)$currentTierPrice['cust_group'] !== $custGroupAllId
         ) {
             return false;
         }

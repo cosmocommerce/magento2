@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,7 +13,10 @@
  */
 namespace Magento\Newsletter\Block\Adminhtml\Template;
 
-class Edit extends \Magento\Backend\Block\Widget
+use Magento\Backend\Block\Widget;
+use Magento\Framework\App\TemplateTypesInterface;
+
+class Edit extends Widget
 {
     /**
      * Core registry
@@ -235,7 +238,7 @@ class Edit extends \Magento\Backend\Block\Widget
      */
     public function getPreviewUrl()
     {
-        return $this->getUrl('*/*/preview');
+        return $this->getUrl('*/*/preview', ['id' => $this->getRequest()->getParam('id')]);
     }
 
     /**
@@ -246,6 +249,19 @@ class Edit extends \Magento\Backend\Block\Widget
     public function isTextType()
     {
         return $this->getModel()->isPlain();
+    }
+
+    /**
+     * Return template type from template object or TYPE_HTML by default
+     *
+     * @return int
+     */
+    public function getTemplateType()
+    {
+        if ($this->getModel()->getTemplateType()) {
+            return $this->getModel()->getTemplateType();
+        }
+        return TemplateTypesInterface::TYPE_HTML;
     }
 
     /**
@@ -281,8 +297,7 @@ class Edit extends \Magento\Backend\Block\Widget
     /**
      * Getter for id of current store (the only one in single-store mode and current in multi-stores mode)
      *
-     * @return boolean
-     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     * @return int
      */
     protected function getStoreId()
     {

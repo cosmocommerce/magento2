@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Test\Unit\Model\Attribute\Data;
@@ -31,7 +31,7 @@ class TextTest extends \PHPUnit_Framework_TestCase
             false
         );
         $logger = $this->getMock('Psr\Log\LoggerInterface');
-        $helper = $this->getMock('Magento\Framework\Stdlib\String', [], [], '', false, false);
+        $helper = $this->getMock('Magento\Framework\Stdlib\StringUtils', [], [], '', false, false);
 
         $attributeData = [
             'store_label' => 'Test',

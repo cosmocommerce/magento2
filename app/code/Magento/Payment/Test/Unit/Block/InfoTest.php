@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Test\Unit\Block;
 
-use Magento\Framework\Object;
+use Magento\Framework\DataObject;
 
 class InfoTest extends \PHPUnit_Framework_TestCase
 {
@@ -125,7 +125,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetInfoThrowException()
     {
-        $this->_object->setData('info', new \Magento\Framework\Object([]));
+        $this->_object->setData('info', new \Magento\Framework\DataObject([]));
         $this->_object->getInfo();
     }
 

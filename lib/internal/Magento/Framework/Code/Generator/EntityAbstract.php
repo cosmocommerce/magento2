@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Code\Generator;
@@ -97,7 +97,7 @@ abstract class EntityAbstract
             if ($this->_validateData()) {
                 $sourceCode = $this->_generateCode();
                 if ($sourceCode) {
-                    $fileName = $this->_ioObject->getResultFileName($this->_getResultClassName());
+                    $fileName = $this->_ioObject->generateResultFileName($this->_getResultClassName());
                     $this->_ioObject->writeResultFile($fileName, $sourceCode);
                     return $fileName;
                 } else {
@@ -249,11 +249,8 @@ abstract class EntityAbstract
         $resultClassName = $this->_getResultClassName();
         $resultDir = $this->_ioObject->getResultFileDirectory($resultClassName);
 
-        if (!$this->definedClasses->classLoadable($sourceClassName)) {
+        if (!$this->definedClasses->isClassLoadable($sourceClassName)) {
             $this->_addError('Source class ' . $sourceClassName . ' doesn\'t exist.');
-            return false;
-        } elseif ($this->definedClasses->classLoadable($resultClassName)) {
-            $this->_addError('Result class ' . $resultClassName . ' already exists.');
             return false;
         } elseif (
             /**
@@ -328,6 +325,8 @@ abstract class EntityAbstract
             $parameterInfo['type'] = 'array';
         } elseif ($parameter->getClass()) {
             $parameterInfo['type'] = $this->_getFullyQualifiedClassName($parameter->getClass()->getName());
+        } elseif ($parameter->isCallable()) {
+            $parameterInfo['type'] = 'callable';
         }
 
         if ($parameter->isOptional() && $parameter->isDefaultValueAvailable()) {

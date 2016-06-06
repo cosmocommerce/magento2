@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Setup\Test\Unit;
@@ -42,6 +42,11 @@ class BackupRollbackTest extends \PHPUnit_Framework_TestCase
     private $filesystem;
 
     /**
+     * @var \Magento\Framework\Backup\Filesystem\Helper|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $helper;
+
+    /**
      * @var \Magento\Framework\Backup\Db|\PHPUnit_Framework_MockObject_MockObject
      */
     private $database;
@@ -51,7 +56,7 @@ class BackupRollbackTest extends \PHPUnit_Framework_TestCase
      */
     private $path;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->objectManager = $this->getMock('Magento\Framework\ObjectManagerInterface', [], [], '', false);
         $this->log = $this->getMock('Magento\Framework\Setup\LoggerInterface', [], [], '', false);
@@ -66,10 +71,10 @@ class BackupRollbackTest extends \PHPUnit_Framework_TestCase
         $this->file = $this->getMock('Magento\Framework\Filesystem\Driver\File', [], [], '', false);
         $this->filesystem = $this->getMock('Magento\Framework\Backup\Filesystem', [], [], '', false);
         $this->database = $this->getMock('Magento\Framework\Backup\Db', [], [], '', false);
-        $helper = $this->getMock('Magento\Framework\Backup\Filesystem\Helper', [], [], '', false);
-        $helper->expects($this->any())
+        $this->helper = $this->getMock('Magento\Framework\Backup\Filesystem\Helper', [], [], '', false);
+        $this->helper->expects($this->any())
             ->method('getInfo')
-            ->willReturn(['writable' => true]);
+            ->willReturn(['writable' => true, 'size' => 100]);
         $configLoader = $this->getMock('Magento\Framework\App\ObjectManager\ConfigLoader', [], [], '', false);
         $configLoader->expects($this->any())
             ->method('load')
@@ -78,12 +83,12 @@ class BackupRollbackTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->will($this->returnValueMap([
                 ['Magento\Framework\App\State', $this->getMock('Magento\Framework\App\State', [], [], '', false)],
-                ['Magento\Framework\App\ObjectManager\ConfigLoader', $configLoader],
+                ['Magento\Framework\ObjectManager\ConfigLoaderInterface', $configLoader],
             ]));
         $this->objectManager->expects($this->any())
             ->method('create')
             ->will($this->returnValueMap([
-                ['Magento\Framework\Backup\Filesystem\Helper', [], $helper],
+                ['Magento\Framework\Backup\Filesystem\Helper', [], $this->helper],
                 ['Magento\Framework\Backup\Filesystem', [], $this->filesystem],
                 ['Magento\Framework\Backup\Db', [], $this->database],
             ]));
@@ -91,7 +96,8 @@ class BackupRollbackTest extends \PHPUnit_Framework_TestCase
             $this->objectManager,
             $this->log,
             $this->directoryList,
-            $this->file
+            $this->file,
+            $this->helper
         );
     }
 
@@ -182,9 +188,9 @@ class BackupRollbackTest extends \PHPUnit_Framework_TestCase
         $this->database->expects($this->once())->method('rollback');
         $this->file->expects($this->once())
             ->method('isExists')
-            ->with($this->path . '/backups/12345_db.gz')
+            ->with($this->path . '/backups/12345_db.sql')
             ->willReturn(true);
-        $this->model->dbRollback('12345_db.gz');
+        $this->model->dbRollback('12345_db.sql');
     }
 
     private function setupCodeBackupRollback()
@@ -200,7 +206,7 @@ class BackupRollbackTest extends \PHPUnit_Framework_TestCase
         $this->filesystem->expects($this->once())
             ->method('getBackupFilename')
             ->willReturn('RollbackFile_A.tgz');
-        $this->filesystem->expects($this->once())
+        $this->filesystem->expects($this->atLeastOnce())
             ->method('getBackupPath')
             ->willReturn('pathToFile/12345_filesystem_code.tgz');
         $this->log->expects($this->once())
@@ -218,10 +224,23 @@ class BackupRollbackTest extends \PHPUnit_Framework_TestCase
         $this->database->expects($this->once())
             ->method('getBackupFilename')
             ->willReturn('RollbackFile_A.gz');
-        $this->database->expects($this->once())
+        $this->database->expects($this->atLeastOnce())
             ->method('getBackupPath')
-            ->willReturn('pathToFile/12345_db.tgz');
+            ->willReturn('pathToFile/12345_db.sql');
         $this->log->expects($this->once())
             ->method('logSuccess');
+    }
+
+    public function testGetFSDiskSpaceback()
+    {
+        $size = $this->model->getFSDiskSpace();
+        $this->assertEquals(100, $size);
+    }
+
+    public function testGetDBDiskSpace()
+    {
+        $this->database->expects($this->once())->method('getDBSize')->willReturn(100);
+        $size = $this->model->getDBDiskSpace();
+        $this->assertEquals(100, $size);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -23,7 +23,10 @@ class TitleTest extends \PHPUnit_Framework_TestCase
      */
     protected $scopeConfigMock;
 
-    public function setUp()
+    /**
+     * @return void
+     */
+    protected function setUp()
     {
         $this->scopeConfigMock = $this->getMockBuilder('Magento\Framework\App\Config\ScopeConfigInterface')
             ->disableOriginalConstructor()
@@ -36,6 +39,9 @@ class TitleTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testSet()
     {
         $value = 'test_value';
@@ -43,6 +49,9 @@ class TitleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $this->title->get());
     }
 
+    /**
+     * @return void
+     */
     public function testUnset()
     {
         $value = 'test';
@@ -52,6 +61,9 @@ class TitleTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->title->get());
     }
 
+    /**
+     * @return void
+     */
     public function testGet()
     {
         $value = 'test';
@@ -61,16 +73,19 @@ class TitleTest extends \PHPUnit_Framework_TestCase
 
         $this->scopeConfigMock->expects($this->any())
             ->method('getValue')
-            ->will($this->returnValueMap(
+            ->willReturnMap(
                 [
                     ['design/head/title_prefix', ScopeInterface::SCOPE_STORE, null, $prefix],
                     ['design/head/title_suffix', ScopeInterface::SCOPE_STORE, null, $suffix],
                 ]
-            ));
+            );
         $this->title->set($value);
         $this->assertEquals($expected, $this->title->get());
     }
 
+    /**
+     * @return void
+     */
     public function testGetShort()
     {
         $value = 'some_title';
@@ -81,6 +96,46 @@ class TitleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $this->title->getShort());
     }
 
+    /**
+     * @return void
+     */
+    public function testGetShortWithSuffixAndPrefix()
+    {
+        $value = 'some_title';
+        $prefix = 'prefix';
+        $suffix = 'suffix';
+        $expected = $prefix . ' ' . $value . ' ' . $suffix;
+        $this->title->set($value);
+
+        $this->scopeConfigMock->expects($this->any())
+            ->method('getValue')
+            ->willReturnMap(
+                [
+                    ['design/head/title_prefix', ScopeInterface::SCOPE_STORE, null, $prefix],
+                    ['design/head/title_suffix', ScopeInterface::SCOPE_STORE, null, $suffix],
+                ]
+            );
+
+        $this->assertEquals($expected, $this->title->getShort());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetShortHeading()
+    {
+        $value = 'some_title';
+        $this->title->set($value);
+
+        $this->scopeConfigMock->expects($this->never())
+            ->method('getValue');
+
+        $this->assertEquals($value, $this->title->getShortHeading());
+    }
+
+    /**
+     * @return void
+     */
     public function testGetDefault()
     {
         $defaultTitle = 'default title';
@@ -90,16 +145,19 @@ class TitleTest extends \PHPUnit_Framework_TestCase
 
         $this->scopeConfigMock->expects($this->any())
             ->method('getValue')
-            ->will($this->returnValueMap(
+            ->willReturnMap(
                 [
                     ['design/head/title_prefix', ScopeInterface::SCOPE_STORE, null, $prefix],
                     ['design/head/title_suffix', ScopeInterface::SCOPE_STORE, null, $suffix],
                     ['design/head/default_title', ScopeInterface::SCOPE_STORE, null, $defaultTitle],
                 ]
-            ));
+            );
         $this->assertEquals($expected, $this->title->getDefault());
     }
 
+    /**
+     * @return void
+     */
     public function testAppendPrepend()
     {
         $value = 'title';

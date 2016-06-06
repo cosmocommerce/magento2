@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Setup\Test\Unit\Module\I18n\Parser\Adapter\Php\Tokenizer;
@@ -203,5 +203,24 @@ class PhraseCollectorTest extends \PHPUnit_Framework_TestCase
             ->method('getLine')
             ->willReturn($line);
         return $token;
+    }
+
+    public function testCollectPhrases()
+    {
+        $firstPart = "'first part'";
+        $firstPartToken = new Token(\T_CONSTANT_ENCAPSED_STRING, $firstPart);
+        $concatenationToken = new Token('.', '.');
+        $secondPart = "' second part'";
+        $secondPartToken = new Token(\T_CONSTANT_ENCAPSED_STRING, $secondPart);
+        $phraseTokens = [$firstPartToken, $concatenationToken, $secondPartToken];
+        $phraseString = "'first part' . ' second part'";
+
+        $reflectionMethod = new \ReflectionMethod(
+            '\Magento\Setup\Module\I18n\Parser\Adapter\Php\Tokenizer\PhraseCollector',
+            '_collectPhrase'
+        );
+
+        $reflectionMethod->setAccessible(true);
+        $this->assertSame($phraseString, $reflectionMethod->invoke($this->phraseCollector, $phraseTokens));
     }
 }

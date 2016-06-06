@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Model;
@@ -63,22 +63,32 @@ class ThemeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @magentoDataFixture Magento/Theme/Model/_files/design/themes.php
+     * @magentoComponentsDir Magento/Theme/Model/_files/design
      * @magentoAppIsolation enabled
+     * @magentoDbIsolation enabled
      * @magentoAppArea frontend
      */
     public function testGetInheritedThemes()
     {
+        $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+        /** @var \Magento\Theme\Model\Theme\Registration $registration */
+        $registration = $objectManager->get(
+            'Magento\Theme\Model\Theme\Registration'
+        );
+        $registration->register();
         /** @var \Magento\Framework\View\Design\Theme\FlyweightFactory $themeFactory */
-        $themeFactory = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
+        $themeFactory = $objectManager->get(
             'Magento\Framework\View\Design\Theme\FlyweightFactory'
         );
-        $theme = $themeFactory->create('Vendor/custom_theme');
+        $theme = $themeFactory->create('Vendor_FrameworkThemeTest/custom_theme');
         $this->assertCount(2, $theme->getInheritedThemes());
         $expected = [];
         foreach ($theme->getInheritedThemes() as $someTheme) {
             $expected[] = $someTheme->getFullPath();
         }
-        $this->assertEquals(['frontend/Vendor/default', 'frontend/Vendor/custom_theme'], $expected);
+        $this->assertEquals(
+            ['frontend/Vendor_FrameworkThemeTest/default', 'frontend/Vendor_FrameworkThemeTest/custom_theme'],
+            $expected
+        );
     }
 }

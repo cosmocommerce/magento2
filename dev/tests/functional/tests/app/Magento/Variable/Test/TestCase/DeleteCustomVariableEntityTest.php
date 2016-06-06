@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -80,5 +80,6 @@ class DeleteCustomVariableEntityTest extends Injectable
         $this->systemVariableIndexPage->open();
         $this->systemVariableIndexPage->getSystemVariableGrid()->searchAndOpen($filter);
         $this->systemVariableNewPage->getFormPageActions()->delete();
+        $this->systemVariableNewPage->getModalBlock()->acceptAlert();
     }
 }

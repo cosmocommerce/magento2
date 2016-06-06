@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Block\Html;
 
-use Magento\Framework\Object\IdentityInterface;
+use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Data\TreeFactory;
 use Magento\Framework\Data\Tree\Node;
@@ -60,6 +60,16 @@ class Topmenu extends Template implements IdentityInterface
     }
 
     /**
+     * Get block cache life time
+     *
+     * @return int
+     */
+    protected function getCacheLifetime()
+    {
+        return parent::getCacheLifetime() ?: 3600;
+    }
+
+    /**
      * Get top menu html
      *
      * @param string $outermostClass
@@ -79,13 +89,12 @@ class Topmenu extends Template implements IdentityInterface
 
         $html = $this->_getHtml($this->_menu, $childrenWrapClass, $limit);
 
-        $transportObject = new \Magento\Framework\Object(['html' => $html]);
+        $transportObject = new \Magento\Framework\DataObject(['html' => $html]);
         $this->_eventManager->dispatch(
             'page_block_html_topmenu_gethtml_after',
             ['menu' => $this->_menu, 'transportObject' => $transportObject]
         );
         $html = $transportObject->getHtml();
-
         return $html;
     }
 
@@ -321,7 +330,9 @@ class Topmenu extends Template implements IdentityInterface
      */
     public function addIdentity($identity)
     {
-        $this->identities[] = $identity;
+        if (!in_array($identity, $this->identities)) {
+            $this->identities[] = $identity;
+        }
     }
 
     /**
@@ -332,5 +343,37 @@ class Topmenu extends Template implements IdentityInterface
     public function getIdentities()
     {
         return $this->identities;
+    }
+
+    /**
+     * Get cache key informative items
+     *
+     * @return array
+     */
+    public function getCacheKeyInfo()
+    {
+        $keyInfo = parent::getCacheKeyInfo();
+        $keyInfo[] = $this->getUrl('*/*/*', ['_current' => true, '_query' => '']);
+        return $keyInfo;
+    }
+
+    /**
+     * Get tags array for saving cache
+     *
+     * @return array
+     */
+    protected function getCacheTags()
+    {
+        return array_merge(parent::getCacheTags(), $this->getIdentities());
+    }
+
+    /**
+     * Get menu object.
+     *
+     * @return Node
+     */
+    public function getMenu()
+    {
+        return $this->_menu;
     }
 }

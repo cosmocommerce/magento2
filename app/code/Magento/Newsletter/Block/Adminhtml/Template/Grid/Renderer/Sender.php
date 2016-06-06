@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -16,10 +16,10 @@ class Sender extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstract
     /**
      * Renderer for "Action" column in Newsletter templates grid
      *
-     * @param \Magento\Framework\Object $row
+     * @param \Magento\Framework\DataObject $row
      * @return string
      */
-    public function render(\Magento\Framework\Object $row)
+    public function render(\Magento\Framework\DataObject $row)
     {
         $str = '';
         if ($row->getTemplateSenderName()) {

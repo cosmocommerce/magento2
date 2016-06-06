@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Backup\Filesystem\Rollback;
@@ -54,7 +54,7 @@ class Fs extends AbstractRollback
         new \Magento\Framework\Archive\Gz();
         new \Magento\Framework\Archive\Helper\File('');
         new \Magento\Framework\Archive\Helper\File\Gz('');
-        new \Magento\Framework\Exception\LocalizedException(new \Magento\Framework\Phrase(''));
+        new \Magento\Framework\Exception\LocalizedException(new \Magento\Framework\Phrase('dummy'));
 
         $fsHelper->rm($this->_snapshot->getRootDir(), $this->_snapshot->getIgnorePaths());
         $archiver->unpack($snapshotPath, $this->_snapshot->getRootDir());

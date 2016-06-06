@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\UrlRewrite\Model\Storage;
 
-use Magento\Framework\App\Resource;
+use Magento\Framework\App\ResourceConnection;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewriteFactory;
 use Magento\Framework\Api\DataObjectHelper;
@@ -35,14 +35,14 @@ class DbStorage extends AbstractStorage
     /**
      * @param \Magento\UrlRewrite\Service\V1\Data\UrlRewriteFactory $urlRewriteFactory
      * @param DataObjectHelper $dataObjectHelper
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\App\ResourceConnection $resource
      */
     public function __construct(
         UrlRewriteFactory $urlRewriteFactory,
         DataObjectHelper $dataObjectHelper,
-        Resource $resource
+        ResourceConnection $resource
     ) {
-        $this->connection = $resource->getConnection(Resource::DEFAULT_WRITE_RESOURCE);
+        $this->connection = $resource->getConnection();
         $this->resource = $resource;
 
         parent::__construct($urlRewriteFactory, $dataObjectHelper);

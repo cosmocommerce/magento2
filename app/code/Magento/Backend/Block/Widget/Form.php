@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Widget;
@@ -187,7 +187,7 @@ class Form extends \Magento\Backend\Block\Widget
                     $fieldType,
                     [
                         'name' => $attribute->getAttributeCode(),
-                        'label' => $attribute->getFrontend()->getLabel(),
+                        'label' => $attribute->getFrontend()->getLocalizedLabel(),
                         'class' => $attribute->getFrontend()->getClass(),
                         'required' => $attribute->getIsRequired(),
                         'note' => $attribute->getNote()

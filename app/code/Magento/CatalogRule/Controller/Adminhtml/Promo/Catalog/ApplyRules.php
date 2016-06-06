@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogRule\Controller\Adminhtml\Promo\Catalog;
@@ -18,7 +18,7 @@ class ApplyRules extends \Magento\CatalogRule\Controller\Adminhtml\Promo\Catalog
      */
     public function execute()
     {
-        $errorMessage = __('Unable to apply rules.');
+        $errorMessage = __('We can\'t apply the rules.');
         try {
             /** @var Job $ruleJob */
             $ruleJob = $this->_objectManager->get('Magento\CatalogRule\Model\Rule\Job');

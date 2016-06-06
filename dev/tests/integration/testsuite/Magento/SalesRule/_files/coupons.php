@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 $this->_collection = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\SalesRule\Model\Resource\Rule\Collection'
+    'Magento\SalesRule\Model\ResourceModel\Rule\Collection'
 );
 $items = array_values($this->_collection->getItems());
 

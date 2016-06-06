@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -9,14 +9,16 @@
  */
 namespace Magento\Framework\Data\Collection\Db;
 
+use Magento\Framework\DB\Select;
+
 interface FetchStrategyInterface
 {
     /**
      * Retrieve all records
      *
-     * @param \Zend_Db_Select $select
+     * @param Select $select
      * @param array $bindParams
      * @return array
      */
-    public function fetchAll(\Zend_Db_Select $select, array $bindParams = []);
+    public function fetchAll(Select $select, array $bindParams = []);
 }

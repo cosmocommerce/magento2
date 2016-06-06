@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -57,6 +57,13 @@ class InstallSchema implements InstallSchemaInterface
                 null,
                 [],
                 'Indexer Status'
+            )
+            ->addColumn(
+                'hash_config',
+                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                32,
+                ['nullable' => false],
+                'Hash of indexer config'
             )
             ->addIndex(
                 $installer->getIdxName('indexer_state', ['indexer_id']),

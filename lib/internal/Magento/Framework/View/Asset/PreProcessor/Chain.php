@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -50,14 +50,21 @@ class Chain
     protected $targetAssetPath;
 
     /**
+     * @var string
+     */
+    protected $origAssetPath;
+
+    /**
      * @param LocalInterface $asset
      * @param string $origContent
      * @param string $origContentType
+     * @param string $origAssetPath
      */
     public function __construct(
         LocalInterface $asset,
         $origContent,
-        $origContentType
+        $origContentType,
+        $origAssetPath
     ) {
         $this->asset = $asset;
         $this->origContent = $origContent;
@@ -66,6 +73,7 @@ class Chain
         $this->contentType = $origContentType;
         $this->targetContentType = $asset->getContentType();
         $this->targetAssetPath = $asset->getPath();
+        $this->origAssetPath = $origAssetPath;
     }
 
     /**
@@ -185,5 +193,14 @@ class Chain
     public function isChanged()
     {
         return $this->origContentType != $this->contentType || $this->origContent != $this->content;
+    }
+
+    /**
+     * @return string
+     * @codeCoverageIgnore
+     */
+    public function getOrigAssetPath()
+    {
+        return $this->origAssetPath;
     }
 }

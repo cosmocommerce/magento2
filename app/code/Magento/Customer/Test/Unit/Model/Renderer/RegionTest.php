@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Test\Unit\Model\Renderer;
@@ -116,8 +116,8 @@ class RegionTest extends \PHPUnit_Framework_TestCase
             'with no defined regions' => [[]],
             'with defined regions' => [
                 [
-                    new \Magento\Framework\Object(['value' => 'Bavaria']),
-                    new \Magento\Framework\Object(['value' => 'Saxony']),
+                    new \Magento\Framework\DataObject(['value' => 'Bavaria']),
+                    new \Magento\Framework\DataObject(['value' => 'Saxony']),
                 ],
             ]
         ];

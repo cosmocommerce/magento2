@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Toolbar;
@@ -21,7 +21,7 @@ class AddTest extends \PHPUnit_Framework_TestCase
         $block->setArea('adminhtml')->unsetChild('setForm');
 
         $childBlock = $layout->addBlock('Magento\Framework\View\Element\Template', 'setForm', 'block');
-        $form = new \Magento\Framework\Object();
+        $form = new \Magento\Framework\DataObject();
         $childBlock->setForm($form);
 
         $expectedId = '12121212';

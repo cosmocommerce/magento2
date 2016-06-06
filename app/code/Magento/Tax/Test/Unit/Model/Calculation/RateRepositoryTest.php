@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Test\Unit\Model\Calculation;
 
+use Magento\Framework\Api\SortOrder;
 use \Magento\Tax\Model\Calculation\RateRepository;
 
-use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\AlreadyExistsException;
@@ -64,7 +64,7 @@ class RateRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     private $joinProcessorMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->rateConverterMock = $this->getMock(
             'Magento\Tax\Model\Calculation\Rate\Converter',
@@ -116,7 +116,7 @@ class RateRepositoryTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->rateResourceMock = $this->getMock(
-            'Magento\Tax\Model\Resource\Calculation\Rate',
+            'Magento\Tax\Model\ResourceModel\Calculation\Rate',
             [],
             [],
             '',
@@ -251,7 +251,7 @@ class RateRepositoryTest extends \PHPUnit_Framework_TestCase
         $objectManager = new ObjectManager($this);
         $items = [$rateMock];
         $collectionMock = $objectManager->getCollectionMock(
-            'Magento\Tax\Model\Resource\Calculation\Rate\Collection',
+            'Magento\Tax\Model\ResourceModel\Calculation\Rate\Collection',
             $items
         );
         $collectionMock->expects($this->once())->method('joinRegionTable');
@@ -378,7 +378,7 @@ class RateRepositoryTest extends \PHPUnit_Framework_TestCase
         $rateMock = $this->getTaxRateMock([]);
         $items = [$rateMock];
         $collectionMock = $objectManager->getCollectionMock(
-            'Magento\Tax\Model\Resource\Calculation\Rate\Collection',
+            'Magento\Tax\Model\ResourceModel\Calculation\Rate\Collection',
             $items
         );
         $collectionMock
@@ -391,14 +391,13 @@ class RateRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('getSortOrders')
             ->will($this->returnValue([$sortOrderMock]));
         $sortOrderMock->expects($this->once())->method('getField')->willReturn('field_name');
-        $sortOrderMock->expects($this->once())->method('getDirection')->willReturn(SearchCriteria::SORT_ASC);
+        $sortOrderMock->expects($this->once())->method('getDirection')->willReturn(SortOrder::SORT_ASC);
         $collectionMock->expects($this->once())->method('addOrder')->with('main_table.field_name', 'ASC');
         $currentPage = 1;
         $pageSize = 100;
         $searchCriteriaMock->expects($this->any())->method('getCurrentPage')->will($this->returnValue($currentPage));
         $searchCriteriaMock->expects($this->any())->method('getPageSize')->will($this->returnValue($pageSize));
         $rateMock = $this->getTaxRateMock([]);
-
 
         $collectionMock->expects($this->once())->method('joinRegionTable');
         $collectionMock->expects($this->once())->method('setCurPage')->with($currentPage);
@@ -407,8 +406,6 @@ class RateRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->rateFactoryMock->expects($this->once())->method('create')->will($this->returnValue($rateMock));
         $rateMock->expects($this->any())->method('getCollection')->will($this->returnValue($collectionMock));
-
-
 
         $this->searchResultMock->expects($this->once())->method('setItems')->with($items)->willReturnSelf();
         $this->searchResultMock->expects($this->once())->method('setTotalCount')->with(count($items))

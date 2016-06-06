@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -103,7 +103,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $themePath = 'Magento/blank';
         /** Unassign themes from store */
-        $configEntity = new \Magento\Framework\Object(['value' => 6, 'scope_id' => 8]);
+        $configEntity = new \Magento\Framework\DataObject(['value' => 6, 'scope_id' => 8]);
 
         $this->_configData->expects(
             $this->once()
@@ -154,7 +154,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $themePath = 'Magento/blank';
         /** Unassign themes from store */
-        $configEntity = new \Magento\Framework\Object(['value' => 6, 'scope_id' => 8]);
+        $configEntity = new \Magento\Framework\DataObject(['value' => 6, 'scope_id' => 8]);
 
         $this->_configData->expects(
             $this->once()

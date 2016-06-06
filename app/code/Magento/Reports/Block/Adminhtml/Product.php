@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Block\Adminhtml;
@@ -13,7 +13,7 @@ namespace Magento\Reports\Block\Adminhtml;
 class Product extends \Magento\Backend\Block\Widget\Grid\Container
 {
     /**
-     * @return void
+     * {@inheritdoc}
      */
     protected function _construct()
     {

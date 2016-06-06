@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Test\Unit\Model\Attribute;
@@ -45,7 +45,7 @@ class GroupRepositoryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->groupResourceMock = $this->getMock(
-            '\Magento\Eav\Model\Resource\Entity\Attribute\Group',
+            '\Magento\Eav\Model\ResourceModel\Entity\Attribute\Group',
             ['delete', '__wakeup', 'load', 'save'],
             [],
             '',
@@ -67,7 +67,7 @@ class GroupRepositoryTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->groupListFactoryMock = $this->getMock(
-            '\Magento\Eav\Model\Resource\Entity\Attribute\Group\CollectionFactory',
+            '\Magento\Eav\Model\ResourceModel\Entity\Attribute\Group\CollectionFactory',
             ['create'],
             [],
             '',
@@ -279,10 +279,10 @@ class GroupRepositoryTest extends \PHPUnit_Framework_TestCase
             false
         );
         $groupCollectionMock->expects($this->once())->method('getItems')->willReturn([$groupMock]);
-        $searchCriteriaMock->expects($this->once())->method('getFilterGroups')->willReturn([$filterGroupMock]);
+        $searchCriteriaMock->expects($this->exactly(2))->method('getFilterGroups')->willReturn([$filterGroupMock]);
 
-        $filterGroupMock->expects($this->once())->method('getFilters')->willReturn([$filterInterfaceMock]);
-        $filterInterfaceMock->expects($this->once())->method('getField')->willReturn('attribute_set_id');
+        $filterGroupMock->expects($this->exactly(2))->method('getFilters')->willReturn([$filterInterfaceMock]);
+        $filterInterfaceMock->expects($this->exactly(2))->method('getField')->willReturn('attribute_set_id');
         $filterInterfaceMock->expects($this->once())->method('getValue')->willReturn($attributeSetId);
 
         $this->setRepositoryMock->expects($this->once())

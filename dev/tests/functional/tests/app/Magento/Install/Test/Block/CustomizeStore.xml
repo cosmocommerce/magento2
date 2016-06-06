@@ -1,19 +1,19 @@
 <?xml version="1.0" ?>
 <!--
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 -->
 <mapping strict="0">
     <fields>
-        <currency>
-            <selector>[ng-model*='currency']</selector>
+        <storeCurrency>
+            <selector>#storeCurrency</selector>
             <input>select</input>
-        </currency>
-        <language>
-            <selector>[ng-model*='language']</selector>
+        </storeCurrency>
+        <storeLanguage>
+            <selector>#storeLanguage</selector>
             <input>select</input>
-        </language>
+        </storeLanguage>
     </fields>
 </mapping>

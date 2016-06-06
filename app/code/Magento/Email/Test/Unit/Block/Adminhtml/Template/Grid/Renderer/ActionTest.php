@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Email\Test\Unit\Block\Adminhtml\Template\Grid\Renderer;
@@ -41,7 +41,7 @@ class ActionTest extends \PHPUnit_Framework_TestCase
             ->method('getActions')
             ->willReturn('');
         $this->action->setColumn($this->columnMock);
-        $row = new \Magento\Framework\Object();
+        $row = new \Magento\Framework\DataObject();
         $this->assertEquals('&nbsp;', $this->action->render($row));
     }
 
@@ -56,7 +56,7 @@ class ActionTest extends \PHPUnit_Framework_TestCase
             ->method('getActions')
             ->willReturn(['url', 'popup', 'caption']);
         $this->action->setColumn($this->columnMock);
-        $row = new \Magento\Framework\Object();
+        $row = new \Magento\Framework\DataObject();
         $row->setId(1);
         $this->assertContains('admin__control-select', $this->action->render($row));
     }

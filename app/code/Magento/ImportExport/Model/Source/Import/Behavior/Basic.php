@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ImportExport\Model\Source\Import\Behavior;
@@ -17,8 +17,8 @@ class Basic extends \Magento\ImportExport\Model\Source\Import\AbstractBehavior
     {
         return [
             \Magento\ImportExport\Model\Import::BEHAVIOR_APPEND => __('Add/Update'),
-            \Magento\ImportExport\Model\Import::BEHAVIOR_REPLACE => __('Replace Existing Complex Data'),
-            \Magento\ImportExport\Model\Import::BEHAVIOR_DELETE => __('Delete Entities')
+            \Magento\ImportExport\Model\Import::BEHAVIOR_REPLACE => __('Replace'),
+            \Magento\ImportExport\Model\Import::BEHAVIOR_DELETE => __('Delete')
         ];
     }
 
@@ -28,5 +28,16 @@ class Basic extends \Magento\ImportExport\Model\Source\Import\AbstractBehavior
     public function getCode()
     {
         return 'basic';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNotes($entityCode)
+    {
+        $messages = ['catalog_product' => [
+            \Magento\ImportExport\Model\Import::BEHAVIOR_REPLACE => __("Note: Product IDs will be regenerated.")
+        ]];
+        return isset($messages[$entityCode]) ? $messages[$entityCode] : [];
     }
 }

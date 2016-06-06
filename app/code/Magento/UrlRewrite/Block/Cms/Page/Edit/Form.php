@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\UrlRewrite\Block\Cms\Page\Edit;
@@ -113,7 +113,7 @@ class Form extends \Magento\UrlRewrite\Block\Edit\Form
 
             if (!$entityStores) {
                 throw new \Magento\Framework\Exception\LocalizedException(
-                    __('Chosen cms page does not associated with any website.')
+                    __('Please assign a website to the selected CMS page.')
                 );
             }
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -104,7 +104,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
         return [
             [[self::PROPERTY_NAME => 'Property value', 'foo' => 'Foo value'], 'Property value', true],
             [
-                new \Magento\Framework\Object([self::PROPERTY_NAME => 'Property value']),
+                new \Magento\Framework\DataObject([self::PROPERTY_NAME => 'Property value']),
                 'Property value',
                 true
             ],

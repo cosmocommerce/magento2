@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\Magento\Framework\Api;
@@ -254,7 +254,7 @@ class ExtensibleInterfacesTest extends \PHPUnit_Framework_TestCase
     protected function blacklistFilter($preFilter)
     {
         $postFilter = [];
-        $blacklist = Files::readLists(__DIR__ . '/_files/ExtensibleInterfacesTest/blacklist*');
+        $blacklist = Files::init()->readLists(__DIR__ . '/_files/ExtensibleInterfacesTest/blacklist*');
         foreach ($preFilter as $file) {
             if (!in_array($file, $blacklist)) {
                 $postFilter[] = $file;

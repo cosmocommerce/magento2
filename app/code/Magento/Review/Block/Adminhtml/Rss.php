@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Review\Block\Adminhtml;
@@ -66,7 +66,7 @@ class Rss extends \Magento\Backend\Block\AbstractBlock implements DataProviderIn
             $description = '<p>' . __('Product: <a href="%1" target="_blank">%2</a> <br/>', $url, $item->getName())
                 . __('Summary of review: %1 <br/>', $item->getTitle()) . __('Review: %1 <br/>', $item->getDetail())
                 . __('Store: %1 <br/>', $storeName)
-                . __('Click <a href="%1">here</a> to view the review.', $reviewUrl)
+                . __('Click <a href="%1">here</a> to see the review.', $reviewUrl)
                 . '</p>';
 
             $data['entries'][] = [

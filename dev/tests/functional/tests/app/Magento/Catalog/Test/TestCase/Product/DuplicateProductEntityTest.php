@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -111,11 +111,11 @@ class DuplicateProductEntityTest extends Injectable
      */
     protected function createProduct($productType)
     {
-        list($fixture, $dataSet) = explode('::', $productType);
+        list($fixture, $dataset) = explode('::', $productType);
         $product = $this->fixtureFactory->createByCode(
             $fixture,
             [
-                'dataSet' => $dataSet,
+                'dataset' => $dataset,
                 'data' => [
                     'category_ids' => [
                         'category' => $this->category,

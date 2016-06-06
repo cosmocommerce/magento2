@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -15,7 +15,7 @@
  */
 namespace Magento\Eav\Model\Entity\Increment;
 
-abstract class AbstractIncrement extends \Magento\Framework\Object implements
+abstract class AbstractIncrement extends \Magento\Framework\DataObject implements
     \Magento\Eav\Model\Entity\Increment\IncrementInterface
 {
     /**
@@ -64,6 +64,7 @@ abstract class AbstractIncrement extends \Magento\Framework\Object implements
      *
      * @param mixed $id
      * @return mixed
+     * @codeCoverageIgnore
      */
     public function frontendFormat($id)
     {

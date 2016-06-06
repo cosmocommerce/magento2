@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Rss\Controller\Adminhtml;
@@ -9,7 +9,7 @@ namespace Magento\Rss\Controller\Adminhtml;
  * Class Feed
  * @package Magento\Rss\Controller
  */
-class Feed extends \Magento\Backend\App\Action
+abstract class Feed extends \Magento\Backend\App\Action
 {
     /**
      * @var \Magento\Rss\Model\RssManager

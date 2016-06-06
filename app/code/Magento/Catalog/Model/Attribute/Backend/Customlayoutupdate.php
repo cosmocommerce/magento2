@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Attribute\Backend;
@@ -35,7 +35,7 @@ class Customlayoutupdate extends \Magento\Eav\Model\Entity\Attribute\Backend\Abs
     /**
      * Validate the custom layout update
      *
-     * @param \Magento\Framework\Object $object
+     * @param \Magento\Framework\DataObject $object
      * @return bool
      * @throws Exception
      */

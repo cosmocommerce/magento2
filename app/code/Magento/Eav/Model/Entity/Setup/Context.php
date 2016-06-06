@@ -2,11 +2,14 @@
 /**
  * Eav setup context object
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Setup;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Context extends \Magento\Framework\Module\Setup\Context
 {
     /**
@@ -17,7 +20,7 @@ class Context extends \Magento\Framework\Module\Setup\Context
     /**
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
-     * @param \Magento\Framework\App\Resource $appResource
+     * @param \Magento\Framework\App\ResourceConnection $appResource
      * @param \Magento\Framework\Module\Dir\Reader $modulesReader
      * @param \Magento\Framework\Module\ModuleListInterface $moduleList
      * @param \Magento\Framework\Module\ResourceInterface $resource
@@ -30,7 +33,7 @@ class Context extends \Magento\Framework\Module\Setup\Context
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Framework\App\Resource $appResource,
+        \Magento\Framework\App\ResourceConnection $appResource,
         \Magento\Framework\Module\Dir\Reader $modulesReader,
         \Magento\Framework\Module\ModuleListInterface $moduleList,
         \Magento\Framework\Module\ResourceInterface $resource,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -14,11 +14,6 @@ use Magento\Mtf\Client\ElementInterface;
  */
 class GlobalsearchElement extends SimpleElement
 {
-    /**
-     * "Backspace" key code.
-     */
-    const BACKSPACE = "\xEE\x80\x83";
-
     /**
      * Search icon selector.
      *
@@ -63,41 +58,12 @@ class GlobalsearchElement extends SimpleElement
     public function setValue($value)
     {
         $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
-
         $this->waitInitElement();
-
         if (!$this->find($this->searchInput)->isVisible()) {
             $this->find($this->searchIcon)->click();
         }
-        $this->selectWindow();
-        $this->clear();
-        $this->find($this->searchInput)->setValue($value);
-        $this->selectWindow();
-
+        $this->find($this->searchInput)->keys(str_split($value));
         $this->waitResult();
-    }
-
-    /**
-     * Clear value of element.
-     *
-     * @return void
-     */
-    protected function clear()
-    {
-        $element = $this->find($this->searchInput);
-        while ('' != $element->getValue()) {
-            $element->setValue([self::BACKSPACE]);
-        }
-    }
-
-    /**
-     * Select to last window.
-     *
-     * @return void
-     */
-    protected function selectWindow()
-    {
-        $this->driver->selectWindow();
     }
 
     /**
@@ -130,12 +96,7 @@ class GlobalsearchElement extends SimpleElement
 
         $this->driver->waitUntil(
             function () use ($browser, $selector) {
-                if ($browser->find($selector)->isVisible()) {
-                    return true;
-                } else {
-                    $browser->selectWindow();
-                    return null;
-                }
+                return $browser->find($selector)->isVisible() ? true : null;
             }
         );
     }

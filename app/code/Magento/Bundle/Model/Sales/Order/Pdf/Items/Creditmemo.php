@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Model\Sales\Order\Pdf\Items;
@@ -13,7 +13,7 @@ class Creditmemo extends AbstractItems
     /**
      * Core string
      *
-     * @var \Magento\Framework\Stdlib\String
+     * @var \Magento\Framework\Stdlib\StringUtils
      */
     protected $string;
 
@@ -23,8 +23,8 @@ class Creditmemo extends AbstractItems
      * @param \Magento\Tax\Helper\Data $taxData
      * @param \Magento\Framework\Filesystem $filesystem
      * @param \Magento\Framework\Filter\FilterManager $filterManager
-     * @param \Magento\Framework\Stdlib\String $string
-     * @param \Magento\Framework\Model\Resource\AbstractResource $resource
+     * @param \Magento\Framework\Stdlib\StringUtils $string
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
      * @param array $data
      */
@@ -34,8 +34,8 @@ class Creditmemo extends AbstractItems
         \Magento\Tax\Helper\Data $taxData,
         \Magento\Framework\Filesystem $filesystem,
         \Magento\Framework\Filter\FilterManager $filterManager,
-        \Magento\Framework\Stdlib\String $string,
-        \Magento\Framework\Model\Resource\AbstractResource $resource = null,
+        \Magento\Framework\Stdlib\StringUtils $string,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
@@ -67,7 +67,7 @@ class Creditmemo extends AbstractItems
         $pdf = $this->getPdf();
         $page = $this->getPage();
 
-        $items = $this->getChilds($item);
+        $items = $this->getChildren($item);
         $prevOptionId = '';
         $drawItems = [];
         $leftBound = 35;

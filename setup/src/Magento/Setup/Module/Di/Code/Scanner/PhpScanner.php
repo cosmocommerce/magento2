@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Setup\Module\Di\Code\Scanner;
@@ -49,7 +49,7 @@ class PhpScanner implements ScannerInterface
                         if (class_exists($missingClassName)) {
                             continue;
                         }
-                    } catch (\Magento\Framework\Exception\LocalizedException $e) {
+                    } catch (\RuntimeException $e) {
                     }
                     $sourceClassName = $this->getSourceClassName($missingClassName, $entityType);
                     if (!class_exists($sourceClassName) && !interface_exists($sourceClassName)) {
@@ -227,17 +227,17 @@ class PhpScanner implements ScannerInterface
     protected function _getDeclaredClasses($file)
     {
         $classes = [];
-        $namespace = "";
+        $namespace = '';
         $tokens = token_get_all(file_get_contents($file));
         $count = count($tokens);
 
         for ($tokenIterator = 0; $tokenIterator < $count; $tokenIterator++) {
-            if ($tokens[$tokenIterator][0] === T_NAMESPACE) {
+            if ($tokens[$tokenIterator][0] == T_NAMESPACE) {
                 $namespace .= $this->_fetchNamespace($tokenIterator, $count, $tokens);
             }
 
-            if ($tokens[$tokenIterator][0] === T_CLASS
-                || $tokens[$tokenIterator][0] === T_INTERFACE
+            if (($tokens[$tokenIterator][0] == T_CLASS || $tokens[$tokenIterator][0] == T_INTERFACE)
+                && $tokens[$tokenIterator - 1][0] != T_DOUBLE_COLON
             ) {
                 $classes = array_merge($classes, $this->_fetchClasses($namespace, $tokenIterator, $count, $tokens));
             }

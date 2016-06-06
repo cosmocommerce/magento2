@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -35,7 +35,7 @@ class File
      * @param ThemeInterface $themeModel
      * @param string $file
      * @param string|null $module
-     * @return string|false
+     * @return string|bool
      */
     public function getFile($area, ThemeInterface $themeModel, $file, $module = null)
     {

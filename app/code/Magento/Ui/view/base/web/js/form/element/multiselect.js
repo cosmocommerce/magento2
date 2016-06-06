@@ -1,7 +1,8 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 define([
     'underscore',
     'mageUtils',
@@ -11,30 +12,96 @@ define([
 
     return Select.extend({
         defaults: {
-            size: 5
+            size: 5,
+            elementTmpl: 'ui/form/element/multiselect'
         },
 
         /**
-         * Calls 'getInitialValue' of parent and if the result of it is not empty
-         * string, returs it, else returnes caption or first found option's value
-         *
-         * @returns {Number|String}
+         * @inheritdoc
          */
-        getInititalValue: function () {
-            var value = this._super();
+        initConfig: function () {
+            this._super();
+
+            this.value = this.normalizeData(this.value);
+
+            return this;
+        },
+
+        /**
+         * @inheritdoc
+         */
+        initLinks: function () {
+            var scope = this.source.get(this.dataScope);
+
+            this.multipleScopeValue = _.isArray(scope) ? utils.copy(scope) : undefined;
+
+            return this._super();
+        },
+
+        /**
+         * @inheritdoc
+         */
+        setInitialValue: function () {
+            this._super();
+
+            this.initialValue = utils.copy(this.initialValue);
+
+            return this;
+        },
+
+        /**
+         * @inheritdoc
+         */
+        normalizeData: function (value) {
+            if (utils.isEmpty(value)) {
+                value = [];
+            }
 
             return _.isString(value) ? value.split(',') : value;
         },
 
         /**
-         * Defines if value has changed
-         * @returns {Boolean}
+         * @inheritdoc
+         */
+        getInitialValue: function () {
+            var values = [this.multipleScopeValue, this.default, this.value.peek(), []],
+                value;
+
+            values.some(function (v) {
+                return _.isArray(v) && (value = utils.copy(v));
+            });
+
+            return value;
+        },
+
+        /**
+         * @inheritdoc
          */
         hasChanged: function () {
             var value = this.value(),
                 initial = this.initialValue;
 
-            return !utils.identical(value, initial);
+            return !utils.equalArrays(value, initial);
+        },
+
+        /**
+         * @inheritdoc
+         */
+        reset: function () {
+            this.value(utils.copy(this.initialValue));
+            this.error(false);
+
+            return this;
+        },
+
+        /**
+         * @inheritdoc
+         */
+        clear: function () {
+            this.value([]);
+            this.error(false);
+
+            return this;
         }
     });
 });

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Helper;
@@ -79,7 +79,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $_catalogCategory;
 
     /**
-     * @var \Magento\Framework\Stdlib\String
+     * @var \Magento\Framework\Stdlib\StringUtils
      */
     protected $string;
 
@@ -185,7 +185,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Catalog\Model\Session $catalogSession
-     * @param \Magento\Framework\Stdlib\String $string
+     * @param \Magento\Framework\Stdlib\StringUtils $string
      * @param Category $catalogCategory
      * @param Product $catalogProduct
      * @param \Magento\Framework\Registry $coreRegistry
@@ -209,7 +209,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Catalog\Model\Session $catalogSession,
-        \Magento\Framework\Stdlib\String $string,
+        \Magento\Framework\Stdlib\StringUtils $string,
         Category $catalogCategory,
         Product $catalogProduct,
         \Magento\Framework\Registry $coreRegistry,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\User\Controller\Adminhtml\User;
@@ -10,7 +10,7 @@ namespace Magento\User\Controller\Adminhtml\User;
  *
  * @magentoAppArea adminhtml
  */
-class RoleTest extends \Magento\Backend\Utility\Controller
+class RoleTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     public function testEditRoleAction()
     {

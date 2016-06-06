@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Model\Indexer\Product\Flat\System\Config;
@@ -170,7 +170,7 @@ class ModeTest extends \PHPUnit_Framework_TestCase
         $this->indexerStateMock->expects($this->never())->method('save');
 
         $indexerMock = $this->getMockForAbstractClass(
-            'Magento\Indexer\Model\IndexerInterface',
+            'Magento\Framework\Indexer\IndexerInterface',
             [],
             '',
             false,

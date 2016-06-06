@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\MediaStorage\Test\Unit\Helper\File\Storage;
@@ -30,7 +30,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
     /** @var Database */
     protected $helper;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->dbStorageFactoryMock = $this->getMockBuilder('Magento\MediaStorage\Model\File\Storage\DatabaseFactory')
             ->disableOriginalConstructor()
@@ -107,7 +107,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $this->dbStorageFactoryMock->expects($this->once())
             ->method('create')
             ->will($this->returnValue($dbModelMock));
-        $resourceModelMock = $this->getMockBuilder('Magento\Framework\Model\Resource\Db\AbstractDb')
+        $resourceModelMock = $this->getMockBuilder('Magento\Framework\Model\ResourceModel\Db\AbstractDb')
             ->disableOriginalConstructor()
             ->setMethods(['__wakeup'])
             ->getMockForAbstractClass();
@@ -348,7 +348,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $this->dbStorageFactoryMock->expects($this->exactly($callNum))
             ->method('create')
             ->will($this->returnValue($dbModelMock));
-        $resourceModelMock = $this->getMockBuilder('Magento\Framework\Model\Resource\Db\AbstractDb')
+        $resourceModelMock = $this->getMockBuilder('Magento\Framework\Model\ResourceModel\Db\AbstractDb')
             ->disableOriginalConstructor()
             ->setMethods(['deleteFolder', '__wakeup'])
             ->getMockForAbstractClass();

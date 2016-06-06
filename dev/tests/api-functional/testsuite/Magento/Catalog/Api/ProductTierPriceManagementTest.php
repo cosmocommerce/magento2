@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -36,15 +36,15 @@ class ProductTierPriceManagementTest extends WebapiAbstract
             ],
         ];
 
-        $groupPriceList = $this->_webApiCall(
+        $tearPriceList = $this->_webApiCall(
             $serviceInfo,
             ['sku' => $productSku, 'customerGroupId' => $customerGroupId]
         );
 
-        $this->assertCount($count, $groupPriceList);
+        $this->assertCount($count, $tearPriceList);
         if ($count) {
-            $this->assertEquals($value, $groupPriceList[0]['value']);
-            $this->assertEquals($qty, $groupPriceList[0]['qty']);
+            $this->assertEquals($value, $tearPriceList[0]['value']);
+            $this->assertEquals($qty, $tearPriceList[0]['qty']);
         }
     }
 

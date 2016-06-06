@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -60,9 +60,9 @@ class Management implements \Magento\Tax\Api\TaxClassManagementInterface
                 case TaxClassKeyInterface::TYPE_ID:
                     return $taxClassKey->getValue();
                 case TaxClassKeyInterface::TYPE_NAME:
-                    $searchCriteria = $this->searchCriteriaBuilder->addFilter(
+                    $searchCriteria = $this->searchCriteriaBuilder->addFilters(
                         [$this->filterBuilder->setField(ClassModel::KEY_TYPE)->setValue($taxClassType)->create()]
-                    )->addFilter(
+                    )->addFilters(
                         [
                             $this->filterBuilder->setField(ClassModel::KEY_NAME)
                                 ->setValue($taxClassKey->getValue())

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Pricing\Price;
@@ -358,7 +358,7 @@ class CustomOptionPriceTest extends \PHPUnit_Framework_TestCase
         $optionValueMock->expects($this->once())
             ->method('getValue')
             ->will($this->returnValue($optionValue));
-        $optionIds = new \Magento\Framework\Object(['value' => '1,2']);
+        $optionIds = new \Magento\Framework\DataObject(['value' => '1,2']);
 
         $customOptions = ['option_ids' => $optionIds, 'option_1' => $optionValueMock, 'option_2' => null];
         $this->product->setCustomOptions($customOptions);

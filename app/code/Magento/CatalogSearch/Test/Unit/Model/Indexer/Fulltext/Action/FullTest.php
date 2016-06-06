@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -10,14 +10,16 @@ class FullTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Magento\Framework\Search\Request\Config|\PHPUnit_Framework_MockObject_MockObject */
     protected $searchRequestConfig;
+
     /** @var \Magento\Store\Model\StoreManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
     protected $storeManager;
+
     /** @var \Magento\CatalogSearch\Model\Indexer\Fulltext\Action\Full */
     protected $object;
 
-    public function setUp()
+    protected function setUp()
     {
-        $resource = $this->getMockBuilder('Magento\Framework\App\Resource')
+        $resource = $this->getMockBuilder('Magento\Framework\App\ResourceConnection')
             ->disableOriginalConstructor()
             ->getMock();
         $catalogProductType = $this->getMockBuilder('Magento\Catalog\Model\Product\Type')
@@ -33,7 +35,7 @@ class FullTest extends \PHPUnit_Framework_TestCase
             $this->getMockBuilder('Magento\Catalog\Model\Product\Attribute\Source\Status')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $engineProvider = $this->getMockBuilder('Magento\CatalogSearch\Model\Resource\EngineProvider')
+        $engineProvider = $this->getMockBuilder('Magento\CatalogSearch\Model\ResourceModel\EngineProvider')
             ->disableOriginalConstructor()
             ->getMock();
         $eventManager = $this->getMockBuilder('Magento\Framework\Event\ManagerInterface')
@@ -57,7 +59,7 @@ class FullTest extends \PHPUnit_Framework_TestCase
         $localeDate = $this->getMockBuilder('Magento\Framework\Stdlib\DateTime\TimezoneInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $fulltextResource = $this->getMockBuilder('Magento\CatalogSearch\Model\Resource\Fulltext')
+        $fulltextResource = $this->getMockBuilder('Magento\CatalogSearch\Model\ResourceModel\Fulltext')
             ->disableOriginalConstructor()
             ->getMock();
         $objectManagerHelper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);

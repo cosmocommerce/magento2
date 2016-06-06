@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\TestFramework\ObjectManager;
@@ -17,6 +17,7 @@ class Configurator implements \Magento\Framework\ObjectManager\DynamicConfigInte
         return [
             'preferences' => [
                 'Magento\Framework\Stdlib\CookieManagerInterface' => 'Magento\TestFramework\CookieManager',
+                'Magento\Store\Model\StoreManagerInterface' => 'Magento\TestFramework\Store\StoreManager',
             ]
         ];
     }

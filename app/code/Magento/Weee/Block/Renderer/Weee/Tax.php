@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -73,7 +73,7 @@ class Tax extends \Magento\Backend\Block\Widget implements \Magento\Framework\Da
     }
 
     /**
-     * @return \Magento\Framework\Object
+     * @return \Magento\Framework\DataObject
      */
     public function getProduct()
     {
@@ -136,7 +136,7 @@ class Tax extends \Magento\Backend\Block\Widget implements \Magento\Framework\Da
     public function getValues()
     {
         $values = [];
-        $data = $this->getElement()->getValue();
+        $data = $this->getElement()->getEscapedValue();
 
         if (is_array($data) && count($data)) {
             usort($data, [$this, '_sortWeeeTaxes']);

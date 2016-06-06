@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Items;
@@ -19,7 +19,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
         /** @var $block \Magento\Sales\Block\Adminhtml\Items\AbstractItems */
         $block = $layout->createBlock('Magento\Sales\Block\Adminhtml\Items\AbstractItems', 'block');
 
-        $item = new \Magento\Framework\Object();
+        $item = new \Magento\Framework\DataObject();
 
         $this->assertEmpty($block->getItemExtraInfoHtml($item));
 

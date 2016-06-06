@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -160,7 +160,7 @@ class Chooser extends \Magento\Catalog\Block\Adminhtml\Category\Tree
     /**
      * Adds some extra params to categories collection
      *
-     * @return \Magento\Catalog\Model\Resource\Category\Collection
+     * @return \Magento\Catalog\Model\ResourceModel\Category\Collection
      */
     public function getCategoryCollection()
     {

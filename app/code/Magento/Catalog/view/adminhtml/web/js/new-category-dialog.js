@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 /*jshint browser:true jquery:true*/
@@ -32,7 +32,6 @@ define([
                 .on('suggestbeforeselect', function (event) {
                     clearParentCategory();
                     $(event.target).treeSuggest('close');
-                    $('#new_category_name').focus();
                 });
 
             $.validator.addMethod('validate-parent-category', function () {
@@ -88,12 +87,10 @@ define([
                             type: 'POST',
                             url: widget.options.saveCategoryUrl,
                             data: {
-                                general: {
-                                    name: $('#new_category_name').val(),
-                                    is_active: 1,
-                                    include_in_menu: 1
-                                },
+                                name: $('#new_category_name').val(),
                                 parent: $('#new_category_parent').val(),
+                                is_active: 1,
+                                include_in_menu: 1,
                                 use_config: ['available_sort_by', 'default_sort_by'],
                                 form_key: FORM_KEY,
                                 return_session_messages_only: 1
@@ -111,7 +108,7 @@ define([
                                 $('#new_category_name, #new_category_parent-suggest').val('');
                                 $suggest.val('');
                                 clearParentCategory();
-                                widget.element.trigger('closeModal');
+                                $(widget.element).modal('closeModal');
                             } else {
                                 $('#new_category_messages').html(data.messages);
                             }

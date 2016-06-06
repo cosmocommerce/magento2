@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model;
@@ -185,14 +185,14 @@ abstract class Form
     protected function _getFormAttributeCollection()
     {
         return $this->_universalFactory->create(
-            str_replace('_', '\\', $this->_moduleName) . '\\Model\\Resource\\Form\\Attribute\\Collection'
+            str_replace('_', '\\', $this->_moduleName) . '\\Model\\ResourceModel\\Form\\Attribute\\Collection'
         );
     }
 
     /**
      * Get EAV Entity Form Attribute Collection with applied filters
      *
-     * @return \Magento\Eav\Model\Resource\Form\Attribute\Collection
+     * @return \Magento\Eav\Model\ResourceModel\Form\Attribute\Collection
      */
     protected function _getFilteredFormAttributeCollection()
     {
@@ -210,6 +210,7 @@ abstract class Form
      *
      * @param \Magento\Store\Model\Store|string|int $store
      * @return $this
+     * @codeCoverageIgnore
      */
     public function setStore($store)
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Element;
@@ -22,7 +22,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         )->createBlock(
             'Magento\Framework\View\Element\Template',
             '',
-            ['context' => $context, 'data' => ['module_name' => 'Magento_View']]
+            ['context' => $context]
         );
     }
 
@@ -84,7 +84,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
     public function testGetObjectData()
     {
-        $object = new \Magento\Framework\Object(['key' => 'value']);
+        $object = new \Magento\Framework\DataObject(['key' => 'value']);
         $this->assertEquals('value', $this->_block->getObjectData($object, 'key'));
     }
 

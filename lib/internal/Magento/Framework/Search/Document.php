@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search;
@@ -54,7 +54,7 @@ class Document implements \IteratorAggregate
      */
     public function getField($fieldName)
     {
-        return $this->documentFields[$fieldName];
+        return array_key_exists($fieldName, $this->documentFields) ? $this->documentFields[$fieldName] : $fieldName;
     }
 
     /**

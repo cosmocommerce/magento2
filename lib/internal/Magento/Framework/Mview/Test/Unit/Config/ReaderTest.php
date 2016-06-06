@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Mview\Test\Unit\Config;
@@ -36,20 +36,17 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->_converter = $this->getMock('Magento\Framework\Mview\Config\Converter', ['convert']);
 
-        $fsDirList = $this->getMock('Magento\Framework\Filesystem\DirectoryList', ['getPath'], [], '', false);
-        $fsDirList->expects(
-            $this->once()
-        )->method(
-            'getPath'
-        )->with(
-            DirectoryList::LIB_INTERNAL
-        )->will(
-            $this->returnValue('stub')
-        );
-        $schemaLocator = new \Magento\Framework\Mview\Config\SchemaLocator($fsDirList);
+        $urnResolverMock = $this->getMock('Magento\Framework\Config\Dom\UrnResolver', [], [], '', false);
+        $urnResolverMock->expects($this->once())
+            ->method('getRealPath')
+            ->with('urn:magento:framework:Mview/etc/mview.xsd')
+            ->willReturn('test_folder');
+        $schemaLocator = new \Magento\Framework\Mview\Config\SchemaLocator($urnResolverMock);
 
         $validationState = $this->getMock('Magento\Framework\Config\ValidationStateInterface');
-        $validationState->expects($this->once())->method('isValidated')->will($this->returnValue(false));
+        $validationState->expects($this->any())
+            ->method('isValidationRequired')
+            ->willReturn(false);
 
         $this->_model = new \Magento\Framework\Mview\Config\Reader(
             $this->_fileResolverMock,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backup\Test\Unit\Model;
@@ -47,7 +47,7 @@ class BackupFactoryTest extends \PHPUnit_Framework_TestCase
         )->method(
             'getIterator'
         )->will(
-            $this->returnValue(new \ArrayIterator([new \Magento\Framework\Object($this->_data)]))
+            $this->returnValue(new \ArrayIterator([new \Magento\Framework\DataObject($this->_data)]))
         );
 
         $this->_backupModel = $this->getMock('Magento\Backup\Model\Backup', [], [], '', false);

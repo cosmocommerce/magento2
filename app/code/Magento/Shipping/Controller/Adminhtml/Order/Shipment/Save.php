@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Shipping\Controller\Adminhtml\Order\Shipment;
@@ -11,6 +11,13 @@ use Magento\Sales\Model\Order\Email\Sender\ShipmentSender;
 
 class Save extends \Magento\Backend\App\Action
 {
+    /**
+     * Authorization level of a basic admin session
+     *
+     * @see _isAllowed()
+     */
+    const ADMIN_RESOURCE = 'Magento_Sales::shipment';
+
     /**
      * @var \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader
      */
@@ -45,14 +52,6 @@ class Save extends \Magento\Backend\App\Action
     }
 
     /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Magento_Sales::shipment');
-    }
-
-    /**
      * Save shipment and order in one transaction
      *
      * @param \Magento\Sales\Model\Order\Shipment $shipment
@@ -83,6 +82,16 @@ class Save extends \Magento\Backend\App\Action
      */
     public function execute()
     {
+        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        $resultRedirect = $this->resultRedirectFactory->create();
+
+        $formKeyIsValid = $this->_formKeyValidator->validate($this->getRequest());
+        $isPost = $this->getRequest()->isPost();
+        if (!$formKeyIsValid || !$isPost) {
+            $this->messageManager->addError(__('We can\'t save the shipment right now.'));
+            return $resultRedirect->setPath('sales/order/index');
+        }
+
         $data = $this->getRequest()->getParam('shipment');
 
         if (!empty($data['comment_text'])) {
@@ -114,7 +123,7 @@ class Save extends \Magento\Backend\App\Action
             $shipment->register();
 
             $shipment->getOrder()->setCustomerNoteNotify(!empty($data['send_email']));
-            $responseAjax = new \Magento\Framework\Object();
+            $responseAjax = new \Magento\Framework\DataObject();
             $isNeedCreateLabel = isset($data['create_shipping_label']) && $data['create_shipping_label'];
 
             if ($isNeedCreateLabel) {

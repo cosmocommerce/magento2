@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework;
@@ -47,8 +47,8 @@ class TranslateCachingTest extends \PHPUnit_Framework_TestCase
         $model->loadData(\Magento\Framework\App\Area::AREA_FRONTEND); // this is supposed to cache the fixture
         $this->assertEquals('Fixture Db Translation', new Phrase('Fixture String'));
 
-        /** @var \Magento\Translation\Model\Resource\String $translateString */
-        $translateString = $this->objectManager->create('Magento\Translation\Model\Resource\String');
+        /** @var \Magento\Translation\Model\ResourceModel\StringUtils $translateString */
+        $translateString = $this->objectManager->create('Magento\Translation\Model\ResourceModel\StringUtils');
         $translateString->saveTranslate('Fixture String', 'New Db Translation');
 
         $this->assertEquals(

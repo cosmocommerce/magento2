@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -363,8 +363,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             [
                 'getInfoUrl',
                 Config::XML_PATH_TAX_NOTIFICATION_INFO_URL,
-                true,
-                true
+                'http:\\kiwis.rule.com',
+                'http:\\kiwis.rule.com'
             ]
         ];
     }

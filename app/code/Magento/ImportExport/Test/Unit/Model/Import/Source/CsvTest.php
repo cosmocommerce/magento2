@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ImportExport\Test\Unit\Model\Import\Source;
@@ -111,6 +111,10 @@ class CsvTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage wrongColumnsNumber
+     */
     public function testRewind()
     {
         $this->_directoryMock->expects(
@@ -139,6 +143,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase
         $model->next();
         $model->next();
         $this->assertSame(2, $model->key());
-        $this->assertSame(['column1' => '5', 'column2' => ''], $model->current());
+        $model->current();
     }
 }

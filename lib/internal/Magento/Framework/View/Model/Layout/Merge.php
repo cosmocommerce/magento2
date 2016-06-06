@@ -1,12 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Model\Layout;
 
+use Magento\Framework\Filesystem\DriverPool;
+use Magento\Framework\Filesystem\File\ReadFactory;
 use Magento\Framework\View\Model\Layout\Update\Validator;
-use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
  * Layout merge model
@@ -116,11 +117,6 @@ class Merge implements \Magento\Framework\View\Layout\ProcessorInterface
     protected $logger;
 
     /**
-     * @var \Magento\Framework\Filesystem
-     */
-    protected $filesystem;
-
-    /**
      * @var string
      */
     protected $pageLayout;
@@ -152,6 +148,11 @@ class Merge implements \Magento\Framework\View\Layout\ProcessorInterface
     protected $handleProcessed = 2;
 
     /**
+     * @var ReadFactory
+     */
+    private $readFactory;
+
+    /**
      * Init merge model
      *
      * @param \Magento\Framework\View\DesignInterface $design
@@ -162,7 +163,7 @@ class Merge implements \Magento\Framework\View\Layout\ProcessorInterface
      * @param \Magento\Framework\Cache\FrontendInterface $cache
      * @param \Magento\Framework\View\Model\Layout\Update\Validator $validator
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Framework\Filesystem $filesystem
+     * @param ReadFactory $readFactory,
      * @param \Magento\Framework\View\Design\ThemeInterface $theme Non-injectable theme instance
      * @param string $cacheSuffix
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
@@ -176,7 +177,7 @@ class Merge implements \Magento\Framework\View\Layout\ProcessorInterface
         \Magento\Framework\Cache\FrontendInterface $cache,
         \Magento\Framework\View\Model\Layout\Update\Validator $validator,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Framework\Filesystem $filesystem,
+        ReadFactory $readFactory,
         \Magento\Framework\View\Design\ThemeInterface $theme = null,
         $cacheSuffix = ''
     ) {
@@ -188,7 +189,7 @@ class Merge implements \Magento\Framework\View\Layout\ProcessorInterface
         $this->cache = $cache;
         $this->layoutValidator = $validator;
         $this->logger = $logger;
-        $this->filesystem = $filesystem;
+        $this->readFactory = $readFactory;
         $this->cacheSuffix = $cacheSuffix;
     }
 
@@ -450,14 +451,19 @@ class Merge implements \Magento\Framework\View\Layout\ProcessorInterface
     protected function _validateMergedLayout($cacheId, $layout)
     {
         $layoutStr = '<handle id="handle">' . $layout . '</handle>';
+
         if ($this->appState->getMode() === \Magento\Framework\App\State::MODE_DEVELOPER) {
             if (!$this->layoutValidator->isValid($layoutStr, Validator::LAYOUT_SCHEMA_MERGED, false)) {
                 $messages = $this->layoutValidator->getMessages();
                 //Add first message to exception
                 $message = reset($messages);
-                $this->logger->info('Cache file with merged layout: ' . $cacheId . ': ' . $message);
+                $this->logger->info(
+                    'Cache file with merged layout: ' . $cacheId
+                    . ' and handles ' . implode(', ', (array)$this->getHandles()) . ': ' . $message
+                );
             }
         }
+
         return $this;
     }
 
@@ -678,11 +684,11 @@ class Merge implements \Magento\Framework\View\Layout\ProcessorInterface
         $theme = $this->_getPhysicalTheme($this->theme);
         $updateFiles = $this->fileSource->getFiles($theme, '*.xml');
         $updateFiles = array_merge($updateFiles, $this->pageLayoutFileSource->getFiles($theme, '*.xml'));
-        $dir = $this->filesystem->getDirectoryRead(DirectoryList::ROOT);
         $useErrors = libxml_use_internal_errors(true);
         foreach ($updateFiles as $file) {
-            $filename = $dir->getRelativePath($file->getFilename());
-            $fileStr = $dir->readFile($filename);
+            /** @var $fileReader \Magento\Framework\Filesystem\File\Read   */
+            $fileReader = $this->readFactory->create($file->getFilename(), DriverPool::FILE);
+            $fileStr = $fileReader->readAll($file->getName());
             $fileStr = $this->_substitutePlaceholders($fileStr);
             /** @var $fileXml \Magento\Framework\View\Layout\Element */
             $fileXml = $this->_loadXmlString($fileStr);

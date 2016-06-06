@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -26,5 +26,6 @@ $customer->setWebsiteId(1)
     ->setDefaultShipping(1)
     ->setTaxvat('12')
     ->setGender(0);
+
 $customer->isObjectNew(true);
 $customer->save();

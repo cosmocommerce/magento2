@@ -2,7 +2,7 @@
 /**
  * RouterList model test class
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Test\Unit\Router;
@@ -20,22 +20,22 @@ class ActionListTest extends \PHPUnit_Framework_TestCase
     protected $cacheMock;
 
     /**
-     * @var \Magento\Framework\App\Router\ActionList\Reader | \PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Module\Dir\Reader | \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $actionReaderMock;
+    protected $moduleReaderMock;
 
     /**
      * @var \Magento\Framework\App\Router\ActionList
      */
     protected $actionList;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->cacheMock = $this->getMockBuilder('Magento\Framework\Config\CacheInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->actionReaderMock = $this->getMockBuilder('Magento\Framework\App\Router\ActionList\Reader')
+        $this->moduleReaderMock = $this->getMockBuilder('Magento\Framework\Module\Dir\Reader')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -47,13 +47,13 @@ class ActionListTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(serialize('data')));
         $this->cacheMock->expects($this->never())
             ->method('save');
-        $this->actionReaderMock->expects($this->never())
-            ->method('read');
+        $this->moduleReaderMock->expects($this->never())
+            ->method('getActionFiles');
         $this->actionList = $this->objectManager->getObject(
             'Magento\Framework\App\Router\ActionList',
             [
                 'cache' => $this->cacheMock,
-                'actionReader' => $this->actionReaderMock,
+                'moduleReader' => $this->moduleReaderMock,
             ]
         );
     }
@@ -65,14 +65,14 @@ class ActionListTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
         $this->cacheMock->expects($this->once())
             ->method('save');
-        $this->actionReaderMock->expects($this->once())
-            ->method('read')
+        $this->moduleReaderMock->expects($this->once())
+            ->method('getActionFiles')
             ->will($this->returnValue('data'));
         $this->actionList = $this->objectManager->getObject(
             'Magento\Framework\App\Router\ActionList',
             [
                 'cache' => $this->cacheMock,
-                'actionReader' => $this->actionReaderMock,
+                'moduleReader' => $this->moduleReaderMock,
             ]
         );
     }
@@ -94,14 +94,14 @@ class ActionListTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
         $this->cacheMock->expects($this->once())
             ->method('save');
-        $this->actionReaderMock->expects($this->once())
-            ->method('read')
+        $this->moduleReaderMock->expects($this->once())
+            ->method('getActionFiles')
             ->will($this->returnValue($data));
         $this->actionList = $this->objectManager->getObject(
             'Magento\Framework\App\Router\ActionList',
             [
                 'cache' => $this->cacheMock,
-                'actionReader' => $this->actionReaderMock,
+                'moduleReader' => $this->moduleReaderMock,
             ]
         );
         $this->assertEquals($expected, $this->actionList->get($module, $area, $namespace, $action));
@@ -112,7 +112,7 @@ class ActionListTest extends \PHPUnit_Framework_TestCase
         $mockClassName = 'Mock_Action_Class';
         $actionClass = $this->getMockClass(
             'Magento\Framework\App\ActionInterface',
-            ['dispatch', 'getResponse'],
+            ['execute', 'getResponse'],
             [],
             $mockClassName
         );
@@ -156,6 +156,14 @@ class ActionListTest extends \PHPUnit_Framework_TestCase
                 'Namespace',
                 'Index',
                 [],
+                null
+            ],
+            [
+                'Magento_Module',
+                null,
+                'adminhtml_product',
+                'index',
+                'magento\module\controller\adminhtml\product\index' => '$mockClassName',
                 null
             ],
         ];

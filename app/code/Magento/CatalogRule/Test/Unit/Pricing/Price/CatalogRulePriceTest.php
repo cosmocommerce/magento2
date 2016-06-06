@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -19,7 +19,7 @@ class CatalogRulePriceTest extends \PHPUnit_Framework_TestCase
     protected $object;
 
     /**
-     * @var \Magento\Framework\Pricing\Object\SaleableInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Pricing\SaleableInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $saleableItemMock;
 
@@ -44,12 +44,12 @@ class CatalogRulePriceTest extends \PHPUnit_Framework_TestCase
     protected $priceInfoMock;
 
     /**
-     * @var \Magento\CatalogRule\Model\Resource\RuleFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\CatalogRule\Model\ResourceModel\RuleFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $catalogRuleResourceFactoryMock;
 
     /**
-     * @var \Magento\CatalogRule\Model\Resource\Rule|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\CatalogRule\Model\ResourceModel\Rule|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $catalogRuleResourceMock;
 
@@ -76,7 +76,7 @@ class CatalogRulePriceTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->saleableItemMock = $this->getMock(
             'Magento\Catalog\Model\Product',
@@ -110,14 +110,14 @@ class CatalogRulePriceTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->catalogRuleResourceFactoryMock = $this->getMock(
-            '\Magento\CatalogRule\Model\Resource\RuleFactory',
+            '\Magento\CatalogRule\Model\ResourceModel\RuleFactory',
             ['create'],
             [],
             '',
             false
         );
         $this->catalogRuleResourceMock = $this->getMock(
-            '\Magento\CatalogRule\Model\Resource\Rule',
+            '\Magento\CatalogRule\Model\ResourceModel\Rule',
             [],
             [],
             '',

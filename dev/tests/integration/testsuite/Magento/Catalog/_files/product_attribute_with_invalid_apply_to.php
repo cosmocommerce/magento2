@@ -1,18 +1,15 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 /** @var \Magento\Catalog\Setup\CategorySetup $installer */
-$installer = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\Catalog\Setup\CategorySetup',
-    ['resourceName' => 'catalog_setup']
-);
+$installer = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Setup\CategorySetup');
 
-/** @var $attribute \Magento\Catalog\Model\Resource\Eav\Attribute */
+/** @var $attribute \Magento\Catalog\Model\ResourceModel\Eav\Attribute */
 $attribute = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\Catalog\Model\Resource\Eav\Attribute'
+    'Magento\Catalog\Model\ResourceModel\Eav\Attribute'
 );
 $attribute->setData(
     [

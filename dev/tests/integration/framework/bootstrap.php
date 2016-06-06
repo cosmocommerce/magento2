@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 use Magento\Framework\Autoload\AutoloaderRegistry;
@@ -8,13 +8,8 @@ use Magento\Framework\Autoload\AutoloaderRegistry;
 require_once __DIR__ . '/../../../../app/bootstrap.php';
 require_once __DIR__ . '/autoload.php';
 
-$updateAppBootstrap = __DIR__ . '/../../../../update/app/bootstrap.php';
-if (file_exists($updateAppBootstrap)) {
-    require_once $updateAppBootstrap;
-}
-
 $testsBaseDir = dirname(__DIR__);
-$magentoBaseDir = realpath("{$testsBaseDir}/../../../");
+$fixtureBaseDir = $testsBaseDir. '/testsuite';
 
 if (!defined('TESTS_TEMP_DIR')) {
     define('TESTS_TEMP_DIR', $testsBaseDir . '/tmp');
@@ -76,10 +71,20 @@ try {
 
     \Magento\TestFramework\Helper\Bootstrap::setInstance(new \Magento\TestFramework\Helper\Bootstrap($bootstrap));
 
-    \Magento\Framework\App\Utility\Files::setInstance(new Magento\Framework\App\Utility\Files($magentoBaseDir));
+    $dirSearch = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
+        ->create('Magento\Framework\Component\DirSearch');
+    $themePackageList = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
+        ->create('Magento\Framework\View\Design\Theme\ThemePackageList');
+    \Magento\Framework\App\Utility\Files::setInstance(
+        new Magento\Framework\App\Utility\Files(
+            new \Magento\Framework\Component\ComponentRegistrar(),
+            $dirSearch,
+            $themePackageList
+        )
+    );
 
     /* Unset declared global variables to release the PHPUnit from maintaining their values between tests */
-    unset($testsBaseDir, $magentoBaseDir, $logWriter, $settings, $shell, $application, $bootstrap);
+    unset($testsBaseDir, $logWriter, $settings, $shell, $application, $bootstrap);
 } catch (\Exception $e) {
     echo $e . PHP_EOL;
     exit(1);

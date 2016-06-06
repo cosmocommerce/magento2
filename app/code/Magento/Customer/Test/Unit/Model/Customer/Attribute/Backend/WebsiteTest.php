@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -20,7 +20,7 @@ class WebsiteTest extends \PHPUnit_Framework_TestCase
      */
     protected $storeManager;
 
-    public function setUp()
+    protected function setUp()
     {
         $storeManager = $this->storeManager = $this->getMockBuilder('Magento\Store\Model\StoreManagerInterface')
             ->getMock();
@@ -30,13 +30,13 @@ class WebsiteTest extends \PHPUnit_Framework_TestCase
 
     public function testBeforeSaveWithId()
     {
-        $object = $this->getMockBuilder('Magento\Framework\Object')
+        $object = $this->getMockBuilder('Magento\Framework\DataObject')
             ->disableOriginalConstructor()
             ->setMethods(['getId'])
             ->getMock();
 
         $object->expects($this->once())->method('getId')->will($this->returnValue(1));
-        /** @var \Magento\Framework\Object $object */
+        /** @var \Magento\Framework\DataObject $object */
 
         $this->assertInstanceOf(
             'Magento\Customer\Model\Customer\Attribute\Backend\Website',
@@ -47,12 +47,12 @@ class WebsiteTest extends \PHPUnit_Framework_TestCase
     public function testBeforeSave()
     {
         $websiteId = 1;
-        $object = $this->getMockBuilder('Magento\Framework\Object')
+        $object = $this->getMockBuilder('Magento\Framework\DataObject')
             ->disableOriginalConstructor()
             ->setMethods(['hasData', 'setData'])
             ->getMock();
 
-        $store = $this->getMockBuilder('Magento\Framework\Object')->setMethods(['getWebsiteId'])->getMock();
+        $store = $this->getMockBuilder('Magento\Framework\DataObject')->setMethods(['getWebsiteId'])->getMock();
         $store->expects($this->once())->method('getWebsiteId')->will($this->returnValue($websiteId));
 
         $this->storeManager->expects($this->once())
@@ -64,7 +64,7 @@ class WebsiteTest extends \PHPUnit_Framework_TestCase
             ->method('setData')
             ->with($this->logicalOr('website_id', $websiteId))
             ->will($this->returnSelf());
-        /** @var \Magento\Framework\Object $object */
+        /** @var \Magento\Framework\DataObject $object */
 
         $this->assertInstanceOf(
             'Magento\Customer\Model\Customer\Attribute\Backend\Website',

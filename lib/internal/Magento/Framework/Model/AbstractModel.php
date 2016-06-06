@@ -1,9 +1,8 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 namespace Magento\Framework\Model;
 
 use Magento\Framework\Phrase;
@@ -15,7 +14,7 @@ use Magento\Framework\Phrase;
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  * @SuppressWarnings(PHPMD.TooManyFields)
  */
-abstract class AbstractModel extends \Magento\Framework\Object
+abstract class AbstractModel extends \Magento\Framework\DataObject
 {
     /**
      * Prefix of model events names
@@ -63,14 +62,14 @@ abstract class AbstractModel extends \Magento\Framework\Object
     /**
      * Resource model instance
      *
-     * @var \Magento\Framework\Model\Resource\Db\AbstractDb
+     * @var \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     protected $_resource;
 
     /**
      * Resource collection
      *
-     * @var \Magento\Framework\Model\Resource\Db\Collection\AbstractCollection
+     * @var \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
      */
     protected $_resourceCollection;
 
@@ -164,14 +163,14 @@ abstract class AbstractModel extends \Magento\Framework\Object
     /**
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\Model\Resource\AbstractResource $resource
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Model\Resource\AbstractResource $resource = null,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
@@ -185,7 +184,7 @@ abstract class AbstractModel extends \Magento\Framework\Object
         $this->_actionValidator = $context->getActionValidator();
 
         if (method_exists($this->_resource, 'getIdFieldName')
-            || $this->_resource instanceof \Magento\Framework\Object
+            || $this->_resource instanceof \Magento\Framework\DataObject
         ) {
             $this->_idFieldName = $this->_getResource()->getIdFieldName();
         }
@@ -221,7 +220,19 @@ abstract class AbstractModel extends \Magento\Framework\Object
     public function __sleep()
     {
         $properties = array_keys(get_object_vars($this));
-        $properties = array_diff($properties, ['_eventManager', '_cacheManager', '_registry', '_appState']);
+        $properties = array_diff(
+            $properties,
+            [
+                '_eventManager',
+                '_cacheManager',
+                '_registry',
+                '_appState',
+                '_actionValidator',
+                '_logger',
+                '_resourceCollection',
+                '_resource',
+            ]
+        );
         return $properties;
     }
 
@@ -233,12 +244,15 @@ abstract class AbstractModel extends \Magento\Framework\Object
     public function __wakeup()
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->_eventManager = $objectManager->get('Magento\Framework\Event\ManagerInterface');
-        $this->_cacheManager = $objectManager->get('Magento\Framework\App\CacheInterface');
         $this->_registry = $objectManager->get('Magento\Framework\Registry');
+
         $context = $objectManager->get('Magento\Framework\Model\Context');
         if ($context instanceof \Magento\Framework\Model\Context) {
             $this->_appState = $context->getAppState();
+            $this->_eventManager = $context->getEventDispatcher();
+            $this->_cacheManager = $context->getCacheManager();
+            $this->_logger = $context->getLogger();
+            $this->_actionValidator = $context->getActionValidator();
         }
     }
 
@@ -263,7 +277,6 @@ abstract class AbstractModel extends \Magento\Framework\Object
     {
         return $this->_idFieldName;
     }
-
 
     /**
      * Identifier getter
@@ -449,13 +462,13 @@ abstract class AbstractModel extends \Magento\Framework\Object
      * Get resource instance
      *
      * @throws \Magento\Framework\Exception\LocalizedException
-     * @return \Magento\Framework\Model\Resource\Db\AbstractDb
+     * @return \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     protected function _getResource()
     {
         if (empty($this->_resourceName) && empty($this->_resource)) {
             throw new \Magento\Framework\Exception\LocalizedException(
-                new \Magento\Framework\Phrase('Resource is not set.')
+                new \Magento\Framework\Phrase('The resource isn\'t set.')
             );
         }
 
@@ -475,10 +488,9 @@ abstract class AbstractModel extends \Magento\Framework\Object
     /**
      * Get collection instance
      *
-     * @deprecated
      * @TODO MAGETWO-23541: Incorrect dependencies between Model\AbstractModel and Data\Collection\Db from Framework
      * @throws \Magento\Framework\Exception\LocalizedException
-     * @return \Magento\Framework\Model\Resource\Db\Collection\AbstractCollection
+     * @return \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
      */
     public function getResourceCollection()
     {
@@ -497,9 +509,8 @@ abstract class AbstractModel extends \Magento\Framework\Object
     /**
      * Retrieve collection instance
      *
-     * @deprecated
      * @TODO MAGETWO-23541: Incorrect dependencies between Model\AbstractModel and Data\Collection\Db from Framework
-     * @return \Magento\Framework\Model\Resource\Db\Collection\AbstractCollection
+     * @return \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
      */
     public function getCollection()
     {
@@ -509,6 +520,7 @@ abstract class AbstractModel extends \Magento\Framework\Object
     /**
      * Load object data
      *
+     * @deprecated
      * @param integer $modelId
      * @param null|string $field
      * @return $this
@@ -610,6 +622,7 @@ abstract class AbstractModel extends \Magento\Framework\Object
     /**
      * Save object data
      *
+     * @deprecated
      * @return $this
      * @throws \Exception
      */
@@ -794,6 +807,7 @@ abstract class AbstractModel extends \Magento\Framework\Object
     /**
      * Delete object from database
      *
+     * @deprecated
      * @return $this
      * @throws \Exception
      */
@@ -852,7 +866,7 @@ abstract class AbstractModel extends \Magento\Framework\Object
     /**
      * Retrieve model resource
      *
-     * @return \Magento\Framework\Model\Resource\Db\AbstractDb
+     * @return \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function getResource()
     {
@@ -936,5 +950,15 @@ abstract class AbstractModel extends \Magento\Framework\Object
     public function getStoredData()
     {
         return $this->storedData;
+    }
+
+    /**
+     * Returns _eventPrefix
+     *
+     * @return string
+     */
+    public function getEventPrefix()
+    {
+        return $this->_eventPrefix;
     }
 }

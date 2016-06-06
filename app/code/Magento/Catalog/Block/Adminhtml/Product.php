@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,11 +13,6 @@ namespace Magento\Catalog\Block\Adminhtml;
 
 class Product extends \Magento\Backend\Block\Widget\Container
 {
-    /**
-     * @var string
-     */
-    protected $_template = 'catalog/product.phtml';
-
     /**
      * @var \Magento\Catalog\Model\Product\TypeFactory
      */
@@ -63,10 +58,6 @@ class Product extends \Magento\Backend\Block\Widget\Container
         ];
         $this->buttonList->add('add_new', $addButtonProps);
 
-        $this->setChild(
-            'grid',
-            $this->getLayout()->createBlock('Magento\Catalog\Block\Adminhtml\Product\Grid', 'product.grid')
-        );
         return parent::_prepareLayout();
     }
 
@@ -109,16 +100,6 @@ class Product extends \Magento\Backend\Block\Widget\Container
             'catalog/*/new',
             ['set' => $this->_productFactory->create()->getDefaultAttributeSetId(), 'type' => $type]
         );
-    }
-
-    /**
-     * Render grid
-     *
-     * @return string
-     */
-    public function getGridHtml()
-    {
-        return $this->getChildHtml('grid');
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -148,7 +148,7 @@ class Wishlist implements DataProviderInterface
                 }
 
                 $description = '<table><tr><td><a href="' . $productUrl . '"><img src="'
-                    . $this->imageHelper->init($product, 'thumbnail')->resize(75, 75)
+                    . $this->imageHelper->init($product, 'rss_thumbnail')->getUrl()
                     . '" border="0" align="left" height="75" width="75"></a></td>'
                     . '<td style="text-decoration:none;">'
                     . $this->outputHelper->productAttribute(
@@ -255,7 +255,7 @@ class Wishlist implements DataProviderInterface
         }
         if ($priceRender) {
             $price = $priceRender->render(
-                \Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE,
+                'wishlist_configured_price',
                 $product,
                 ['zone' => \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST]
             );

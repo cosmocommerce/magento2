@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Adminhtml\Index;
@@ -30,7 +30,7 @@ class ResetPassword extends \Magento\Customer\Controller\Adminhtml\Index
                 \Magento\Customer\Model\AccountManagement::EMAIL_REMINDER,
                 $customer->getWebsiteId()
             );
-            $this->messageManager->addSuccess(__('Customer will receive an email with a link to reset password.'));
+            $this->messageManager->addSuccess(__('The customer will receive an email with a link to reset password.'));
         } catch (NoSuchEntityException $exception) {
             $resultRedirect->setPath('customer/index');
             return $resultRedirect;
@@ -43,7 +43,7 @@ class ResetPassword extends \Magento\Customer\Controller\Adminhtml\Index
         } catch (\Exception $exception) {
             $this->messageManager->addException(
                 $exception,
-                __('An error occurred while resetting customer password.')
+                __('Something went wrong while resetting customer password.')
             );
         }
         $resultRedirect->setPath(

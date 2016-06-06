@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Setup\Module\I18n\Dictionary\Writer;
@@ -41,32 +41,13 @@ class Csv implements WriterInterface
      */
     public function write(Phrase $phrase)
     {
-        $fields = [$phrase->getPhrase(), $phrase->getTranslation()];
-        $encloseQuote = $phrase->getQuote() == Phrase::QUOTE_DOUBLE ? Phrase::QUOTE_DOUBLE : Phrase::QUOTE_SINGLE;
-        $fields[0] = $this->compileString($fields[0], $encloseQuote);
-        $fields[1] = $this->compileString($fields[1], $encloseQuote);
+        $fields = [$phrase->getCompiledPhrase(), $phrase->getCompiledTranslation()];
         if (($contextType = $phrase->getContextType()) && ($contextValue = $phrase->getContextValueAsString())) {
             $fields[] = $contextType;
             $fields[] = $contextValue;
         }
 
         fputcsv($this->_fileHandler, $fields, ',', '"');
-    }
-
-    /**
-     * Compile PHP string based on quotes type it enclosed with
-     *
-     * @param string $string
-     * @param string $encloseQuote
-     * @return string
-     *
-     * @SuppressWarnings(PHPMD.EvalExpression)
-     */
-    protected function compileString($string, $encloseQuote)
-    {
-        $evalString = 'return ' . $encloseQuote . $string . $encloseQuote . ';';
-        $result = @eval($evalString);
-        return is_string($result) ? $result : $string;
     }
 
     /**

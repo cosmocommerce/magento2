@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -64,12 +64,12 @@ class CreateProductsStep implements TestStepInterface
         foreach ($productsDataSets as $key => $productDataSet) {
             $productDataSet = explode('::', $productDataSet);
             $fixtureClass = $productDataSet[0];
-            $dataSet = isset($productDataSet[1]) ? $productDataSet[1] : '';
+            $dataset = isset($productDataSet[1]) ? $productDataSet[1] : '';
             $data = isset($this->data[$key]) ? $this->data[$key] : [];
             /** @var FixtureInterface[] $products */
             $products[$key] = $this->fixtureFactory->createByCode(
                 trim($fixtureClass),
-                ['dataSet' => trim($dataSet), 'data' => $data]
+                ['dataset' => trim($dataset), 'data' => $data]
             );
             if ($products[$key]->hasData('id') === false) {
                 $products[$key]->persist();

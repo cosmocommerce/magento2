@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml\System;
@@ -10,7 +10,7 @@ use Magento\TestFramework\Bootstrap;
 /**
  * @magentoAppArea adminhtml
  */
-class AccountTest extends \Magento\Backend\Utility\Controller
+class AccountTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * @dataProvider saveDataProvider

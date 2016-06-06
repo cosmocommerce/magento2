@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Model\Cart;
@@ -11,6 +11,7 @@ use Magento\Quote\Model\Quote;
  * Shopping cart interface
  *
  * @author      Magento Core Team <core@magentocommerce.com>
+ * @deprecated
  */
 interface CartInterface
 {
@@ -18,7 +19,7 @@ interface CartInterface
      * Add product to shopping cart (quote)
      *
      * @param int|\Magento\Catalog\Model\Product $productInfo
-     * @param array|float|int|\Magento\Framework\Object|null $requestInfo
+     * @param array|float|int|\Magento\Framework\DataObject|null $requestInfo
      * @return $this
      */
     public function addProduct($productInfo, $requestInfo = null);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,7 +13,6 @@ namespace Magento\Framework\Filesystem\Io;
  *
  * @link        http://www.php.net/manual/en/function.ssh2-connect.php
  */
-require_once 'phpseclib/Net/SFTP.php';
 class Sftp extends AbstractIo
 {
     const REMOTE_TIMEOUT = 10;
@@ -47,7 +46,7 @@ class Sftp extends AbstractIo
             $host = $args['host'];
             $port = self::SSH2_PORT;
         }
-        $this->_connection = new \Net_SFTP($host, $port, $args['timeout']);
+        $this->_connection = new \phpseclib\Net\SFTP($host, $port, $args['timeout']);
         if (!$this->_connection->login($args['username'], $args['password'])) {
             throw new \Exception(sprintf("Unable to open SFTP connection as %s@%s", $args['username'], $args['host']));
         }
@@ -75,6 +74,7 @@ class Sftp extends AbstractIo
      * No rollback is performed.
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function mkdir($dir, $mode = 0777, $recursive = true)
     {
@@ -231,6 +231,7 @@ class Sftp extends AbstractIo
      * @param null $grep ignored parameter
      * @return array
      * @SuppressWarnings(PHPMD.ShortMethodName)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function ls($grep = null)
     {
@@ -238,7 +239,7 @@ class Sftp extends AbstractIo
         $currentWorkingDir = $this->pwd();
         $result = [];
         foreach ($list as $name) {
-            $result[] = ['text' => $name, 'id' => "{$currentWorkingDir}{$name}"];
+            $result[] = ['text' => $name, 'id' => "{$currentWorkingDir}/{$name}"];
         }
         return $result;
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -39,7 +39,7 @@ class AdjustmentTest extends \PHPUnit_Framework_TestCase
     /**
      * Init mocks and model
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->contextMock = $this->getMock(
             'Magento\Framework\View\Element\Template\Context',
@@ -89,6 +89,16 @@ class AdjustmentTest extends \PHPUnit_Framework_TestCase
     public function testGetAdjustmentCode()
     {
         $this->assertEquals(\Magento\Tax\Pricing\Adjustment::ADJUSTMENT_CODE, $this->model->getAdjustmentCode());
+    }
+
+    /**
+     * Test for method getDefaultExclusions
+     */
+    public function testGetDefaultExclusions()
+    {
+        $defaultExclusions = $this->model->getDefaultExclusions();
+        $this->assertNotEmpty($defaultExclusions, 'Expected to have at least one default exclusion');
+        $this->assertContains($this->model->getAdjustmentCode(), $defaultExclusions);
     }
 
     /**
@@ -323,7 +333,7 @@ class AdjustmentTest extends \PHPUnit_Framework_TestCase
             '',
             false
         );
-        $product = $this->getMockForAbstractClass('Magento\Framework\Pricing\Object\SaleableInterface');
+        $product = $this->getMockForAbstractClass('Magento\Framework\Pricing\SaleableInterface');
         $product->expects($this->once())
             ->method('getId');
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Element\UiComponent\Argument\Interpreter;
@@ -40,17 +40,22 @@ class ConfigurableObject implements InterpreterInterface
      */
     public function evaluate(array $data)
     {
-        if (!isset($data['argument'])) {
-            throw new \InvalidArgumentException('Node "argument" required for this type.');
+        if (isset($data['value'])) {
+            $className = $data['value'];
+            $arguments = [];
+        } else {
+            if (!isset($data['argument'])) {
+                throw new \InvalidArgumentException('Node "argument" required for this type.');
+            }
+            foreach ($data['argument'] as $name => $argument) {
+                $arguments[$name] = $this->argumentInterpreter->evaluate($argument);
+            }
+            if (!isset($arguments['class'])) {
+                throw new \InvalidArgumentException('Node "argument" with name "class" is required for this type.');
+            }
+            $className = $arguments['class'];
+            unset($arguments['class']);
         }
-        foreach ($data['argument'] as $name => $argument) {
-            $arguments[$name] = $this->argumentInterpreter->evaluate($argument);
-        }
-        if (!isset($arguments['class'])) {
-            throw new \InvalidArgumentException('Node "argument" with name "class" is required for this type.');
-        }
-        $className = $arguments['class'];
-        unset($arguments['class']);
 
         return $this->objectManager->create($className, $arguments);
     }

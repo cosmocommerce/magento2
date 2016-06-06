@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order\Creditmemo;
@@ -9,6 +9,13 @@ use Magento\Backend\App\Action;
 
 class UpdateQty extends \Magento\Backend\App\Action
 {
+    /**
+     * Authorization level of a basic admin session
+     *
+     * @see _isAllowed()
+     */
+    const ADMIN_RESOURCE = 'Magento_Sales::sales_creditmemo';
+
     /**
      * @var \Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader
      */
@@ -51,14 +58,6 @@ class UpdateQty extends \Magento\Backend\App\Action
     }
 
     /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Magento_Sales::sales_creditmemo');
-    }
-
-    /**
      * Update items qty action
      *
      * @return \Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\Result\Raw
@@ -76,7 +75,7 @@ class UpdateQty extends \Magento\Backend\App\Action
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $response = ['error' => true, 'message' => $e->getMessage()];
         } catch (\Exception $e) {
-            $response = ['error' => true, 'message' => __('Cannot update the item\'s quantity.')];
+            $response = ['error' => true, 'message' => __('We can\'t update the item\'s quantity right now.')];
         }
         if (is_array($response)) {
             $resultJson = $this->resultJsonFactory->create();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Ui\Model;
@@ -155,10 +155,7 @@ class Manager implements ManagerInterface
     {
         if ($name === null || $this->hasData($name)) {
             throw new LocalizedException(
-                new \Magento\Framework\Phrase(
-                    'Initialization error component, check the '
-                    . 'spelling of the name or the correctness of the call.'
-                )
+                new \Magento\Framework\Phrase("Invalid UI Component element name: '%1'", [$name])
             );
         }
         $this->componentsPool = $this->arrayObjectFactory->create();
@@ -190,12 +187,11 @@ class Manager implements ManagerInterface
                 $component[ManagerInterface::COMPONENT_ARGUMENTS_KEY][$argumentName]
                     = $this->argumentInterpreter->evaluate($argument);
             }
-            $component['children'] = $this->evaluateComponentArguments($component['children']);
-            $this->mergeBookmarkConfig(
-                $component['attributes']['name'],
-                $component[ManagerInterface::COMPONENT_ARGUMENTS_KEY]['data']['config']
+            $component[ManagerInterface::CHILDREN_KEY] = $this->evaluateComponentArguments(
+                $component[ManagerInterface::CHILDREN_KEY]
             );
         }
+
         return $components;
     }
 
@@ -206,7 +202,7 @@ class Manager implements ManagerInterface
      * @param bool $evaluated
      * @return array
      */
-    public function createRawComponentData($component, $evaluated = false)
+    public function createRawComponentData($component, $evaluated = true)
     {
         $componentData = $this->componentConfigProvider->getComponentData($component);
         $componentData[Converter::DATA_ATTRIBUTES_KEY] = isset($componentData[Converter::DATA_ATTRIBUTES_KEY])
@@ -280,7 +276,7 @@ class Manager implements ManagerInterface
     protected function createDataForComponent($name, array $componentsPool)
     {
         $createdComponents = [];
-        $rootComponent = $this->createRawComponentData($name);
+        $rootComponent = $this->createRawComponentData($name, false);
         foreach ($componentsPool as $key => $component) {
             $resultConfiguration = [ManagerInterface::CHILDREN_KEY => []];
             $instanceName = $this->createName($component, $key, $name);
@@ -299,37 +295,13 @@ class Manager implements ManagerInterface
             foreach ($component as $subComponentName => $subComponent) {
                 $resultConfiguration[ManagerInterface::CHILDREN_KEY] = array_merge(
                     $resultConfiguration[ManagerInterface::CHILDREN_KEY],
-                    $this->createDataForComponent($subComponentName, $subComponent, $name)
+                    $this->createDataForComponent($subComponentName, $subComponent)
                 );
             }
             $createdComponents[$instanceName] = $resultConfiguration;
         }
 
         return $createdComponents;
-    }
-
-    /**
-     * Merged bookmark config with main config
-     *
-     * @param string $parentName
-     * @param array|null $configuration
-     * @return void
-     */
-    protected function mergeBookmarkConfig($parentName, &$configuration)
-    {
-        $data = [];//$this->bookmark->getCurrentBookmarkByIdentifier('cms_page_listing')->getConfig();
-
-        if (isset($data[$parentName])) {
-            foreach ($data[$parentName] as $name => $fields) {
-                if ($configuration['attributes']['name'] == $name && is_array($fields)) {
-                    $configuration['arguments']['data']['config'] = array_replace_recursive(
-                        $configuration['arguments']['data']['config'],
-                        $fields
-                    );
-                }
-            }
-        }
-
     }
 
     /**

@@ -1,10 +1,8 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-
-// @codingStandardsIgnoreFile
 
 namespace Magento\Reports\Block\Adminhtml\Sales\Refunded;
 
@@ -17,12 +15,15 @@ namespace Magento\Reports\Block\Adminhtml\Sales\Refunded;
 class Grid extends \Magento\Reports\Block\Adminhtml\Grid\AbstractGrid
 {
     /**
+     * GROUP BY criteria
+     *
      * @var string
      */
     protected $_columnGroupBy = 'period';
 
     /**
-     * @return void
+     * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     protected function _construct()
     {
@@ -31,18 +32,17 @@ class Grid extends \Magento\Reports\Block\Adminhtml\Grid\AbstractGrid
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getResourceCollectionName()
     {
-        return $this->getFilterData()->getData(
-            'report_type'
-        ) ==
-            'created_at_refunded' ? 'Magento\Sales\Model\Resource\Report\Refunded\Collection\Refunded' : 'Magento\Sales\Model\Resource\Report\Refunded\Collection\Order';
+        return $this->getFilterData()->getData('report_type') == 'created_at_refunded'
+            ? 'Magento\Sales\Model\ResourceModel\Report\Refunded\Collection\Refunded'
+            : 'Magento\Sales\Model\ResourceModel\Report\Refunded\Collection\Order';
     }
 
     /**
-     * @return \Magento\Backend\Block\Widget\Grid\Extended
+     * {@inheritdoc}
      */
     protected function _prepareColumns()
     {

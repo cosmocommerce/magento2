@@ -1,10 +1,14 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Gateway\Data;
 
+/**
+ * Interface AddressAdapterInterface
+ * @api
+ */
 interface AddressAdapterInterface
 {
     /**
@@ -12,7 +16,7 @@ interface AddressAdapterInterface
      *
      * @return string
      */
-    public function getRegion();
+    public function getRegionCode();
 
     /**
      * Get country id
@@ -90,4 +94,25 @@ interface AddressAdapterInterface
      * @return string
      */
     public function getEmail();
+
+    /**
+     * Returns name prefix
+     *
+     * @return string
+     */
+    public function getPrefix();
+
+    /**
+     * Returns name suffix
+     *
+     * @return string
+     */
+    public function getSuffix();
+
+    /**
+     * Get company
+     *
+     * @return string
+     */
+    public function getCompany();
 }

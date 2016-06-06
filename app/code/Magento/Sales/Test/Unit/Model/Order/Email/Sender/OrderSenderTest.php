@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Model\Order\Email\Sender;
@@ -15,7 +15,7 @@ class OrderSenderTest extends AbstractSenderTest
     protected $sender;
 
     /**
-     * @var \Magento\Sales\Model\Resource\EntityAbstract|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Sales\Model\ResourceModel\EntityAbstract|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $orderResourceMock;
 
@@ -24,7 +24,7 @@ class OrderSenderTest extends AbstractSenderTest
         $this->stepMockSetup();
 
         $this->orderResourceMock = $this->getMock(
-            '\Magento\Sales\Model\Resource\Order',
+            '\Magento\Sales\Model\ResourceModel\Order',
             ['saveAttribute'],
             [],
             '',

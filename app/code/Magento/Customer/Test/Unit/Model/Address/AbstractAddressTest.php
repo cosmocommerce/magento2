@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -29,7 +29,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
     /** @var \Magento\Directory\Model\CountryFactory|\PHPUnit_Framework_MockObject_MockObject  */
     protected $countryFactoryMock;
 
-    /** @var \Magento\Customer\Model\Resource\Customer|\PHPUnit_Framework_MockObject_MockObject  */
+    /** @var \Magento\Customer\Model\ResourceModel\Customer|\PHPUnit_Framework_MockObject_MockObject  */
     protected $resourceMock;
 
     /** @var \Magento\Framework\Data\Collection\AbstractDb|\PHPUnit_Framework_MockObject_MockObject  */
@@ -60,7 +60,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
             false
         );
         $regionCollectionMock = $this->getMock(
-            'Magento\Directory\Model\Resource\Region\Collection',
+            'Magento\Directory\Model\ResourceModel\Region\Collection',
             [],
             [],
             '',
@@ -77,7 +77,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
             ->method('create')
             ->will($this->returnValue($countryMock));
 
-        $this->resourceMock = $this->getMock('Magento\Customer\Model\Resource\Customer', [], [], '', false);
+        $this->resourceMock = $this->getMock('Magento\Customer\Model\ResourceModel\Customer', [], [], '', false);
         $this->resourceCollectionMock = $this->getMockBuilder('Magento\Framework\Data\Collection\AbstractDb')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
@@ -218,6 +218,79 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
         $this->regionFactoryMock->expects($this->once())
             ->method('create')
             ->will($this->returnValue($region));
+    }
+
+    /**
+     * Test for setData method
+     *
+     * @return void
+     */
+    public function testSetData()
+    {
+        $key = [
+            'key' => 'value'
+        ];
+
+        $this->model->setData($key);
+        $this->assertEquals($key, $this->model->getData());
+    }
+
+    /**
+     * Test for setData method with multidimensional array in "key" argument
+     *
+     * @return void
+     */
+    public function testSetDataWithMultidimensionalArray()
+    {
+        $this->markTestSkipped('Need to revert changes from  MAGETWO-39106 and then modify this test.');
+        $expected = [
+            'key' => 'value',
+            'array' => 'value1',
+        ];
+
+        $key = [
+            'key' => 'value',
+            'array' => [
+                'key1' => 'value1',
+            ]
+        ];
+
+        $this->model->setData($key);
+        $this->assertEquals($expected, $this->model->getData());
+    }
+
+    /**
+     * Test for setData method with "value" argument
+     *
+     * @return void
+     */
+    public function testSetDataWithValue()
+    {
+        $value = [
+            'street' => 'value',
+        ];
+
+        $this->model->setData('street', $value);
+        $this->assertEquals($value, $this->model->getData());
+    }
+
+    /**
+     * Test for setData method with "value" argument
+     *
+     * @return void
+     */
+    public function testSetDataWithObject()
+    {
+        $value = [
+            'key' => new \Magento\Framework\DataObject(),
+        ];
+        $expected = [
+            'key' => [
+                'key' => new \Magento\Framework\DataObject()
+            ]
+        ];
+        $this->model->setData('key', $value);
+        $this->assertEquals($expected, $this->model->getData());
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -25,7 +25,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $backendQuoteSession->setCustomerId($fixtureCustomerId);
         /** @var \Magento\Sales\Block\Adminhtml\Order\Create\Giftmessage\Form $block */
         $block = $objectManager->create('Magento\Sales\Block\Adminhtml\Order\Create\Giftmessage\Form');
-        $block->setEntity(new \Magento\Framework\Object());
+        $block->setEntity(new \Magento\Framework\DataObject());
 
         /** SUT execution and assertions */
         $this->assertEquals('John Smith', $block->getDefaultSender(), 'Sender name is invalid.');

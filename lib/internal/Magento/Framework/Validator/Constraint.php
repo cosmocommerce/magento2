@@ -2,7 +2,7 @@
 /**
  * Validator constraint delegates validation to wrapped validator.
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Validator;
@@ -64,7 +64,7 @@ class Constraint extends \Magento\Framework\Validator\AbstractValidator
     protected function _getValidatorValue($value)
     {
         if (is_array($value)) {
-            $value = new \Magento\Framework\Object($value);
+            $value = new \Magento\Framework\DataObject($value);
         }
         return $value;
     }

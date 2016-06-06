@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Captcha\Test\Unit\Helper;
@@ -71,7 +71,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
                 new \Magento\Captcha\Model\DefaultModel(
                     $this->getMock('Magento\Framework\Session\SessionManager', [], [], '', false),
                     $this->getMock('Magento\Captcha\Helper\Data', [], [], '', false),
-                    $this->getMock('Magento\Captcha\Model\Resource\LogFactory', ['create'], [], '', false),
+                    $this->getMock('Magento\Captcha\Model\ResourceModel\LogFactory', ['create'], [], '', false),
                     'user_create'
                 )
             )

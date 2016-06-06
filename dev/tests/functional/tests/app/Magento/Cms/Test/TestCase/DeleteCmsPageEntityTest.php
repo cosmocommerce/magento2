@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -74,5 +74,6 @@ class DeleteCmsPageEntityTest extends Injectable
         $this->cmsPageIndex->open();
         $this->cmsPageIndex->getCmsPageGridBlock()->searchAndOpen(['title' => $cmsPage->getTitle()]);
         $this->cmsPageNew->getPageMainActions()->delete();
+        $this->cmsPageNew->getModalBlock()->acceptAlert();
     }
 }

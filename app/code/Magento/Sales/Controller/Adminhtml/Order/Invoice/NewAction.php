@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order\Invoice;
@@ -9,9 +9,17 @@ namespace Magento\Sales\Controller\Adminhtml\Order\Invoice;
 use Magento\Backend\App\Action;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Sales\Model\Service\InvoiceService;
 
 class NewAction extends \Magento\Backend\App\Action
 {
+    /**
+     * Authorization level of a basic admin session
+     *
+     * @see _isAllowed()
+     */
+    const ADMIN_RESOURCE = 'Magento_Sales::sales_invoice';
+
     /**
      * @var Registry
      */
@@ -23,26 +31,26 @@ class NewAction extends \Magento\Backend\App\Action
     protected $resultPageFactory;
 
     /**
+     * @var InvoiceService
+     */
+    private $invoiceService;
+
+    /**
      * @param Action\Context $context
      * @param Registry $registry
      * @param PageFactory $resultPageFactory
+     * @param InvoiceService $invoiceService
      */
     public function __construct(
         Action\Context $context,
         Registry $registry,
-        PageFactory $resultPageFactory
+        PageFactory $resultPageFactory,
+        InvoiceService $invoiceService
     ) {
         $this->registry = $registry;
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Magento_Sales::sales_invoice');
+        $this->invoiceService = $invoiceService;
     }
 
     /**
@@ -82,14 +90,11 @@ class NewAction extends \Magento\Backend\App\Action
                     __('The order does not allow an invoice to be created.')
                 );
             }
-
-            /** @var \Magento\Sales\Model\Order\Invoice $invoice */
-            $invoice = $this->_objectManager->create('Magento\Sales\Model\Service\Order', ['order' => $order])
-                ->prepareInvoice($invoiceItems);
+            $invoice = $this->invoiceService->prepareInvoice($order, $invoiceItems);
 
             if (!$invoice->getTotalQty()) {
                 throw new \Magento\Framework\Exception\LocalizedException(
-                    __('Cannot create an invoice without products.')
+                    __('You can\'t create an invoice without products.')
                 );
             }
             $this->registry->register('current_invoice', $invoice);

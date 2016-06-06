@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Test\Unit\TemplateEngine;
@@ -74,7 +74,7 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function testHelperWithInvalidClass()
     {
-        $class = 'Magento\Framework\Object';
+        $class = 'Magento\Framework\DataObject';
         $object = $this->getMock($class, [], [], '', false);
         $this->_helperFactoryMock->expects(
             $this->once()

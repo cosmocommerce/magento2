@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Ui\Component;
 
-use Magento\Ui\Component\Layout\LayoutPool;
+use Magento\Framework\View\Layout\Pool as LayoutPool;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\UiComponent\LayoutInterface;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;

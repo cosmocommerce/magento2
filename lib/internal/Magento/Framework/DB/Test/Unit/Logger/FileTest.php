@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\DB\Test\Unit\Logger;
@@ -134,7 +134,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testcritical()
     {
         $exception = new \Exception('error message');
-        $expected = "%aEXCEPTION%a'Exception'%a'error message'%a";
+        $expected = "%aEXCEPTION%aException%aerror message%a";
 
         $this->stream->expects($this->once())
             ->method('write')

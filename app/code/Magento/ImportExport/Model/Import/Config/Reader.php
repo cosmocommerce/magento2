@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ImportExport\Model\Import\Config;
@@ -15,7 +15,7 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
     protected $_idAttributes = [
         '/config/entity' => 'name',
         '/config/entityType' => ['entity', 'name'],
-        '/config/relatedIndexers' => ['entity', 'name'],
+        '/config/relatedIndexer' => ['entity', 'name'],
     ];
 
     /**

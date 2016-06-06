@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -54,13 +54,6 @@ class Attributes extends \Magento\Catalog\Block\Adminhtml\Form
             if ($tierPrice) {
                 $tierPrice->setRenderer(
                     $this->getLayout()->createBlock('Magento\Catalog\Block\Adminhtml\Product\Edit\Tab\Price\Tier')
-                );
-            }
-
-            $groupPrice = $form->getElement('group_price');
-            if ($groupPrice) {
-                $groupPrice->setRenderer(
-                    $this->getLayout()->createBlock('Magento\Catalog\Block\Adminhtml\Product\Edit\Tab\Price\Group')
                 );
             }
 
@@ -153,7 +146,7 @@ class Attributes extends \Magento\Catalog\Block\Adminhtml\Form
             'textarea' => 'Magento\Catalog\Block\Adminhtml\Helper\Form\Wysiwyg',
         ];
 
-        $response = new \Magento\Framework\Object();
+        $response = new \Magento\Framework\DataObject();
         $response->setTypes([]);
         $this->_eventManager->dispatch('adminhtml_catalog_product_edit_element_types', ['response' => $response]);
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Test\Unit\Model\TaxClass\Source;
@@ -54,7 +54,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
         );
         $this->searchCriteriaBuilderMock = $this->getMock(
             'Magento\Framework\Api\SearchCriteriaBuilder',
-            ['addFilter', 'create'],
+            ['addFilters', 'create'],
             [],
             '',
             false
@@ -130,7 +130,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
             ->method('create')
             ->willReturn($filterMock);
         $this->searchCriteriaBuilderMock->expects($this->once())
-            ->method('addFilter')
+            ->method('addFilters')
             ->with([$filterMock])
             ->willReturnSelf();
         $this->searchCriteriaBuilderMock->expects($this->once())
@@ -234,7 +234,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
             ->method('create')
             ->willReturn($filterMock);
         $this->searchCriteriaBuilderMock->expects($this->once())
-            ->method('addFilter')
+            ->method('addFilters')
             ->with([$filterMock])
             ->willReturnSelf();
         $this->searchCriteriaBuilderMock->expects($this->once())

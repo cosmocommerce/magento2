@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Block;
@@ -11,7 +11,7 @@ use Magento\Store\Model\ScopeInterface;
  * Cms page content block
  */
 class Page extends \Magento\Framework\View\Element\AbstractBlock implements
-    \Magento\Framework\Object\IdentityInterface
+    \Magento\Framework\DataObject\IdentityInterface
 {
     /**
      * @var \Magento\Cms\Model\Template\FilterProvider
@@ -101,7 +101,8 @@ class Page extends \Magento\Framework\View\Element\AbstractBlock implements
         $page = $this->getPage();
         $this->_addBreadcrumbs($page);
         $this->pageConfig->addBodyClass('cms-' . $page->getIdentifier());
-        $this->pageConfig->getTitle()->set($page->getTitle());
+        $metaTitle = $page->getMetaTitle();
+        $this->pageConfig->getTitle()->set($metaTitle ? $metaTitle : $page->getTitle());
         $this->pageConfig->setKeywords($page->getMetaKeywords());
         $this->pageConfig->setDescription($page->getMetaDescription());
 

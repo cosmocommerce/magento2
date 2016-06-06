@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Element;
@@ -113,9 +113,9 @@ interface UiComponentInterface extends BlockInterface
      * Prepare Data Source
      *
      * @param array $dataSource
-     * @return void
+     * @return array
      */
-    public function prepareDataSource(array & $dataSource);
+    public function prepareDataSource(array $dataSource);
 
     /**
      * Get Data Source data

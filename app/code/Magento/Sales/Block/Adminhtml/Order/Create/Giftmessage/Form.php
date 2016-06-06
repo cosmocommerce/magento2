@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\Create\Giftmessage;
@@ -88,10 +88,10 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
     /**
      * Set entity for form
      *
-     * @param \Magento\Framework\Object $entity
+     * @param \Magento\Framework\DataObject $entity
      * @return $this
      */
-    public function setEntity(\Magento\Framework\Object $entity)
+    public function setEntity(\Magento\Framework\DataObject $entity)
     {
         $this->_entity = $entity;
         return $this;
@@ -100,7 +100,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
     /**
      * Retrieve entity for form
      *
-     * @return \Magento\Framework\Object
+     * @return \Magento\Framework\DataObject
      */
     public function getEntity()
     {

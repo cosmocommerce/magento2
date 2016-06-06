@@ -1,22 +1,28 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogSearch\Model\Search;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Resource;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Select;
+use Magento\Framework\Search\Adapter\Mysql\ConditionManager;
 use Magento\Framework\Search\Adapter\Mysql\IndexBuilderInterface;
-use Magento\Framework\Search\Adapter\Mysql\ScoreBuilder;
+use Magento\Framework\Search\Request\Dimension;
 use Magento\Framework\Search\RequestInterface;
+use Magento\Framework\Indexer\ScopeResolver\IndexScopeResolver;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\CatalogInventory\Api\StockConfigurationInterface;
+use Magento\CatalogInventory\Model\Stock;
+use Magento\Framework\App\ScopeResolverInterface;
 
 /**
  * Build base Query for Index
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class IndexBuilder implements IndexBuilderInterface
 {
@@ -32,19 +38,60 @@ class IndexBuilder implements IndexBuilderInterface
 
     /**
      * @var StoreManagerInterface
+     * @deprecated
      */
     private $storeManager;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @var IndexScopeResolver
+     */
+    private $scopeResolver;
+
+    /**
+     * @var ConditionManager
+     */
+    private $conditionManager;
+
+    /**
+     * @var TableMapper
+     */
+    private $tableMapper;
+
+    /**
+     * @var ScopeResolverInterface
+     */
+    private $dimensionScopeResolver;
+
+    /**
+     * @var StockConfigurationInterface
+     */
+    private $stockConfiguration;
+
+    /**
+     * @param \Magento\Framework\App\ResourceConnection $resource
      * @param ScopeConfigInterface $config
      * @param StoreManagerInterface $storeManager
+     * @param ConditionManager $conditionManager
+     * @param IndexScopeResolver $scopeResolver
+     * @param TableMapper $tableMapper
+     * @param ScopeResolverInterface $dimensionScopeResolver
      */
-    public function __construct(Resource $resource, ScopeConfigInterface $config, StoreManagerInterface $storeManager)
-    {
+    public function __construct(
+        ResourceConnection $resource,
+        ScopeConfigInterface $config,
+        StoreManagerInterface $storeManager,
+        ConditionManager $conditionManager,
+        IndexScopeResolver $scopeResolver,
+        TableMapper $tableMapper,
+        ScopeResolverInterface $dimensionScopeResolver
+    ) {
         $this->resource = $resource;
         $this->config = $config;
         $this->storeManager = $storeManager;
+        $this->conditionManager = $conditionManager;
+        $this->scopeResolver = $scopeResolver;
+        $this->tableMapper = $tableMapper;
+        $this->dimensionScopeResolver = $dimensionScopeResolver;
     }
 
     /**
@@ -55,28 +102,21 @@ class IndexBuilder implements IndexBuilderInterface
      */
     public function build(RequestInterface $request)
     {
-        $tableName = [$request->getIndex(), 'index_default'];
-        $select = $this->getSelect()
+        $searchIndexTable = $this->scopeResolver->resolve($request->getIndex(), $request->getDimensions());
+        $select = $this->resource->getConnection()->select()
             ->from(
-                ['search_index' => $this->resource->getTableName($tableName)],
-                ['entity_id' => 'product_id']
-            )
-            ->joinLeft(
-                ['category_index' => $this->resource->getTableName('catalog_category_product_index')],
-                'search_index.product_id = category_index.product_id'
-                . ' AND search_index.store_id = category_index.store_id',
-                []
+                ['search_index' => $searchIndexTable],
+                ['entity_id' => 'entity_id']
             )
             ->joinLeft(
                 ['cea' => $this->resource->getTableName('catalog_eav_attribute')],
                 'search_index.attribute_id = cea.attribute_id',
-                [ScoreBuilder::WEIGHT_FIELD]
-            )
-            ->joinLeft(
-                ['cpie' => $this->resource->getTableName('catalog_product_index_eav')],
-                'search_index.product_id = cpie.entity_id AND search_index.attribute_id = cpie.attribute_id',
                 []
             );
+
+        $select = $this->tableMapper->addTables($select, $request);
+
+        $select = $this->processDimensions($request, $select);
 
         $isShowOutOfStock = $this->config->isSetFlag(
             'cataloginventory/options/show_out_of_stock',
@@ -85,36 +125,70 @@ class IndexBuilder implements IndexBuilderInterface
         if ($isShowOutOfStock === false) {
             $select->joinLeft(
                 ['stock_index' => $this->resource->getTableName('cataloginventory_stock_status')],
-                'search_index.product_id = stock_index.product_id'
-                . $this->getReadConnection()->quoteInto(
+                'search_index.entity_id = stock_index.product_id'
+                . $this->resource->getConnection()->quoteInto(
                     ' AND stock_index.website_id = ?',
-                    $this->storeManager->getWebsite()->getId()
+                    $this->getStockConfiguration()->getDefaultScopeId()
                 ),
                 []
-            )
-                ->where('stock_index.stock_status = ?', 1);
+            );
+            $select->where('stock_index.stock_status = ?', Stock::DEFAULT_STOCK_ID);
         }
 
         return $select;
     }
 
     /**
-     * Get read connection
+     * @return StockConfigurationInterface
      *
-     * @return \Magento\Framework\DB\Adapter\AdapterInterface
+     * @deprecated
      */
-    private function getReadConnection()
+    private function getStockConfiguration()
     {
-        return $this->resource->getConnection(Resource::DEFAULT_READ_RESOURCE);
+        if ($this->stockConfiguration === null) {
+            $this->stockConfiguration = \Magento\Framework\App\ObjectManager::getInstance()
+                ->get('Magento\CatalogInventory\Api\StockConfigurationInterface');
+        }
+        return $this->stockConfiguration;
     }
 
     /**
-     * Get empty Select
+     * Add filtering by dimensions
      *
-     * @return Select
+     * @param RequestInterface $request
+     * @param Select $select
+     * @return \Magento\Framework\DB\Select
      */
-    private function getSelect()
+    private function processDimensions(RequestInterface $request, Select $select)
     {
-        return $this->getReadConnection()->select();
+        $dimensions = $this->prepareDimensions($request->getDimensions());
+
+        $query = $this->conditionManager->combineQueries($dimensions, Select::SQL_OR);
+        if (!empty($query)) {
+            $select->where($this->conditionManager->wrapBrackets($query));
+        }
+
+        return $select;
+    }
+
+    /**
+     * @param Dimension[] $dimensions
+     * @return string[]
+     */
+    private function prepareDimensions(array $dimensions)
+    {
+        $preparedDimensions = [];
+        foreach ($dimensions as $dimension) {
+            if ('scope' === $dimension->getName()) {
+                continue;
+            }
+            $preparedDimensions[] = $this->conditionManager->generateCondition(
+                $dimension->getName(),
+                '=',
+                $this->dimensionScopeResolver->getScope($dimension->getValue())->getId()
+            );
+        }
+
+        return $preparedDimensions;
     }
 }

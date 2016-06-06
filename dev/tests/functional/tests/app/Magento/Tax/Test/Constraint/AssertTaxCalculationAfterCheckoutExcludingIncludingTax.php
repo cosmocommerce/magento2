@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -48,7 +48,7 @@ class AssertTaxCalculationAfterCheckoutExcludingIncludingTax extends
      */
     public function getOrderTotals($actualPrices)
     {
-        $viewBlock = $this->salesOrderView->getSalesOrderViewBlock();
+        $viewBlock = $this->customerOrderView->getOrderViewBlock();
         $actualPrices['subtotal_excl_tax'] = $viewBlock->getSubtotalExclTax();
         $actualPrices['subtotal_incl_tax'] = $viewBlock->getSubtotalInclTax();
         $actualPrices['discount'] = $viewBlock->getDiscount();

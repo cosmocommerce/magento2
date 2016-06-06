@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Model\Search;
@@ -20,7 +20,7 @@ namespace Magento\Backend\Model\Search;
  * @method Customer setResults(array $results)
  * @method array getResults()
  */
-class Customer extends \Magento\Framework\Object
+class Customer extends \Magento\Framework\DataObject
 {
     /**
      * Adminhtml data
@@ -96,7 +96,7 @@ class Customer extends \Magento\Framework\Object
                 ->setValue($this->getQuery() . '%')
                 ->create();
         }
-        $this->searchCriteriaBuilder->addFilter($filters);
+        $this->searchCriteriaBuilder->addFilters($filters);
         $searchCriteria = $this->searchCriteriaBuilder->create();
         $searchResults = $this->customerRepository->getList($searchCriteria);
 

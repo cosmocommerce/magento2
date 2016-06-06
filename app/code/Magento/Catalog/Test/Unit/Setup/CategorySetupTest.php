@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Setup;
@@ -76,7 +76,6 @@ class CategorySetupTest extends \PHPUnit_Framework_TestCase
                 'thumbnail',
                 'media_gallery',
                 'old_id',
-                'group_price',
                 'tier_price',
                 'color',
                 'news_from_date',

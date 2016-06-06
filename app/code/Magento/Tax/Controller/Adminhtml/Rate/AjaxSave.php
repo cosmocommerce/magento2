@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Controller\Adminhtml\Rate;
@@ -26,7 +26,7 @@ class AjaxSave extends \Magento\Tax\Controller\Adminhtml\Rate
                 'success' => true,
                 'error_message' => '',
                 'tax_calculation_rate_id' => $taxRate->getId(),
-                'code' => $taxRate->getCode(),
+                'code' =>  htmlspecialchars($taxRate->getCode()),
             ];
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $responseContent = [

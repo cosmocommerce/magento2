@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\Create;
@@ -45,7 +45,7 @@ class Sidebar extends \Magento\Sales\Block\Adminhtml\Order\Create\AbstractCreate
     /**
      * Check if can display
      *
-     * @param \Magento\Framework\Object $child
+     * @param \Magento\Framework\DataObject $child
      * @return true
      */
     public function canDisplay($child)

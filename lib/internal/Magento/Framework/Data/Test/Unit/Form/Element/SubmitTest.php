@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -37,7 +37,7 @@ class SubmitTest extends \PHPUnit_Framework_TestCase
             $collectionFactoryMock,
             $escaperMock
         );
-        $formMock = new \Magento\Framework\Object();
+        $formMock = new \Magento\Framework\DataObject();
         $formMock->getHtmlIdPrefix('id_prefix');
         $formMock->getHtmlIdPrefix('id_suffix');
         $this->_model->setForm($formMock);

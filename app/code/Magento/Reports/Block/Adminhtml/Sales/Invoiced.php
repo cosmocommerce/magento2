@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Block\Adminhtml\Sales;
@@ -13,12 +13,14 @@ namespace Magento\Reports\Block\Adminhtml\Sales;
 class Invoiced extends \Magento\Backend\Block\Widget\Grid\Container
 {
     /**
+     * Template file
+     *
      * @var string
      */
     protected $_template = 'report/grid/container.phtml';
 
     /**
-     * @return void
+     * {@inheritdoc}
      */
     protected function _construct()
     {
@@ -35,6 +37,8 @@ class Invoiced extends \Magento\Backend\Block\Widget\Grid\Container
     }
 
     /**
+     * Get filter URL
+     *
      * @return string
      */
     public function getFilterUrl()

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Gateway\Config;
@@ -19,27 +19,49 @@ class Config implements ConfigInterface
     private $scopeConfig;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $methodCode;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $pathPattern;
 
     /**
      * @param ScopeConfigInterface $scopeConfig
-     * @param string $methodCode
+     * @param string|null $methodCode
      * @param string $pathPattern
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        $methodCode,
+        $methodCode = null,
         $pathPattern = self::DEFAULT_PATH_PATTERN
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->methodCode = $methodCode;
+        $this->pathPattern = $pathPattern;
+    }
+
+    /**
+     * Sets method code
+     *
+     * @param string $methodCode
+     * @return void
+     */
+    public function setMethodCode($methodCode)
+    {
+        $this->methodCode = $methodCode;
+    }
+
+    /**
+     * Sets path pattern
+     *
+     * @param string $pathPattern
+     * @return void
+     */
+    public function setPathPattern($pathPattern)
+    {
         $this->pathPattern = $pathPattern;
     }
 
@@ -53,6 +75,10 @@ class Config implements ConfigInterface
      */
     public function getValue($field, $storeId = null)
     {
+        if ($this->methodCode === null || $this->pathPattern === null) {
+            return null;
+        }
+
         return $this->scopeConfig->getValue(
             sprintf($this->pathPattern, $this->methodCode, $field),
             ScopeInterface::SCOPE_STORE,

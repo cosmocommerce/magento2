@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -68,7 +68,7 @@ class DeleteUserRoleEntityTest extends Injectable
     {
         $adminUser = $fixtureFactory->createByCode(
             'user',
-            ['dataSet' => 'custom_admin_with_default_role']
+            ['dataset' => 'custom_admin_with_default_role']
         );
         $adminUser->persist();
 
@@ -122,6 +122,7 @@ class DeleteUserRoleEntityTest extends Injectable
         $this->userRoleIndex->open();
         $this->userRoleIndex->getRoleGrid()->searchAndOpen($filter);
         $this->userRoleEditRole->getPageActions()->delete();
+        $this->userRoleEditRole->getModalBlock()->acceptAlert();
     }
 
     /**

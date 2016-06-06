@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Test\Unit\Element\Html;
@@ -48,6 +48,6 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
     public function testGetYearRange()
     {
         $testCurrentYear = (new \DateTime())->format('Y');
-        $this->assertEquals((int)$testCurrentYear - 100 . ':' . $testCurrentYear, $this->block->getYearRange());
+        $this->assertEquals((int)$testCurrentYear - 100 . ':' . ($testCurrentYear + 100), $this->block->getYearRange());
     }
 }

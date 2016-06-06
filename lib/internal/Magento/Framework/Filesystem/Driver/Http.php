@@ -2,7 +2,7 @@
 /**
  * Origin filesystem driver
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Filesystem\Driver;
@@ -167,8 +167,7 @@ class Http extends File
             'Host: ' .
             $hostname .
             "\r\n" .
-            'User-Agent: Magento ver/' .
-            \Magento\Framework\AppInterface::VERSION .
+            'User-Agent: Magento' .
             "\r\n" .
             'Connection: close' .
             "\r\n" .
@@ -243,7 +242,7 @@ class Http extends File
         if ($result === false) {
             throw new FileSystemException(
                 new \Magento\Framework\Phrase(
-                    'Something went wrong connecting to the host. Error#%1 - %2.',
+                    'Something went wrong while connecting to the host. Error#%1 - %2.',
                     [$errorNumber, $errorMessage]
                 )
             );

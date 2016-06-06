@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -235,7 +235,7 @@ class SaveTest extends \PHPUnit_Framework_TestCase
             ->with('sales/*/new', ['_current' => true])
             ->willReturnSelf();
 
-        $this->_setSaveActionExpectationForMageCoreException($data, 'Credit memo\'s total must be positive.');
+        $this->_setSaveActionExpectationForMageCoreException($data, 'The credit memo\'s total must be positive.');
 
         $this->_controller->execute();
     }

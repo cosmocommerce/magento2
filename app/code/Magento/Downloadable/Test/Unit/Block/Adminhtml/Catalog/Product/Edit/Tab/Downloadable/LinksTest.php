@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Downloadable\Test\Unit\Block\Adminhtml\Catalog\Product\Edit\Tab\Downloadable;
@@ -134,11 +134,11 @@ class LinksTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that getConfig method retrieve \Magento\Framework\Object object
+     * Test that getConfig method retrieve \Magento\Framework\DataObject object
      */
     public function testGetConfig()
     {
-        $this->assertInstanceOf('Magento\Framework\Object', $this->block->getConfig());
+        $this->assertInstanceOf('Magento\Framework\DataObject', $this->block->getConfig());
     }
 
     public function testGetLinkData()

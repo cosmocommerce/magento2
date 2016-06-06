@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model;
@@ -9,6 +9,7 @@ namespace Magento\Eav\Model;
  * EAV attribute model factory
  *
  * @author     Magento Core Team <core@magentocommerce.com>
+ * @codeCoverageIgnore
  */
 class AttributeFactory
 {

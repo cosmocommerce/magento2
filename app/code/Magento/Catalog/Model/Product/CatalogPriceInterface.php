@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -15,11 +15,15 @@ interface CatalogPriceInterface
      * Minimal price for "regular" user
      *
      * @param \Magento\Catalog\Model\Product $product
-     * @param null|\Magento\Store\Model\Store $store Store view
+     * @param null|\Magento\Store\Api\Data\StoreInterface $store Store view
      * @param bool $inclTax
      * @return null|float
      */
-    public function getCatalogPrice(\Magento\Catalog\Model\Product $product, $store = null, $inclTax = false);
+    public function getCatalogPrice(
+        \Magento\Catalog\Model\Product $product,
+        \Magento\Store\Api\Data\StoreInterface $store = null,
+        $inclTax = false
+    );
 
     /**
      * Calculate price without discount for external catalogs if applicable

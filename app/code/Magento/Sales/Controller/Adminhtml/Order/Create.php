@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order;
@@ -15,7 +15,7 @@ use Magento\Backend\Model\View\Result\ForwardFactory;
  * @author      Magento Core Team <core@magentocommerce.com>
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-class Create extends \Magento\Backend\App\Action
+abstract class Create extends \Magento\Backend\App\Action
 {
     /**
      * @var \Magento\Framework\Escaper
@@ -243,6 +243,7 @@ class Create extends \Magento\Backend\App\Action
         $removeFrom = (string)$this->getRequest()->getPost('from');
         if ($removeItemId && $removeFrom) {
             $this->_getOrderCreateModel()->removeItem($removeItemId, $removeFrom);
+            $this->_getOrderCreateModel()->recollectCart();
         }
 
         /**
@@ -346,7 +347,7 @@ class Create extends \Magento\Backend\App\Action
         /* @var $productHelper \Magento\Catalog\Helper\Product */
         $productHelper = $this->_objectManager->get('Magento\Catalog\Helper\Product');
         foreach ($items as $id => $item) {
-            $buyRequest = new \Magento\Framework\Object($item);
+            $buyRequest = new \Magento\Framework\DataObject($item);
             $params = ['files_prefix' => 'item_' . $id . '_'];
             $buyRequest = $productHelper->addParamsToBuyRequest($buyRequest, $params);
             if ($buyRequest->hasData()) {

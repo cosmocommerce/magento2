@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogRule\Plugin\Indexer;
@@ -34,7 +34,9 @@ class ImportExport
      */
     public function afterImportSource(Import $subject, $result)
     {
-        $this->ruleProductProcessor->markIndexerAsInvalid();
+        if (!$this->ruleProductProcessor->isIndexerScheduled()) {
+            $this->ruleProductProcessor->markIndexerAsInvalid();
+        }
         return $result;
     }
 }

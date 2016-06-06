@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Shipping\Controller\Adminhtml\Order\Shipment;
@@ -10,6 +10,13 @@ use Magento\Backend\App\Action;
 
 class RemoveTrack extends \Magento\Backend\App\Action
 {
+    /**
+     * Authorization level of a basic admin session
+     *
+     * @see _isAllowed()
+     */
+    const ADMIN_RESOURCE = 'Magento_Sales::shipment';
+
     /**
      * @var \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader
      */
@@ -25,14 +32,6 @@ class RemoveTrack extends \Magento\Backend\App\Action
     ) {
         $this->shipmentLoader = $shipmentLoader;
         parent::__construct($context);
-    }
-
-    /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Magento_Sales::shipment');
     }
 
     /**
@@ -61,14 +60,17 @@ class RemoveTrack extends \Magento\Backend\App\Action
                 } else {
                     $response = [
                         'error' => true,
-                        'message' => __('Cannot initialize shipment for delete tracking number.'),
+                        'message' => __('We can\'t initialize shipment for delete tracking number.'),
                     ];
                 }
             } catch (\Exception $e) {
-                $response = ['error' => true, 'message' => __('Cannot delete tracking number.')];
+                $response = ['error' => true, 'message' => __('We can\'t delete tracking number.')];
             }
         } else {
-            $response = ['error' => true, 'message' => __('Cannot load track with retrieving identifier.')];
+            $response = [
+                'error' => true,
+                'message' => __('We can\'t load track with retrieving identifier right now.')
+            ];
         }
         if (is_array($response)) {
             $response = $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($response);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -39,7 +39,7 @@ abstract class AbstractAssertSalesReportResult extends AbstractConstraint
     protected function searchInSalesReportGrid(array $salesReport)
     {
         $this->salesReportPage->open();
-        $this->salesReportPage->getMessagesBlock()->clickLinkInMessages('notice', 'here');
+        $this->salesReportPage->getMessagesBlock()->clickLinkInMessage('notice', 'here');
         $this->salesReportPage->getFilterBlock()->viewsReport($salesReport);
         $this->salesReportPage->getActionBlock()->showReport();
     }

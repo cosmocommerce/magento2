@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Test\Unit\Model\Coupon;
@@ -94,15 +94,16 @@ class MassgeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGeneratePool()
     {
+        $qty = 10;
         $data = [
-            'qty' => 10,
+            'qty' => $qty,
             'length' => 15,
             'format' => 'test-format',
         ];
 
         $salesRuleCouponMock = $this->getMock('Magento\SalesRule\Helper\Coupon', ['getCharset'], [], '', false);
         $resourceMock = $this->getMock(
-            'Magento\SalesRule\Model\Resource\Coupon',
+            'Magento\SalesRule\Model\ResourceModel\Coupon',
             ['exists', '__wakeup', 'getIdFieldName'],
             [],
             '',
@@ -160,6 +161,9 @@ class MassgeneratorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($massgenerator, $massgenerator->generatePool());
+        $this->assertEquals($qty, $massgenerator->getGeneratedCount());
+        $codes = $massgenerator->getGeneratedCodes();
+        ($qty > 0) ? $this->assertNotEmpty($codes) : $this->assertEmpty($codes);
     }
 
     /**
@@ -178,7 +182,7 @@ class MassgeneratorTest extends \PHPUnit_Framework_TestCase
 
         $salesRuleCouponMock = $this->getMock('Magento\SalesRule\Helper\Coupon', ['getCharset'], [], '', false);
         $resourceMock = $this->getMock(
-            'Magento\SalesRule\Model\Resource\Coupon',
+            'Magento\SalesRule\Model\ResourceModel\Coupon',
             ['exists', '__wakeup', 'getIdFieldName'],
             [],
             '',

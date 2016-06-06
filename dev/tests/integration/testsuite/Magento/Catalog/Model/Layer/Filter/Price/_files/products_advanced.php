@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -11,10 +11,7 @@
 $prices = [5, 10, 15, 20, 50, 100, 150];
 
 /** @var $installer \Magento\Catalog\Setup\CategorySetup */
-$installer = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\Catalog\Setup\CategorySetup',
-    ['resourceName' => 'catalog_setup']
-);
+$installer = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Setup\CategorySetup');
 /**
  * After installation system has two categories: root one with ID:1 and Default category with ID:2
  */
@@ -71,8 +68,6 @@ foreach ($prices as $price) {
     $productId = $lastProductId + 1;
     $product->setTypeId(
         \Magento\Catalog\Model\Product\Type::TYPE_SIMPLE
-    )->setId(
-        $productId
     )->setAttributeSetId(
         $installer->getAttributeSetId('catalog_product', 'Default')
     )->setStoreId(
@@ -85,6 +80,11 @@ foreach ($prices as $price) {
         'simple-' . $productId
     )->setPrice(
         $price
+    )->setStockData(
+        [
+            'qty' => 100,
+            'is_in_stock' => 1,
+        ]
     )->setWeight(
         18
     )->setCategoryIds(

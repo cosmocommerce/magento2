@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Product\Option\Type;
@@ -15,7 +15,7 @@ class Text extends \Magento\Catalog\Model\Product\Option\Type\DefaultType
     /**
      * Magento string lib
      *
-     * @var \Magento\Framework\Stdlib\String
+     * @var \Magento\Framework\Stdlib\StringUtils
      */
     protected $string;
 
@@ -28,14 +28,14 @@ class Text extends \Magento\Catalog\Model\Product\Option\Type\DefaultType
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Framework\Escaper $escaper
-     * @param \Magento\Framework\Stdlib\String $string
+     * @param \Magento\Framework\Stdlib\StringUtils $string
      * @param array $data
      */
     public function __construct(
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Framework\Escaper $escaper,
-        \Magento\Framework\Stdlib\String $string,
+        \Magento\Framework\Stdlib\StringUtils $string,
         array $data = []
     ) {
         $this->_escaper = $escaper;
@@ -60,7 +60,7 @@ class Text extends \Magento\Catalog\Model\Product\Option\Type\DefaultType
         // Check requires option to have some value
         if (strlen($value) == 0 && $option->getIsRequire() && !$this->getSkipCheckRequiredOption()) {
             $this->setIsValid(false);
-            throw new LocalizedException(__('Please specify the product\'s required option(s).'));
+            throw new LocalizedException(__('Please specify product\'s required option(s).'));
         }
 
         // Check maximal length limit

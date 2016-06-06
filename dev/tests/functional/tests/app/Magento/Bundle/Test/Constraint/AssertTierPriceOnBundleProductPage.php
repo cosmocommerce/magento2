@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -32,7 +32,7 @@ class AssertTierPriceOnBundleProductPage extends AssertProductTierPriceOnProduct
      *
      * @var int
      */
-    protected $priceFormat = 4;
+    protected $priceFormat = 0;
 
     /**
      * Assertion that tier prices are displayed correctly

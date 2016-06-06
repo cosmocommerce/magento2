@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -61,7 +61,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
      */
     protected $bootstrapMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->objectManagerFactory = $this->getMock('Magento\Framework\App\ObjectManagerFactory', [], [], '', false);
         $this->objectManager = $this->getMock('Magento\Framework\ObjectManagerInterface');
@@ -164,6 +164,19 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
 
     public function testIsDeveloperMode()
     {
+        $bootstrap = self::createBootstrap();
+        $this->assertFalse($bootstrap->isDeveloperMode());
+        $testParams = [State::PARAM_MODE => State::MODE_DEVELOPER];
+        $bootstrap = self::createBootstrap($testParams);
+        $this->assertTrue($bootstrap->isDeveloperMode());
+        $this->deploymentConfig->expects($this->any())->method('get')->willReturn(State::MODE_DEVELOPER);
+        $bootstrap = self::createBootstrap();
+        $this->assertTrue($bootstrap->isDeveloperMode());
+    }
+
+    public function testIsDeveloperModeСontradictoryValues()
+    {
+        $this->deploymentConfig->expects($this->any())->method('get')->willReturn(State::MODE_PRODUCTION);
         $bootstrap = self::createBootstrap();
         $this->assertFalse($bootstrap->isDeveloperMode());
         $testParams = [State::PARAM_MODE => State::MODE_DEVELOPER];

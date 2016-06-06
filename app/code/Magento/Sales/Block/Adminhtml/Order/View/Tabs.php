@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\View;
@@ -52,7 +52,7 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
         if ($this->_coreRegistry->registry('order')) {
             return $this->_coreRegistry->registry('order');
         }
-        throw new \Magento\Framework\Exception\LocalizedException(__('We cannot get the order instance.'));
+        throw new \Magento\Framework\Exception\LocalizedException(__('We can\'t get the order instance right now.'));
     }
 
     /**

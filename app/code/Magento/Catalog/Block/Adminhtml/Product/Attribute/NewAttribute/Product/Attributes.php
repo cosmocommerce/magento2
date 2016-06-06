@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -66,7 +66,7 @@ class Attributes extends \Magento\Catalog\Block\Adminhtml\Form
             'boolean' => 'Magento\Catalog\Block\Adminhtml\Product\Helper\Form\Boolean',
         ];
 
-        $response = new \Magento\Framework\Object();
+        $response = new \Magento\Framework\DataObject();
         $response->setTypes([]);
         $this->_eventManager->dispatch('adminhtml_catalog_product_edit_element_types', ['response' => $response]);
 

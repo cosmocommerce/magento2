@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -14,12 +14,12 @@ use Magento\Sales\Test\Page\CustomerOrderView;
 use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
- * Assert that message from dataSet is displayed on order(s) view page on frontend.
+ * Assert that message from dataset is displayed on order(s) view page on frontend.
  */
 class AssertGiftMessageInFrontendOrder extends AbstractConstraint
 {
     /**
-     * Assert that message from dataSet is displayed on order(s) view page on frontend.
+     * Assert that message from dataset is displayed on order(s) view page on frontend.
      *
      * @param GiftMessage $giftMessage
      * @param Customer $customer

@@ -1,14 +1,14 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 /**
  * Region
  *
- * @method \Magento\Directory\Model\Resource\Region _getResource()
- * @method \Magento\Directory\Model\Resource\Region getResource()
+ * @method \Magento\Directory\Model\ResourceModel\Region _getResource()
+ * @method \Magento\Directory\Model\ResourceModel\Region getResource()
  * @method string getRegionId()
  * @method string getCountryId()
  * @method \Magento\Directory\Model\Region setCountryId(string $value)
@@ -28,7 +28,7 @@ class Region extends \Magento\Framework\Model\AbstractModel
      */
     protected function _construct()
     {
-        $this->_init('Magento\Directory\Model\Resource\Region');
+        $this->_init('Magento\Directory\Model\ResourceModel\Region');
     }
 
     /**

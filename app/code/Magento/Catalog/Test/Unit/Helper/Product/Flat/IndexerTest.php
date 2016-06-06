@@ -1,9 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Helper\Product\Flat;
+
+use Magento\Framework\App\ResourceConnection;
 
 class IndexerTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,12 +25,12 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
     protected $_storeManagerMock;
 
     /**
-     * @var \Magento\Framework\App\Resource|\PHPUnit_Framework_MockObject_MockObject
+     * @var Resource|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $_resourceMock;
 
     /**
-     * @var \Magento\Framework\DB\Adapter\Pdo\Mysql|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\DB\Adapter\AdapterInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $_connectionMock;
 
@@ -37,12 +39,12 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     protected $_changelogMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $contextMock = $this->getMock('Magento\Framework\App\Helper\Context', [], [], '', false);
 
         $this->_resourceMock = $this->getMock(
-            'Magento\Framework\App\Resource',
+            'Magento\Framework\App\ResourceConnection',
             [],
             [],
             '',
@@ -64,7 +66,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $attributeConfigMock = $this->getMock('Magento\Catalog\Model\Attribute\Config', [], [], '', false);
 
         $resourceConfigFactoryMock = $this->getMock(
-            'Magento\Catalog\Model\Resource\ConfigFactory',
+            'Magento\Catalog\Model\ResourceModel\ConfigFactory',
             ['create'],
             [],
             '',
@@ -152,8 +154,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
             $this->once()
         )->method(
             'getConnection'
-        )->with(
-            'write'
         )->will(
             $this->returnValue($this->_connectionMock)
         );
@@ -200,8 +200,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
             $this->once()
         )->method(
             'getConnection'
-        )->with(
-            'write'
         )->will(
             $this->returnValue($this->_connectionMock)
         );
@@ -240,8 +238,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
             $this->once()
         )->method(
             'getConnection'
-        )->with(
-            'write'
         )->will(
             $this->returnValue($this->_connectionMock)
         );

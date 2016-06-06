@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -14,7 +14,7 @@ use Magento\Mtf\Constraint\AbstractConstraint;
  */
 class AssertCustomerGroupSuccessDeleteMessage extends AbstractConstraint
 {
-    const SUCCESS_DELETE_MESSAGE= "The customer group has been deleted.";
+    const SUCCESS_DELETE_MESSAGE= "You deleted the customer group.";
 
     /**
      * Assert that message "The customer group has been deleted." is displayed on Customer Group page.
@@ -24,12 +24,13 @@ class AssertCustomerGroupSuccessDeleteMessage extends AbstractConstraint
      */
     public function processAssert(CustomerGroupIndex $customerGroupIndex)
     {
+        $actualMessage = $customerGroupIndex->getMessagesBlock()->getSuccessMessage();
         \PHPUnit_Framework_Assert::assertEquals(
             self::SUCCESS_DELETE_MESSAGE,
-            $customerGroupIndex->getMessagesBlock()->getSuccessMessages(),
+            $actualMessage,
             'Wrong message is displayed.'
             . "\nExpected: " . self::SUCCESS_DELETE_MESSAGE
-            . "\nActual: " . $customerGroupIndex->getMessagesBlock()->getSuccessMessages()
+            . "\nActual: " . $actualMessage
         );
     }
 

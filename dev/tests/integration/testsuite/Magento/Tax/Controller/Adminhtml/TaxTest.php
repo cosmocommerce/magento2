@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Controller\Adminhtml;
@@ -10,7 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 /**
  * @magentoAppArea adminhtml
  */
-class TaxTest extends \Magento\Backend\Utility\Controller
+class TaxTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * @dataProvider ajaxActionDataProvider

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Test\Unit\Config\Storage;
@@ -21,14 +21,14 @@ class WriterTest extends \PHPUnit_Framework_TestCase
     protected $model;
 
     /**
-     * @var \Magento\Framework\App\Config\Resource\ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\App\Config\ConfigResource\ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $resource;
 
     protected function setUp()
     {
         $this->objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
-        $this->resource = $this->getMockBuilder('Magento\Framework\App\Config\Resource\ConfigInterface')
+        $this->resource = $this->getMockBuilder('Magento\Framework\App\Config\ConfigResource\ConfigInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $this->model = $this->objectManager->getObject(

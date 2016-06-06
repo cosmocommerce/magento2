@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Model\Product;
@@ -38,16 +38,16 @@ class ActionTest extends \PHPUnit_Framework_TestCase
     protected $eavConfig;
 
     /**
-     * @var \Magento\Catalog\Model\Resource\Eav\Attribute|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $eavAttribute;
 
     /**
-     * @var \Magento\Indexer\Model\IndexerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Indexer\IndexerRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $indexerRegistryMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $eventManagerMock = $this->getMock('Magento\Framework\Event\ManagerInterface');
         $this->productWebsiteFactory = $this->getMock(
@@ -58,8 +58,13 @@ class ActionTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->resource = $this->getMock(
-            '\Magento\Framework\Model\Resource\AbstractResource',
-            ['updateAttributes', '_getWriteAdapter', '_getReadAdapter', '_construct', 'getIdFieldName'],
+            '\Magento\Framework\Model\ResourceModel\AbstractResource',
+            [
+                'updateAttributes',
+                'getConnection',
+                '_construct',
+                'getIdFieldName',
+            ],
             [],
             '',
             false
@@ -90,13 +95,19 @@ class ActionTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->eavAttribute = $this->getMock(
-            '\Magento\Catalog\Model\Resource\Eav\Attribute',
+            '\Magento\Catalog\Model\ResourceModel\Eav\Attribute',
             ['__wakeup', 'isIndexable'],
             [],
             '',
             false
         );
-        $this->indexerRegistryMock = $this->getMock('Magento\Indexer\Model\IndexerRegistry', ['get'], [], '', false);
+        $this->indexerRegistryMock = $this->getMock(
+            'Magento\Framework\Indexer\IndexerRegistry',
+            ['get'],
+            [],
+            '',
+            false
+        );
 
         $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->model = $objectManager->getObject(

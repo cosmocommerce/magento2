@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\User\Block\User\Edit\Tab;
@@ -8,7 +8,7 @@ namespace Magento\User\Block\User\Edit\Tab;
 /**
  * @magentoAppArea adminhtml
  */
-class MainTest extends \Magento\Backend\Utility\Controller
+class MainTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * @var \Magento\User\Block\User\Edit\Tab\Main

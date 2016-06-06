@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\DB;
@@ -24,7 +24,7 @@ class HelperTest extends \PHPUnit_Framework_TestCase
             ['modulePrefix' => 'core']
         );
         $collection = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-            'Magento\Store\Model\Resource\Store\Collection'
+            'Magento\Store\Model\ResourceModel\Store\Collection'
         );
         $this->_select = $collection->getSelect();
     }

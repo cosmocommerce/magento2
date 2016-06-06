@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\MediaStorage\Test\Unit\Model\File\Storage;
@@ -31,7 +31,7 @@ class MediaTest extends \PHPUnit_Framework_TestCase
     protected $_mediaHelperMock;
 
     /**
-     * @var \Magento\MediaStorage\Model\Resource\File\Storage\File
+     * @var \Magento\MediaStorage\Model\ResourceModel\File\Storage\File
      */
     protected $_fileUtilityMock;
 
@@ -47,7 +47,7 @@ class MediaTest extends \PHPUnit_Framework_TestCase
         );
         $this->_mediaHelperMock = $this->getMock('Magento\MediaStorage\Helper\File\Media', [], [], '', false);
         $this->_fileUtilityMock = $this->getMock(
-            'Magento\MediaStorage\Model\Resource\File\Storage\File',
+            'Magento\MediaStorage\Model\ResourceModel\File\Storage\File',
             [],
             [],
             '',

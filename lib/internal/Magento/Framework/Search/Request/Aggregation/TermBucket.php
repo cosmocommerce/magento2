@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Request\Aggregation;
@@ -31,6 +31,7 @@ class TermBucket implements BucketInterface
      * @param string $name
      * @param string $field
      * @param array $metrics
+     * @codeCoverageIgnore
      */
     public function __construct($name, $field, array $metrics)
     {
@@ -49,6 +50,7 @@ class TermBucket implements BucketInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -57,6 +59,7 @@ class TermBucket implements BucketInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getField()
     {
@@ -65,6 +68,7 @@ class TermBucket implements BucketInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getMetrics()
     {

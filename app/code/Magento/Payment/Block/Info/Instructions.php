@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Block\Info;
@@ -33,7 +33,7 @@ class Instructions extends \Magento\Payment\Block\Info
         if ($this->_instructions === null) {
             $this->_instructions = $this->getInfo()->getAdditionalInformation(
                 'instructions'
-            ) ?: $this->getMethod()->getConfigData('instructions');
+            ) ?: trim($this->getMethod()->getConfigData('instructions'));
         }
         return $this->_instructions;
     }

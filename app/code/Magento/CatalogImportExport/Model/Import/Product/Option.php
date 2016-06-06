@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -9,6 +9,9 @@
 namespace Magento\CatalogImportExport\Model\Import\Product;
 
 use Magento\CatalogImportExport\Model\Import\Product;
+use Magento\Framework\App\ResourceConnection;
+use Magento\ImportExport\Model\Import\ErrorProcessing\ProcessingErrorAggregatorInterface;
+use Magento\Catalog\Api\Data\ProductInterface;
 
 /**
  * Entity class which provide possibility to import product custom options
@@ -55,6 +58,11 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     const XML_PATH_PAGE_SIZE = 'import/format_v1/page_size';
 
     /**
+     * @var string
+     */
+    private $columnMaxCharacters = '_custom_option_max_characters';
+
+    /**
      * All stores code-ID pairs
      *
      * @var array
@@ -71,7 +79,7 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     /**
      * Instance of import/export resource helper
      *
-     * @var \Magento\ImportExport\Model\Resource\Helper
+     * @var \Magento\ImportExport\Model\ResourceModel\Helper
      */
     protected $_resourceHelper;
 
@@ -144,7 +152,7 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     /**
      * DB data source model
      *
-     * @var \Magento\ImportExport\Model\Resource\Import\Data
+     * @var \Magento\ImportExport\Model\ResourceModel\Import\Data
      */
     protected $_dataSourceModel;
 
@@ -208,7 +216,7 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     /**
      * Product options collection
      *
-     * @var \Magento\Catalog\Model\Resource\Product\Option\Collection
+     * @var \Magento\Catalog\Model\ResourceModel\Product\Option\Collection
      */
     protected $_optionCollection;
 
@@ -242,7 +250,7 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     /**
      * Collection by pages iterator
      *
-     * @var \Magento\ImportExport\Model\Resource\CollectionByPagesIterator
+     * @var \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIterator
      */
     protected $_byPagesIterator;
 
@@ -273,7 +281,7 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     protected $_importFactory;
 
     /**
-     * @var \Magento\Framework\App\Resource
+     * @var \Magento\Framework\App\ResourceConnection
      */
     protected $_resource;
 
@@ -288,46 +296,63 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     protected $_productFactory;
 
     /**
-     * @var \Magento\Catalog\Model\Resource\Product\Option\CollectionFactory
+     * @var \Magento\Catalog\Model\ResourceModel\Product\Option\CollectionFactory
      */
     protected $_optionColFactory;
 
     /**
-     * @var \Magento\ImportExport\Model\Resource\CollectionByPagesIteratorFactory
+     * @var \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory
      */
     protected $_colIteratorFactory;
 
     /**
-     * @var \Magento\Framework\Stdlib\DateTime
+     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
      */
     protected $dateTime;
 
     /**
-     * @param \Magento\ImportExport\Model\Resource\Import\Data $importData
-     * @param \Magento\Framework\App\Resource $resource
-     * @param \Magento\ImportExport\Model\Resource\Helper $resourceHelper
+     * Product entity link field
+     *
+     * @var string
+     */
+    private $productEntityLinkField;
+
+    /**
+     * Product entity identifier field
+     *
+     * @var string
+     */
+    private $productEntityIdentifierField;
+
+    /**
+     * @param \Magento\ImportExport\Model\ResourceModel\Import\Data $importData
+     * @param ResourceConnection $resource
+     * @param \Magento\ImportExport\Model\ResourceModel\Helper $resourceHelper
      * @param \Magento\Store\Model\StoreManagerInterface $_storeManager
      * @param \Magento\Catalog\Model\ProductFactory $productFactory
-     * @param \Magento\Catalog\Model\Resource\Product\Option\CollectionFactory $optionColFactory
-     * @param \Magento\ImportExport\Model\Resource\CollectionByPagesIteratorFactory $colIteratorFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Option\CollectionFactory $optionColFactory
+     * @param \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory $colIteratorFactory
      * @param \Magento\Catalog\Helper\Data $catalogData
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Framework\Stdlib\DateTime $dateTime
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $dateTime
+     * @param ProcessingErrorAggregatorInterface $errorAggregator
      * @param array $data
+     * @throws \Magento\Framework\Exception\LocalizedException
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
-        \Magento\ImportExport\Model\Resource\Import\Data $importData,
-        \Magento\Framework\App\Resource $resource,
-        \Magento\ImportExport\Model\Resource\Helper $resourceHelper,
+        \Magento\ImportExport\Model\ResourceModel\Import\Data $importData,
+        \Magento\Framework\App\ResourceConnection $resource,
+        \Magento\ImportExport\Model\ResourceModel\Helper $resourceHelper,
         \Magento\Store\Model\StoreManagerInterface $_storeManager,
         \Magento\Catalog\Model\ProductFactory $productFactory,
-        \Magento\Catalog\Model\Resource\Product\Option\CollectionFactory $optionColFactory,
-        \Magento\ImportExport\Model\Resource\CollectionByPagesIteratorFactory $colIteratorFactory,
+        \Magento\Catalog\Model\ResourceModel\Product\Option\CollectionFactory $optionColFactory,
+        \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory $colIteratorFactory,
         \Magento\Catalog\Helper\Data $catalogData,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\Stdlib\DateTime $dateTime,
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $dateTime,
+        ProcessingErrorAggregatorInterface $errorAggregator,
         array $data = []
     ) {
         $this->_resource = $resource;
@@ -343,7 +368,7 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
         if (isset($data['connection'])) {
             $this->_connection = $data['connection'];
         } else {
-            $this->_connection = $resource->getConnection('write');
+            $this->_connection = $resource->getConnection();
         }
 
         if (isset($data['resource_helper'])) {
@@ -357,6 +382,15 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
         } else {
             $this->_isPriceGlobal = $this->_catalogData->isPriceGlobal();
         }
+
+        /**
+         * TODO: Make metadataPool a direct constructor dependency, and eliminate its setter & getter
+         */
+        if (isset($data['metadata_pool'])) {
+            $this->metadataPool = $data['metadata_pool'];
+        }
+
+        $this->errorAggregator = $errorAggregator;
 
         $this->_initSourceEntities($data)->_initTables($data)->_initStores($data);
 
@@ -373,33 +407,42 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     protected function _initMessageTemplates()
     {
         // @codingStandardsIgnoreStart
-        $this->_productEntity->addMessageTemplate(self::ERROR_INVALID_STORE, __('Invalid custom option store.'));
-        $this->_productEntity->addMessageTemplate(self::ERROR_INVALID_TYPE, __('Invalid custom option type.'));
-        $this->_productEntity->addMessageTemplate(self::ERROR_EMPTY_TITLE, __('Empty custom option title.'));
-        $this->_productEntity->addMessageTemplate(self::ERROR_INVALID_PRICE, __('Invalid custom option price.'));
+        $this->_productEntity->addMessageTemplate(
+            self::ERROR_INVALID_STORE,
+            __('Value for \'price\' sub attribute in \'store\' attribute contains incorrect value')
+        );
+        $this->_productEntity->addMessageTemplate(
+            self::ERROR_INVALID_TYPE,
+            __('Value for \'type\' sub attribute in \'custom_options\' attribute contains incorrect value, acceptable values are: \'dropdown\', \'checkbox\'')
+        );
+        $this->_productEntity->addMessageTemplate(self::ERROR_EMPTY_TITLE, __('Please enter a value for title.'));
+        $this->_productEntity->addMessageTemplate(
+            self::ERROR_INVALID_PRICE,
+            __('Value for \'price\' sub attribute in \'custom_options\' attribute contains incorrect value')
+        );
         $this->_productEntity->addMessageTemplate(
             self::ERROR_INVALID_MAX_CHARACTERS,
-            __('Invalid custom option maximum characters value.')
+            __('Value for \'maximum characters\' sub attribute in \'custom_options\' attribute contains incorrect value')
         );
         $this->_productEntity->addMessageTemplate(
             self::ERROR_INVALID_SORT_ORDER,
-            __('Invalid custom option sort order.')
+            __('Value for \'sort order\' sub attribute in \'custom_options\' attribute contains incorrect value')
         );
         $this->_productEntity->addMessageTemplate(
             self::ERROR_INVALID_ROW_PRICE,
-            __('Invalid custom option value price.')
+            __('Value for \'value price\' sub attribute in \'custom_options\' attribute contains incorrect value')
         );
         $this->_productEntity->addMessageTemplate(
             self::ERROR_INVALID_ROW_SORT,
-            __('Invalid custom option value sort order.')
+            __('Value for \'sort order\' sub attribute in \'custom_options\' attribute contains incorrect value')
         );
         $this->_productEntity->addMessageTemplate(
             self::ERROR_AMBIGUOUS_NEW_NAMES,
-            __('Custom option with such title already declared in source file.')
+            __('This name is already being used for custom option. Please enter a different name.')
         );
         $this->_productEntity->addMessageTemplate(
             self::ERROR_AMBIGUOUS_OLD_NAMES,
-            __('There are several existing custom options with such name.')
+            __('This name is already being used for custom option. Please enter a different name.')
         );
         $this->_productEntity->addMessageTemplate(
             self::ERROR_AMBIGUOUS_TYPES,
@@ -475,7 +518,7 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
             $this->_productEntity = $data['product_entity'];
         } else {
             throw new \Magento\Framework\Exception\LocalizedException(
-                __('Option entity must have a parent product entity.')
+                __('Every option entity must have a parent product entity.')
             );
         }
         if (isset($data['collection_by_pages_iterator'])) {
@@ -525,7 +568,7 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
                         ];
                     }
                 };
-                /** @var $collection \Magento\Catalog\Model\Resource\Product\Option\Collection */
+                /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Option\Collection */
                 $this->_optionCollection->reset();
                 $this->_optionCollection->getSelect()->join(
                     ['option_title' => $optionTitleTable],
@@ -1027,48 +1070,73 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
      * Get multiRow format from one line data.
      *
      * @param array $rowData
-     *
      * @return array
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _getMultiRowFormat($rowData)
     {
         // Parse custom options.
         $rowData = $this->_parseCustomOptions($rowData);
-        $multiRow = array();
+        $multiRow = [];
         if (empty($rowData['custom_options'])) {
             return $multiRow;
         }
 
         $i = 0;
-
         foreach ($rowData['custom_options'] as $name => $customOption) {
             $i++;
             foreach ($customOption as $rowOrder => $optionRow) {
-                $row = array(
-                    self::COLUMN_STORE => '',
-                    self::COLUMN_TYPE => $name ? $optionRow['type'] : '',
-                    self::COLUMN_TITLE => $name,
-                    self::COLUMN_IS_REQUIRED => $optionRow['required'],
-                    self::COLUMN_SORT_ORDER => $i,
-                    self::COLUMN_ROW_TITLE => isset($optionRow['option_title']) ? $optionRow['option_title'] : '',
-                    self::COLUMN_ROW_SKU => $optionRow['sku'],
-                    self::COLUMN_ROW_SORT => $rowOrder,
-                    self::COLUMN_PREFIX . 'sku' => $optionRow['sku']
+                $row = array_merge(
+                    [
+                        self::COLUMN_STORE => '',
+                        self::COLUMN_TITLE => $name,
+                        self::COLUMN_SORT_ORDER => $i,
+                        self::COLUMN_ROW_SORT => $rowOrder
+                    ],
+                    $this->processOptionRow($name, $optionRow)
                 );
-
-                $percent_suffix = isset($optionRow['price_type']) && ($optionRow['price_type'] == 'percent') ? '%' : '';
-                $row[self::COLUMN_ROW_PRICE] = isset($optionRow['price']) ? $optionRow['price'] . $percent_suffix : '';
-                $row[self::COLUMN_PREFIX . 'price'] = $row[self::COLUMN_ROW_PRICE];
-
                 $name = '';
-
                 $multiRow[] = $row;
             }
-
         }
 
         return $multiRow;
+    }
+
+    /**
+     * @param string $name
+     * @param array $optionRow
+     * @return array
+     */
+    private function processOptionRow($name, $optionRow)
+    {
+        $result = [
+            self::COLUMN_TYPE => $name ? $optionRow['type'] : '',
+            self::COLUMN_IS_REQUIRED => $optionRow['required'],
+            self::COLUMN_ROW_SKU => $optionRow['sku'],
+            self::COLUMN_PREFIX . 'sku' => $optionRow['sku'],
+            self::COLUMN_ROW_TITLE => '',
+            self::COLUMN_ROW_PRICE => ''
+        ];
+
+        if (isset($optionRow['option_title'])) {
+            $result[self::COLUMN_ROW_TITLE] = $optionRow['option_title'];
+        }
+
+        if (isset($optionRow['price'])) {
+            $percent_suffix = '';
+            if (isset($optionRow['price_type']) && $optionRow['price_type'] == 'percent') {
+                $percent_suffix =  '%';
+            }
+            $result[self::COLUMN_ROW_PRICE] = $optionRow['price'] . $percent_suffix;
+        }
+
+        $result[self::COLUMN_PREFIX . 'price'] = $result[self::COLUMN_ROW_PRICE];
+
+        if (isset($optionRow['max_characters'])) {
+            $result[$this->columnMaxCharacters] = $optionRow['max_characters'];
+        }
+
+        return $result;
     }
 
     /**
@@ -1176,8 +1244,11 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     {
         if (!$this->_productsSkuToId || !empty($this->_newOptionsNewData)) {
             $columns = ['entity_id', 'sku'];
+            if ($this->getProductEntityLinkField() != $this->getProductIdentifierField()) {
+                $columns[] = $this->getProductEntityLinkField();
+            }
             foreach ($this->_productModel->getProductEntitiesInfo($columns) as $product) {
-                $this->_productsSkuToId[$product['sku']] = $product['entity_id'];
+                $this->_productsSkuToId[$product['sku']] = $product[$this->getProductEntityLinkField()];
             }
         }
 
@@ -1413,10 +1484,10 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     protected function _getProductData(array $rowData, $productId)
     {
         $productData = [
-            'entity_id' => $productId,
+            $this->getProductEntityLinkField() => $productId,
             'has_options' => 1,
             'required_options' => 0,
-            'updated_at' => (new \DateTime())->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT),
+            'updated_at' => $this->dateTime->date(null, null, false)->format('Y-m-d H:i:s'),
         ];
 
         if (!empty($rowData[self::COLUMN_IS_REQUIRED])) {
@@ -1739,7 +1810,7 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
             return $rowData;
         }
         $rowData['custom_options'] = str_replace($beforeOptionValueSkuDelimiter, $this->_productEntity->getMultipleValueSeparator(), $rowData['custom_options']);
-        $options = array();
+        $options = [];
         $optionValues = explode(Product::PSEUDO_MULTI_LINE_SEPARATOR, $rowData['custom_options']);
         $k = 0;
         $name = '';
@@ -1778,5 +1849,35 @@ class Option extends \Magento\ImportExport\Model\Import\Entity\AbstractEntity
     {
         $this->_productsSkuToId = null;
         return $this;
+    }
+
+    /**
+     * Get product entity link field
+     *
+     * @return string
+     */
+    private function getProductEntityLinkField()
+    {
+        if (!$this->productEntityLinkField) {
+            $this->productEntityLinkField = $this->getMetadataPool()
+                ->getMetadata(\Magento\Catalog\Api\Data\ProductInterface::class)
+                ->getLinkField();
+        }
+        return $this->productEntityLinkField;
+    }
+
+    /**
+     * Get product entity identifier field
+     *
+     * @return string
+     */
+    private function getProductIdentifierField()
+    {
+        if (!$this->productEntityIdentifierField) {
+            $this->productEntityIdentifierField = $this->getMetadataPool()
+                ->getMetadata(\Magento\Catalog\Api\Data\ProductInterface::class)
+                ->getIdentifierField();
+        }
+        return $this->productEntityIdentifierField;
     }
 }

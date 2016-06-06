@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -29,11 +29,6 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     protected $pageConfigMock;
 
     /**
-     * @var \Magento\Framework\View\Asset\MinifyService|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $assetMinifyServiceMock;
-
-    /**
      * @var \Magento\Framework\View\Asset\AssetInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $assetInterfaceMock;
@@ -54,7 +49,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     protected $escaperMock;
 
     /**
-     * @var \Magento\Framework\Stdlib\String|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Stdlib\StringUtils|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $stringMock;
 
@@ -84,11 +79,6 @@ class RendererTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->assetMinifyServiceMock = $this->getMockBuilder('Magento\Framework\View\Asset\MinifyService')
-            ->setMethods(['getAssets'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->assetMergeServiceMock = $this->getMockBuilder('Magento\Framework\View\Asset\MergeService')
             ->disableOriginalConstructor()
             ->getMock();
@@ -102,7 +92,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
             ->method('escapeHtml')
             ->willReturnArgument(0);
 
-        $this->stringMock = $this->getMockBuilder('Magento\Framework\Stdlib\String')
+        $this->stringMock = $this->getMockBuilder('Magento\Framework\Stdlib\StringUtils')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -126,7 +116,6 @@ class RendererTest extends \PHPUnit_Framework_TestCase
             'Magento\Framework\View\Page\Config\Renderer',
             [
                 'pageConfig' => $this->pageConfigMock,
-                'assetMinifyService' => $this->assetMinifyServiceMock,
                 'assetMergeService' => $this->assetMergeServiceMock,
                 'urlBuilder' => $this->urlBuilderMock,
                 'escaper' => $this->escaperMock,
@@ -158,13 +147,15 @@ class RendererTest extends \PHPUnit_Framework_TestCase
             'content_type' => 'content_type_value',
             'x_ua_compatible' => 'x_ua_compatible_value',
             'media_type' => 'media_type_value',
+            'og:video:secure_url' => 'secure_url'
         ];
         $metadataValueCharset = 'newCharsetValue';
 
         $expected = '<meta charset="newCharsetValue"/>' . "\n"
             . '<meta name="metadataName" content="metadataValue"/>' . "\n"
             . '<meta http-equiv="Content-Type" content="content_type_value"/>' . "\n"
-            . '<meta http-equiv="X-UA-Compatible" content="x_ua_compatible_value"/>' . "\n";
+            . '<meta http-equiv="X-UA-Compatible" content="x_ua_compatible_value"/>' . "\n"
+            . '<meta property="og:video:secure_url" content="secure_url"/>' . "\n";
 
         $this->stringMock->expects($this->at(0))
             ->method('upperCaseWords')
@@ -190,11 +181,15 @@ class RendererTest extends \PHPUnit_Framework_TestCase
 
         $this->pageConfigMock->expects($this->any())
             ->method('getTitle')
-            ->will($this->returnValue($this->titleMock));
+            ->willReturn($this->titleMock);
 
         $this->titleMock->expects($this->once())
             ->method('get')
-            ->will($this->returnValue($title));
+            ->willReturn($title);
+
+        $this->escaperMock->expects($this->once())
+            ->method('escapeHtml')
+            ->willReturnArgument(0);
 
         $this->assertEquals($expected, $this->renderer->renderTitle());
     }
@@ -317,10 +312,6 @@ class RendererTest extends \PHPUnit_Framework_TestCase
         $this->assetsCollection->expects($this->once())
             ->method('getGroups')
             ->willReturn([$groupMockOne, $groupMockTwo]);
-
-        $this->assetMinifyServiceMock->expects($this->exactly(2))
-            ->method('getAssets')
-            ->willReturnArgument(0);
 
         $this->assetMergeServiceMock->expects($this->exactly(1))
             ->method('getMergedAssets')

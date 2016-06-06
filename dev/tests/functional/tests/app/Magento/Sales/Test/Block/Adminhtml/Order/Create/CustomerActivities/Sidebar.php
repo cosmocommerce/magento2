@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -19,14 +19,14 @@ abstract class Sidebar extends Block
      *
      * @var string
      */
-    protected $addToOrder = '//tr[td[.="%s"]]//input[contains(@name,"add")]';
+    protected $addToOrder = './/tr[td[.="%s"]]//input[contains(@name,"add")]';
 
     /**
      * 'Add to order' checkbox.
      *
      * @var string
      */
-    protected $addToOrderProductName = '//tr/td[.="%s"]';
+    protected $addToOrderProductName = './/tr/td[.="%s"]';
 
     /**
      * Add productz to order.

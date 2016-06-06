@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Newsletter\Controller\Adminhtml\Subscriber;
@@ -28,7 +28,7 @@ class MassDelete extends \Magento\Newsletter\Controller\Adminhtml\Subscriber
                     );
                     $subscriber->delete();
                 }
-                $this->messageManager->addSuccess(__('Total of %1 record(s) were deleted', count($subscribersIds)));
+                $this->messageManager->addSuccess(__('Total of %1 record(s) were deleted.', count($subscribersIds)));
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
             }

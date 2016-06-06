@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager;
@@ -45,24 +45,23 @@ class TMap implements \IteratorAggregate, \Countable, \ArrayAccess
     private $configInterface;
 
     /**
-     * @var ClassReaderInterface
+     * @var \Closure
      */
-    private $classReaderInterface;
-
+    private $objectCreationStrategy;
 
     /**
      * @param string $type
      * @param ObjectManagerInterface $objectManager
      * @param ConfigInterface $configInterface
-     * @param ClassReaderInterface $classReaderInterface
      * @param array $array
+     * @param \Closure $objectCreationStrategy
      */
     public function __construct(
         $type,
         ObjectManagerInterface $objectManager,
         ConfigInterface $configInterface,
-        ClassReaderInterface $classReaderInterface,
-        array $array = []
+        array $array = [],
+        \Closure $objectCreationStrategy = null
     ) {
         if (!class_exists($this->type) && !interface_exists($type)) {
             throw new \InvalidArgumentException(sprintf('Unknown type %s', $type));
@@ -72,7 +71,6 @@ class TMap implements \IteratorAggregate, \Countable, \ArrayAccess
 
         $this->objectManager = $objectManager;
         $this->configInterface = $configInterface;
-        $this->classReaderInterface = $classReaderInterface;
 
         array_walk(
             $array,
@@ -83,6 +81,7 @@ class TMap implements \IteratorAggregate, \Countable, \ArrayAccess
 
         $this->array = $array;
         $this->counter = count($array);
+        $this->objectCreationStrategy = $objectCreationStrategy;
     }
 
     /**
@@ -99,7 +98,12 @@ class TMap implements \IteratorAggregate, \Countable, \ArrayAccess
             $this->configInterface->getPreference($instanceName)
         );
 
-        if (!in_array($this->type, $this->classReaderInterface->getParents($realType), true)) {
+        if (
+        !in_array(
+            $this->type,
+            array_unique(array_merge(class_parents($realType), class_implements($realType))),
+            true
+        )) {
             $this->throwTypeException($realType, $index);
         }
     }
@@ -133,7 +137,10 @@ class TMap implements \IteratorAggregate, \Countable, \ArrayAccess
             return $this->objectsArray[$index];
         }
 
-        return $this->objectsArray[$index] = $this->objectManager->create($this->array[$index]);
+        $objectCreationStrategy = $this->objectCreationStrategy;
+        return $this->objectsArray[$index] = $objectCreationStrategy === null
+            ? $this->objectManager->create($this->array[$index])
+            : $objectCreationStrategy($this->objectManager, $this->array[$index]);
     }
 
     /**

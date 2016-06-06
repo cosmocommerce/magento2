@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Api\Data;
@@ -24,5 +24,5 @@ interface ProductSearchResultsInterface extends \Magento\Framework\Api\SearchRes
      * @param \Magento\Catalog\Api\Data\ProductInterface[] $items
      * @return $this
      */
-    public function setItems(array $items = null);
+    public function setItems(array $items);
 }

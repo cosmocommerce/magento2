@@ -4,11 +4,11 @@ namespace Magento\Downloadable\Controller\Adminhtml\Downloadable;
 /**
  * Magento\Downloadable\Controller\Adminhtml\Downloadable\File
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  * @magentoAppArea adminhtml
  */
-class FileTest extends \Magento\Backend\Utility\Controller
+class FileTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     public function testUploadAction()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Test\Unit\Gateway\Data;
@@ -57,9 +57,7 @@ class PaymentDataObjectFactoryTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
 
         $this->paymentDataObjectMock =
-            $this->getMockBuilder('Magento\Payment\Gateway\Data\PaymentDataObject')
-                ->disableOriginalConstructor()
-                ->getMock();
+            $this->getMock('Magento\Payment\Gateway\Data\PaymentDataObjectInterface');
 
         $this->model = new PaymentDataObjectFactory(
             $this->objectManagerMock,

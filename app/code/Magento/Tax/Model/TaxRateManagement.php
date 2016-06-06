@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -57,7 +57,7 @@ class TaxRateManagement implements TaxRateManagementInterface
      */
     public function getRatesByCustomerAndProductTaxClassId($customerTaxClassId, $productTaxClassId)
     {
-        $this->searchCriteriaBuilder->addFilter(
+        $this->searchCriteriaBuilder->addFilters(
             [
                 $this->filterBuilder
                     ->setField('customer_tax_class_ids')
@@ -66,7 +66,7 @@ class TaxRateManagement implements TaxRateManagementInterface
             ]
         );
 
-        $this->searchCriteriaBuilder->addFilter(
+        $this->searchCriteriaBuilder->addFilters(
             [
                 $this->filterBuilder
                     ->setField('product_tax_class_ids')

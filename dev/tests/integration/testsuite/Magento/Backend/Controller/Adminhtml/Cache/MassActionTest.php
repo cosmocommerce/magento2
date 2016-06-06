@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -11,7 +11,7 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\Framework\Config\File\ConfigFilePool;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
-class MassActionTest extends \Magento\Backend\Utility\Controller
+class MassActionTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * Configuration of cache types

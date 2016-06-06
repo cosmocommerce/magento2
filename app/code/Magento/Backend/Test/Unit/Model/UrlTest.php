@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -406,5 +406,11 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->_model->setRequest($this->_requestMock);
         $keyFromRequest = $this->_model->getSecretKey();
         $this->assertEquals($keyFromParams, $keyFromRequest);
+    }
+
+    public function testGetUrlWithUrlInRoutePath()
+    {
+        $routePath = 'https://localhost/index.php/catalog/product/view/id/100/?foo=bar#anchor';
+        static::assertEquals($routePath, $this->_model->getUrl($routePath));
     }
 }

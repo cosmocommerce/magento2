@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -22,7 +22,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     private $category;
 
     /**
-     * @var \Magento\CatalogSearch\Model\Resource\Fulltext\Collection|MockObject
+     * @var \Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection|MockObject
      */
     private $fulltextCollection;
 
@@ -83,7 +83,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->fulltextCollection = $this->fulltextCollection = $this->getMockBuilder(
-            '\Magento\CatalogSearch\Model\Resource\Fulltext\Collection'
+            '\Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection'
         )
             ->disableOriginalConstructor()
             ->setMethods(['addCategoryFilter', 'getFacetedData', 'getSize'])

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Test\Unit\Model\Attribute\Data;
@@ -22,7 +22,7 @@ class MultilineTest extends \PHPUnit_Framework_TestCase
         $timezoneMock = $this->getMock('\Magento\Framework\Stdlib\DateTime\TimezoneInterface');
         $loggerMock = $this->getMock('\Psr\Log\LoggerInterface', [], [], '', false);
         $localeResolverMock = $this->getMock('\Magento\Framework\Locale\ResolverInterface');
-        $this->stringMock = $this->getMock('\Magento\Framework\Stdlib\String', [], [], '', false);
+        $this->stringMock = $this->getMock('\Magento\Framework\Stdlib\StringUtils', [], [], '', false);
 
         $this->model = new \Magento\Eav\Model\Attribute\Data\Multiline(
             $timezoneMock,

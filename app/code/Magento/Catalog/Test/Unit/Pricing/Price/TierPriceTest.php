@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,9 +8,8 @@
 
 namespace Magento\Catalog\Test\Unit\Pricing\Price;
 
-use \Magento\Catalog\Pricing\Price\TierPrice;
-use \Magento\Catalog\Pricing\Price\RegularPrice;
-
+use Magento\Catalog\Pricing\Price\TierPrice;
+use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Customer\Model\Group;
 use Magento\Customer\Model\GroupManagement;
 
@@ -223,7 +222,7 @@ class TierPriceTest extends \PHPUnit_Framework_TestCase
         $attributeMock = $this->getMock('Magento\Eav\Model\Entity\Attribute\AbstractAttribute', [], [], '', false);
         $attributeMock->expects($this->once())->method('getBackend')->will($this->returnValue($backendMock));
 
-        $productResource = $this->getMock('Magento\Catalog\Model\Resource\Product', [], [], '', false);
+        $productResource = $this->getMock('Magento\Catalog\Model\ResourceModel\Product', [], [], '', false);
         $productResource->expects($this->once())->method('getAttribute')->with(TierPrice::PRICE_CODE)
             ->will($this->returnValue($attributeMock));
 
@@ -271,6 +270,10 @@ class TierPriceTest extends \PHPUnit_Framework_TestCase
         $this->calculator->expects($this->atLeastOnce())->method('getAmount')
             ->will($this->returnArgument(0));
 
+        $this->priceInfo->expects(static::atLeastOnce())
+            ->method('getPrice')
+            ->with(FinalPrice::PRICE_CODE)
+            ->willReturn($price);
         $this->priceCurrencyMock->expects($this->any())
             ->method('convertAndRound')
             ->will($this->returnCallback(
@@ -365,20 +368,15 @@ class TierPriceTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSavePercent($basePrice, $tierPrice, $savedPercent)
     {
-        $priceAmount = $this->getMockForAbstractClass('Magento\Framework\Pricing\Amount\AmountInterface');
-        $priceAmount->expects($this->once())
-            ->method('getBaseAmount')
-            ->will($this->returnValue($basePrice));
-
         $price = $this->getMock('Magento\Framework\Pricing\Price\PriceInterface');
-        $price->expects($this->any())
-            ->method('getAmount')
-            ->will($this->returnValue($priceAmount));
 
-        $this->priceInfo->expects($this->atLeastOnce())
+        $this->priceInfo->expects(static::atLeastOnce())
             ->method('getPrice')
-            ->will($this->returnValue($price))
-            ->with(RegularPrice::PRICE_CODE);
+            ->with(FinalPrice::PRICE_CODE)
+            ->willReturn($price);
+        $price->expects(static::atLeastOnce())
+            ->method('getValue')
+            ->willReturn($basePrice);
 
         $amount = $this->getMockForAbstractClass('Magento\Framework\Pricing\Amount\AmountInterface');
         $amount->expects($this->atLeastOnce())

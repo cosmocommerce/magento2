@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Quote\Api\Data;
@@ -15,6 +15,8 @@ interface CartInterface extends \Magento\Framework\Api\ExtensibleDataInterface
      * Constants defined for keys of array, makes typos less likely
      */
     const KEY_ID = 'id';
+
+    const KEY_ENTITY_ID = 'entity_id';
 
     const KEY_CREATED_AT = 'created_at';
 
@@ -53,6 +55,8 @@ interface CartInterface extends \Magento\Framework\Api\ExtensibleDataInterface
     const KEY_CUSTOMER_NOTE_NOTIFY = 'customer_note_notify';
 
     const KEY_CUSTOMER_TAX_CLASS_ID = 'customer_tax_class_id';
+
+    const KEY_STORE_ID = 'store_id';
 
     /**#@-*/
 
@@ -201,36 +205,6 @@ interface CartInterface extends \Magento\Framework\Api\ExtensibleDataInterface
     public function setCustomer(\Magento\Customer\Api\Data\CustomerInterface $customer = null);
 
     /**
-     * Returns the payment method that is used to process the cart.
-     *
-     * @return string|null Payment method. Otherwise, null.
-     */
-    public function getCheckoutMethod();
-
-    /**
-     * Sets the payment method that is used to process the cart.
-     *
-     * @param string $checkoutMethod
-     * @return $this
-     */
-    public function setCheckoutMethod($checkoutMethod);
-
-    /**
-     * Returns the cart shipping address.
-     *
-     * @return \Magento\Quote\Api\Data\AddressInterface|null Cart shipping address. Otherwise, null.
-     */
-    public function getShippingAddress();
-
-    /**
-     * Sets the cart shipping address.
-     *
-     * @param \Magento\Quote\Api\Data\AddressInterface $shippingAddress
-     * @return $this
-     */
-    public function setShippingAddress(\Magento\Quote\Api\Data\AddressInterface $shippingAddress = null);
-
-    /**
      * Returns the cart billing address.
      *
      * @return \Magento\Quote\Api\Data\AddressInterface|null Cart billing address. Otherwise, null.
@@ -349,6 +323,21 @@ interface CartInterface extends \Magento\Framework\Api\ExtensibleDataInterface
      * @return $this
      */
     public function setCustomerTaxClassId($customerTaxClassId);
+
+    /**
+     * Get store identifier
+     *
+     * @return int
+     */
+    public function getStoreId();
+
+    /**
+     * Sets store identifier
+     *
+     * @param int $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId);
 
     /**
      * Retrieve existing extension attributes object or create a new one.

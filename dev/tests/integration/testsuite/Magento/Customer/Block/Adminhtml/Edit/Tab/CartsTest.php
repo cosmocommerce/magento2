@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Edit\Tab;
@@ -61,7 +61,7 @@ class CartsTest extends \PHPUnit_Framework_TestCase
             '/<div class=".*admin__data-grid-toolbar"/',
             $html
         );
-        $this->assertContains("customer_cart_grid1JsObject = new varienGrid('customer_cart_grid1',", $html);
+        $this->assertContains("customer_cart_grid1JsObject = new varienGrid(\"customer_cart_grid1\",", $html);
         $this->assertContains("backend/customer/cart_product_composite_cart/configure/website_id/1", $html);
     }
 
@@ -84,7 +84,7 @@ class CartsTest extends \PHPUnit_Framework_TestCase
             '/<div class=".*admin__data-grid-toolbar"/',
             $html
         );
-        $this->assertContains("customer_cart_gridJsObject = new varienGrid('customer_cart_grid',", $html);
+        $this->assertContains("customer_cart_gridJsObject = new varienGrid(\"customer_cart_grid\",", $html);
         $this->assertContains("backend/customer/cart_product_composite_cart/configure/key/", $html);
     }
 }

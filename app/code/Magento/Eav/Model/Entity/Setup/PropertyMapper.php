@@ -2,12 +2,12 @@
 /**
  * Default entity attribute mapper
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Setup;
 
-use Magento\Catalog\Model\Resource\Eav\Attribute;
+use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 
 class PropertyMapper extends PropertyMapperAbstract
 {
@@ -17,6 +17,7 @@ class PropertyMapper extends PropertyMapperAbstract
      * @param array $input
      * @param int $entityTypeId
      * @return array
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function map(array $input, $entityTypeId)
     {
@@ -34,7 +35,11 @@ class PropertyMapper extends PropertyMapperAbstract
             'default_value' => $this->_getValue($input, 'default'),
             'is_unique' => $this->_getValue($input, 'unique', 0),
             'note' => $this->_getValue($input, 'note'),
-            'is_global' => $this->_getValue($input, 'global', Attribute::SCOPE_GLOBAL)
+            'is_global' => $this->_getValue(
+                $input,
+                'global',
+                \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL
+            )
         ];
     }
 }

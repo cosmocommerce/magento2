@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\AdminNotification\Test\Unit\Model\System\Message;
@@ -90,7 +90,7 @@ class SecurityTest extends \PHPUnit_Framework_TestCase
 
     public function testGetText()
     {
-        $messageStart = 'Your web server is configured incorrectly.';
+        $messageStart = 'Your web server is set up incorrectly';
 
         $this->assertStringStartsWith($messageStart, (string)$this->_messageModel->getText());
     }

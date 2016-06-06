@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Request\Aggregation;
@@ -24,6 +24,7 @@ class Range
     /**
      * @param int|null $from
      * @param int|null $to
+     * @codeCoverageIgnore
      */
     public function __construct($from, $to)
     {
@@ -35,6 +36,7 @@ class Range
      * Get From
      *
      * @return int|null
+     * @codeCoverageIgnore
      */
     public function getFrom()
     {
@@ -45,6 +47,7 @@ class Range
      * Get To
      *
      * @return int|null
+     * @codeCoverageIgnore
      */
     public function getTo()
     {

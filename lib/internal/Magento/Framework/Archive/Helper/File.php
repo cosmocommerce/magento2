@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,6 +12,7 @@
 namespace Magento\Framework\Archive\Helper;
 
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Filesystem\DriverInterface;
 
 class File
 {
@@ -90,7 +91,7 @@ class File
      * @throws LocalizedException
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function open($mode = 'w+', $chmod = 0666)
+    public function open($mode = 'w+', $chmod = null)
     {
         $this->_isInWriteMode = $this->_isWritableMode($mode);
 
@@ -181,7 +182,7 @@ class File
         $this->_close();
         $this->_fileHandler = false;
 
-        if ($this->_isInWriteMode) {
+        if ($this->_isInWriteMode && isset($this->_chmod)) {
             @chmod($this->_filePath, $this->_chmod);
         }
     }

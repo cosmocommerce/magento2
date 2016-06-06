@@ -2,32 +2,31 @@
     "name": "magento/module-catalog-import-export",
     "description": "N/A",
     "require": {
-        "php": "~5.5.0|~5.6.0",
-        "magento/module-catalog": "0.74.0-beta14",
-        "magento/module-eav": "0.74.0-beta14",
-        "magento/module-import-export": "0.74.0-beta14",
-        "magento/module-indexer": "0.74.0-beta14",
-        "magento/module-store": "0.74.0-beta14",
-        "magento/module-tax": "0.74.0-beta14",
-        "magento/module-catalog-inventory": "0.74.0-beta14",
-        "magento/module-media-storage": "0.74.0-beta14",
-        "magento/module-customer": "0.74.0-beta14",
-        "magento/framework": "0.74.0-beta14",
-        "ext-ctype": "*",
-        "magento/magento-composer-installer": "*"
+        "php": "~5.5.22|~5.6.0|~7.0.0",
+        "magento/module-catalog": "101.0.*",
+        "magento/module-catalog-url-rewrite": "100.1.*",
+        "magento/module-eav": "100.1.*",
+        "magento/module-import-export": "100.1.*",
+        "magento/module-store": "100.1.*",
+        "magento/module-tax": "100.1.*",
+        "magento/module-catalog-inventory": "100.1.*",
+        "magento/module-media-storage": "100.1.*",
+        "magento/module-customer": "100.1.*",
+        "magento/framework": "100.1.*",
+        "ext-ctype": "*"
     },
     "type": "magento2-module",
-    "version": "0.74.0-beta14",
+    "version": "100.1.0-rc1",
     "license": [
         "OSL-3.0",
         "AFL-3.0"
     ],
-    "extra": {
-        "map": [
-            [
-                "*",
-                "Magento/CatalogImportExport"
-            ]
-        ]
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magento\\CatalogImportExport\\": ""
+        }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Weee\Model\Attribute\Backend\Weee;
@@ -10,7 +10,7 @@ use Magento\Framework\Exception\LocalizedException;
 class Tax extends \Magento\Catalog\Model\Product\Attribute\Backend\Price
 {
     /**
-     * @var \Magento\Weee\Model\Resource\Attribute\Backend\Weee\Tax
+     * @var \Magento\Weee\Model\ResourceModel\Attribute\Backend\Weee\Tax
      */
     protected $_attributeTax;
 
@@ -29,21 +29,23 @@ class Tax extends \Magento\Catalog\Model\Product\Attribute\Backend\Price
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Catalog\Helper\Data $catalogData
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
+     * @param \Magento\Framework\Locale\FormatInterface $localeFormat
      * @param \Magento\Directory\Helper\Data $directoryHelper
-     * @param \Magento\Weee\Model\Resource\Attribute\Backend\Weee\Tax $attributeTax
+     * @param \Magento\Weee\Model\ResourceModel\Attribute\Backend\Weee\Tax $attributeTax
      */
     public function __construct(
         \Magento\Directory\Model\CurrencyFactory $currencyFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Catalog\Helper\Data $catalogData,
         \Magento\Framework\App\Config\ScopeConfigInterface $config,
+        \Magento\Framework\Locale\FormatInterface $localeFormat,
         \Magento\Directory\Helper\Data $directoryHelper,
-        \Magento\Weee\Model\Resource\Attribute\Backend\Weee\Tax $attributeTax
+        \Magento\Weee\Model\ResourceModel\Attribute\Backend\Weee\Tax $attributeTax
     ) {
         $this->_directoryHelper = $directoryHelper;
         $this->_storeManager = $storeManager;
         $this->_attributeTax = $attributeTax;
-        parent::__construct($currencyFactory, $storeManager, $catalogData, $config);
+        parent::__construct($currencyFactory, $storeManager, $catalogData, $config, $localeFormat);
     }
 
     /**
@@ -68,18 +70,15 @@ class Tax extends \Magento\Catalog\Model\Product\Attribute\Backend\Price
             return $this;
         }
         $dup = [];
-
         foreach ($taxes as $tax) {
             if (!empty($tax['delete'])) {
                 continue;
             }
-
-            $state = isset($tax['state']) ? $tax['state'] : '0';
+            $state = isset($tax['state']) ? ($tax['state'] > 0 ? $tax['state'] : 0) : '0';
             $key1 = implode('-', [$tax['website_id'], $tax['country'], $state]);
-
             if (!empty($dup[$key1])) {
                 throw new LocalizedException(
-                    __('We found a duplicate of website, country and state fields for a fixed product tax')
+                    __('You must set unique country-state combinations within the same fixed product tax')
                 );
             }
             $dup[$key1] = 1;

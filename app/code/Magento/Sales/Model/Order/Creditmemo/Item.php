@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Order\Creditmemo;
@@ -10,8 +10,8 @@ use Magento\Sales\Api\Data\CreditmemoItemInterface;
 use Magento\Sales\Model\AbstractModel;
 
 /**
- * @method \Magento\Sales\Model\Resource\Order\Creditmemo\Item _getResource()
- * @method \Magento\Sales\Model\Resource\Order\Creditmemo\Item getResource()
+ * @method \Magento\Sales\Model\ResourceModel\Order\Creditmemo\Item _getResource()
+ * @method \Magento\Sales\Model\ResourceModel\Order\Creditmemo\Item getResource()
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  */
@@ -48,7 +48,7 @@ class Item extends AbstractModel implements CreditmemoItemInterface
      * @param \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory
      * @param AttributeValueFactory $customAttributeFactory
      * @param \Magento\Sales\Model\Order\ItemFactory $orderItemFactory
-     * @param \Magento\Framework\Model\Resource\AbstractResource $resource
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
      * @param array $data
      */
@@ -58,7 +58,7 @@ class Item extends AbstractModel implements CreditmemoItemInterface
         \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory,
         AttributeValueFactory $customAttributeFactory,
         \Magento\Sales\Model\Order\ItemFactory $orderItemFactory,
-        \Magento\Framework\Model\Resource\AbstractResource $resource = null,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
@@ -81,7 +81,7 @@ class Item extends AbstractModel implements CreditmemoItemInterface
      */
     protected function _construct()
     {
-        $this->_init('Magento\Sales\Model\Resource\Order\Creditmemo\Item');
+        $this->_init('Magento\Sales\Model\ResourceModel\Order\Creditmemo\Item');
     }
 
     /**
@@ -127,13 +127,38 @@ class Item extends AbstractModel implements CreditmemoItemInterface
     public function getOrderItem()
     {
         if ($this->_orderItem === null) {
-            if ($this->getCreditmemo()) {
-                $this->_orderItem = $this->getCreditmemo()->getOrder()->getItemById($this->getOrderItemId());
-            } else {
-                $this->_orderItem = $this->_orderItemFactory->create()->load($this->getOrderItemId());
-            }
+            $this->_orderItem = $this->getOrderItemWithoutCaching();
         }
         return $this->_orderItem;
+    }
+
+    /**
+     * Retrieve order item instance without set it to property.
+     * It is need for ability to process setQty on api when credit memo and order has not built yet.
+     *
+     * @return \Magento\Sales\Model\Order\Item
+     */
+    private function getOrderItemWithoutCaching()
+    {
+        if ($this->getCreditmemo()) {
+            $orderItem = $this->getCreditmemo()->getOrder()->getItemById($this->getOrderItemId());
+        } else {
+            $orderItem = $this->_orderItemFactory->create()->load($this->getOrderItemId());
+        }
+
+        return $orderItem;
+    }
+
+    /**
+     * Checks if quantity available for refund
+     *
+     * @param int $qty
+     * @param \Magento\Sales\Model\Order\Item $orderItem
+     * @return bool
+     */
+    private function isQtyAvailable($qty, \Magento\Sales\Model\Order\Item $orderItem)
+    {
+        return $qty <= $orderItem->getQtyToRefund() || $orderItem->isDummy();
     }
 
     /**
@@ -145,16 +170,14 @@ class Item extends AbstractModel implements CreditmemoItemInterface
      */
     public function setQty($qty)
     {
-        if ($this->getOrderItem()->getIsQtyDecimal()) {
+        $orderItem = $this->getOrderItemWithoutCaching();
+        if ($orderItem->getIsQtyDecimal()) {
             $qty = (double)$qty;
         } else {
             $qty = (int)$qty;
         }
         $qty = $qty > 0 ? $qty : 0;
-        /**
-         * Check qty availability
-         */
-        if ($qty <= $this->getOrderItem()->getQtyToRefund() || $this->getOrderItem()->isDummy()) {
+        if ($this->isQtyAvailable($qty, $orderItem)) {
             $this->setData('qty', $qty);
         } else {
             throw new \Magento\Framework\Exception\LocalizedException(
@@ -582,6 +605,7 @@ class Item extends AbstractModel implements CreditmemoItemInterface
     }
 
     //@codeCoverageIgnoreStart
+
     /**
      * {@inheritdoc}
      */

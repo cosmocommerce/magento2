@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ImportExport\Model\Export;
@@ -146,7 +146,7 @@ abstract class AbstractEntity
     /**
      * Collection by pages iterator
      *
-     * @var \Magento\ImportExport\Model\Resource\CollectionByPagesIterator
+     * @var \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIterator
      */
     protected $_byPagesIterator;
 
@@ -175,7 +175,7 @@ abstract class AbstractEntity
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\ImportExport\Model\Export\Factory $collectionFactory
-     * @param \Magento\ImportExport\Model\Resource\CollectionByPagesIteratorFactory $resourceColFactory
+     * @param \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory $resourceColFactory
      * @param array $data
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
@@ -183,7 +183,7 @@ abstract class AbstractEntity
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\ImportExport\Model\Export\Factory $collectionFactory,
-        \Magento\ImportExport\Model\Resource\CollectionByPagesIteratorFactory $resourceColFactory,
+        \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory $resourceColFactory,
         array $data = []
     ) {
         $this->_scopeConfig = $scopeConfig;
@@ -266,6 +266,20 @@ abstract class AbstractEntity
         $this->_messageTemplates[$errorCode] = $message;
 
         return $this;
+    }
+
+    /**
+     * Retrieve message template
+     *
+     * @param string $errorCode
+     * @return null|string
+     */
+    public function retrieveMessageTemplate($errorCode)
+    {
+        if (isset($this->_messageTemplates[$errorCode])) {
+            return $this->_messageTemplates[$errorCode];
+        }
+        return null;
     }
 
     /**
@@ -390,7 +404,7 @@ abstract class AbstractEntity
             ) ? __(
                 $this->_messageTemplates[$errorCode]
             ) : __(
-                "Please correct the value for '%1' column",
+                'Please correct the value for "%1" column.',
                 $errorCode
             );
             $message = (string)$message;
@@ -449,7 +463,7 @@ abstract class AbstractEntity
     public function getWriter()
     {
         if (!$this->_writer) {
-            throw new \Magento\Framework\Exception\LocalizedException(__('Please specify writer.'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Please specify the writer.'));
         }
 
         return $this->_writer;

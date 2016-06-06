@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Review\Block\Adminhtml\Rating\Edit\Tab;
@@ -206,7 +206,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
                 'stores',
                 'multiselect',
                 [
-                    'label' => __('Visible In'),
+                    'label' => __('Visibility'),
                     'name' => 'stores[]',
                     'values' => $this->systemStore->getStoreValuesForForm()
                 ]

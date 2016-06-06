@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,7 +8,7 @@ namespace Magento\Customer\Api;
 
 use Magento\Customer\Model\Data\Group as CustomerGroup;
 use Magento\Customer\Model\GroupRegistry;
-use Magento\Customer\Model\Resource\GroupRepository;
+use Magento\Customer\Model\ResourceModel\GroupRepository;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\WebapiAbstract;
@@ -44,7 +44,7 @@ class GroupRepositoryTest extends WebapiAbstract
     {
         $objectManager = Bootstrap::getObjectManager();
         $this->groupRegistry = $objectManager->get('Magento\Customer\Model\GroupRegistry');
-        $this->groupRepository = $objectManager->get('Magento\Customer\Model\Resource\GroupRepository');
+        $this->groupRepository = $objectManager->get('Magento\Customer\Model\ResourceModel\GroupRepository');
         $this->customerGroupFactory = $objectManager->create('Magento\Customer\Api\Data\GroupInterfaceFactory');
     }
 
@@ -53,6 +53,7 @@ class GroupRepositoryTest extends WebapiAbstract
      */
     public function tearDown()
     {
+        parent::tearDown();
     }
 
     /**
@@ -60,6 +61,7 @@ class GroupRepositoryTest extends WebapiAbstract
      */
     public static function tearDownAfterClass()
     {
+        parent::tearDownAfterClass();
     }
 
     /**
@@ -775,7 +777,7 @@ class GroupRepositoryTest extends WebapiAbstract
         ];
 
         $requestData = [CustomerGroup::ID => $groupId];
-        $expectedMessage = NoSuchEntityException::MESSAGE_SINGLE_FIELD;
+        $expectedMessage = 'No such entity with %fieldName = %fieldValue';
         $expectedParameters = ['fieldName' => CustomerGroup::ID, 'fieldValue' => $groupId];
 
         try {
@@ -921,13 +923,14 @@ class GroupRepositoryTest extends WebapiAbstract
     public function testSearchGroups($filterField, $filterValue, $expectedResult)
     {
         $filterBuilder = Bootstrap::getObjectManager()->create('Magento\Framework\Api\FilterBuilder');
+        /** @var \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder */
         $searchCriteriaBuilder =  Bootstrap::getObjectManager()
             ->create('Magento\Framework\Api\SearchCriteriaBuilder');
         $filter = $filterBuilder
                     ->setField($filterField)
                     ->setValue($filterValue)
                     ->create();
-        $searchCriteriaBuilder->addFilter([$filter]);
+        $searchCriteriaBuilder->addFilters([$filter]);
 
         $searchData = $searchCriteriaBuilder->create()->__toArray();
         $requestData = ['searchCriteria' => $searchData];
@@ -968,13 +971,14 @@ class GroupRepositoryTest extends WebapiAbstract
     {
         $this->_markTestAsRestOnly('SOAP is covered in ');
         $filterBuilder = Bootstrap::getObjectManager()->create('Magento\Framework\Api\FilterBuilder');
+        /** @var \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder */
         $searchCriteriaBuilder =  Bootstrap::getObjectManager()
             ->create('Magento\Framework\Api\SearchCriteriaBuilder');
         $filter = $filterBuilder
             ->setField($filterField)
             ->setValue($filterValue)
             ->create();
-        $searchCriteriaBuilder->addFilter([$filter]);
+        $searchCriteriaBuilder->addFilters([$filter]);
         $searchData = $searchCriteriaBuilder->create()->__toArray();
         $requestData = ['searchCriteria' => $searchData];
         $searchQueryString = http_build_query($requestData);

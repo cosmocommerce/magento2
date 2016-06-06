@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -84,12 +84,14 @@ class InstallStoreConfigurationCommand extends AbstractSetupCommand
             $output->writeln(
                 "<info>Store settings can't be saved because the Magento application is not installed.</info>"
             );
-            return;
+            // we must have an exit code higher than zero to indicate something was wrong
+            return \Magento\Framework\Console\Cli::RETURN_FAILURE;
         }
         $errors = $this->validate($input);
         if ($errors) {
             $output->writeln($errors);
-            return;
+            // we must have an exit code higher than zero to indicate something was wrong
+            return \Magento\Framework\Console\Cli::RETURN_FAILURE;
         }
         $installer = $this->installerFactory->create(new ConsoleLogger($output));
         $installer->installUserConfig($input->getOptions());
@@ -166,6 +168,7 @@ class InstallStoreConfigurationCommand extends AbstractSetupCommand
      * @param InputInterface $input
      * @return string[]
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function validate(InputInterface $input)
     {
@@ -178,6 +181,9 @@ class InstallStoreConfigurationCommand extends AbstractSetupCommand
             switch ($key) {
                 case StoreConfigurationDataMapper::KEY_BASE_URL:
                     /** @var Validator $url */
+                    if (strcmp($value, '{{base_url}}') == 0) {
+                        break;
+                    }
                     $url = $this->objectManager->get('Magento\Framework\Url\Validator');
                     if (!$url->isValid($value)) {
                         $errorMsgs = $url->getMessages();
@@ -252,6 +258,15 @@ class InstallStoreConfigurationCommand extends AbstractSetupCommand
                     $errorMsg = $this->validateBinaryValue(
                         $value,
                         StoreConfigurationDataMapper::KEY_ADMIN_USE_SECURITY_KEY
+                    );
+                    if ($errorMsg !== '') {
+                        $errors[] = $errorMsg;
+                    }
+                    break;
+                case StoreConfigurationDataMapper::KEY_JS_LOGGING:
+                    $errorMsg = $this->validateBinaryValue(
+                        $value,
+                        StoreConfigurationDataMapper::KEY_JS_LOGGING
                     );
                     if ($errorMsg !== '') {
                         $errors[] = $errorMsg;

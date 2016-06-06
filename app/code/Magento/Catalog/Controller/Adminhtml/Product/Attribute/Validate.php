@@ -1,13 +1,17 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Adminhtml\Product\Attribute;
 
+use Magento\Framework\DataObject;
+
 class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
 {
+    const DEFAULT_MESSAGE_KEY = 'message';
+
     /**
      * @var \Magento\Framework\Controller\Result\JsonFactory
      */
@@ -46,7 +50,7 @@ class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
      */
     public function execute()
     {
-        $response = new \Magento\Framework\Object();
+        $response = new DataObject();
         $response->setError(false);
 
         $attributeCode = $this->getRequest()->getParam('attribute_code');
@@ -54,21 +58,21 @@ class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
         $attributeCode = $attributeCode ?: $this->generateCode($frontendLabel[0]);
         $attributeId = $this->getRequest()->getParam('attribute_id');
         $attribute = $this->_objectManager->create(
-            'Magento\Catalog\Model\Resource\Eav\Attribute'
+            'Magento\Catalog\Model\ResourceModel\Eav\Attribute'
         )->loadByCode(
             $this->_entityTypeId,
             $attributeCode
         );
 
         if ($attribute->getId() && !$attributeId) {
-            if (strlen($this->getRequest()->getParam('attribute_code'))) {
-                $response->setAttributes(['attribute_code' => __('An attribute with this code already exists.')]);
-            } else {
-                $response->setAttributes(
-                    ['attribute_label' => __('Attribute with the same code (%1) already exists.', $attributeCode)]
-                );
-            }
+            $message = strlen($this->getRequest()->getParam('attribute_code'))
+                ? __('An attribute with this code already exists.')
+                : __('An attribute with the same code (%1) already exists.', $attributeCode);
+
+            $this->setMessageToResponse($response, [$message]);
+
             $response->setError(true);
+            $response->setProductAttribute($attribute->toArray());
         }
         if ($this->getRequest()->has('new_attribute_set_name')) {
             $setName = $this->getRequest()->getParam('new_attribute_set_name');
@@ -77,7 +81,7 @@ class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
             $attributeSet->setEntityTypeId($this->_entityTypeId)->load($setName, 'attribute_set_name');
             if ($attributeSet->getId()) {
                 $setName = $this->_objectManager->get('Magento\Framework\Escaper')->escapeHtml($setName);
-                $this->messageManager->addError(__('Attribute Set with name \'%1\' already exists.', $setName));
+                $this->messageManager->addError(__('An attribute set named \'%1\' already exists.', $setName));
 
                 $layout = $this->layoutFactory->create();
                 $layout->initMessages();
@@ -86,5 +90,21 @@ class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
             }
         }
         return $this->resultJsonFactory->create()->setJsonData($response->toJson());
+    }
+
+    /**
+     * Set message to response object
+     *
+     * @param DataObject $response
+     * @param string[] $messages
+     * @return DataObject
+     */
+    private function setMessageToResponse($response, $messages)
+    {
+        $messageKey = $this->getRequest()->getParam('message_key', static::DEFAULT_MESSAGE_KEY);
+        if ($messageKey === static::DEFAULT_MESSAGE_KEY) {
+            $messages = reset($messages);
+        }
+        return $response->setData($messageKey, $messages);
     }
 }

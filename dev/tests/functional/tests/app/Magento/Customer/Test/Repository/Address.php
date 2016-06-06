@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -25,8 +25,8 @@ class Address extends AbstractRepository
             'data' => $defaultData,
         ];
 
-        $this->_data['address_US_1'] = $this->_getUS1();
-        $this->_data['address_US_2'] = $this->_getUS2();
+        $this->_data['US_address_1'] = $this->_getUS1();
+        $this->_data['US_address_2'] = $this->_getUS2();
         $this->_data['address_UK'] = $this->getAddressUK();
         $this->_data['address_UK_2'] = $this->getAddressUK2();
         $this->_data['address_UK_with_VAT'] = $this->getAddressUKWithVAT($this->_data['address_UK']);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Block\Adminhtml\Wysiwyg\Files;
@@ -114,7 +114,7 @@ class Content extends \Magento\Backend\Block\Widget\Container
      */
     public function getFilebrowserSetupObject()
     {
-        $setupObject = new \Magento\Framework\Object();
+        $setupObject = new \Magento\Framework\DataObject();
 
         $setupObject->setData(
             [

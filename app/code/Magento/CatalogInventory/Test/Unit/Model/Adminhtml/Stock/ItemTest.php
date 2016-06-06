@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Test\Unit\Model\Adminhtml\Stock;
@@ -18,8 +18,8 @@ class ItemTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $resourceMock = $this->getMock(
-            'Magento\Framework\Model\Resource\AbstractResource',
-            ['_construct', '_getReadAdapter', '_getWriteAdapter', 'getIdFieldName'],
+            'Magento\Framework\Model\ResourceModel\AbstractResource',
+            ['_construct', 'getConnection', 'getIdFieldName'],
             [],
             '',
             false
@@ -57,5 +57,11 @@ class ItemTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(32000, $this->_model->getCustomerGroupId());
         $this->_model->setCustomerGroupId(2);
         $this->assertEquals(2, $this->_model->getCustomerGroupId());
+    }
+
+    public function testGetIdentities()
+    {
+        $this->_model->setProductId(1);
+        $this->assertEquals(['catalog_product_1'], $this->_model->getIdentities());
     }
 }

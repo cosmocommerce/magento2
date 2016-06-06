@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Review\Controller\Adminhtml\Product;
@@ -59,7 +59,7 @@ class Post extends ProductController
             } catch (LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addException($e, __('An error occurred while saving review.'));
+                $this->messageManager->addException($e, __('Something went wrong while saving this review.'));
             }
         }
         $resultRedirect->setPath('review/*/');

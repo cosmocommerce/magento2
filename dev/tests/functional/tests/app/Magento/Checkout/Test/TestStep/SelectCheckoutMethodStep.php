@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -67,21 +67,11 @@ class SelectCheckoutMethodStep implements TestStepInterface
      * Run step that selecting checkout method.
      *
      * @return void
-     * @throws \Exception
      */
     public function run()
     {
-        $checkoutMethodBlock = $this->checkoutOnepage->getLoginBlock();
-        switch ($this->checkoutMethod) {
-            case 'guest':
-                $checkoutMethodBlock->clickContinue();
-                break;
-            case 'login':
-                $checkoutMethodBlock->loginCustomer($this->customer);
-                break;
-            default:
-                throw new \Exception("Undefined checkout method.");
-                break;
+        if ($this->checkoutMethod === 'login') {
+            $this->checkoutOnepage->getLoginBlock()->loginCustomer($this->customer);
         }
     }
 

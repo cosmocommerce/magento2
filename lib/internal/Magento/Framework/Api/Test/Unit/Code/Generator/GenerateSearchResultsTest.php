@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Api\Test\Unit\Code\Generator;
@@ -52,7 +52,7 @@ class GenerateSearchResultsTest extends \PHPUnit_Framework_TestCase
         );
         $sampleSearchResultBuilderCode = file_get_contents(__DIR__ . '/_files/SampleSearchResults.txt');
         $this->ioObjectMock->expects($this->once())
-            ->method('getResultFileName')
+            ->method('generateResultFileName')
             ->with('\Magento\Framework\Api\Code\Generator\SampleSearchResults')
             ->will($this->returnValue('SampleSearchResults.php'));
         $this->ioObjectMock->expects($this->once())

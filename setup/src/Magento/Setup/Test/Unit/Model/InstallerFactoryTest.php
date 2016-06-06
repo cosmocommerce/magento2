@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -14,8 +14,8 @@ class InstallerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $returnValueMap = [
             [
-                'Magento\Setup\Model\FilePermissions',
-                $this->getMock('Magento\Setup\Model\FilePermissions', [], [], '', false),
+                'Magento\Framework\Setup\FilePermissions',
+                $this->getMock('Magento\Framework\Setup\FilePermissions', [], [], '', false),
             ],
             [
                 'Magento\Framework\App\DeploymentConfig\Writer',
@@ -54,20 +54,16 @@ class InstallerFactoryTest extends \PHPUnit_Framework_TestCase
                 $this->getMock('Magento\Framework\Filesystem', [], [], '', false),
             ],
             [
-                'Magento\Setup\Model\SampleData',
-                $this->getMock('Magento\Setup\Model\SampleData', [], [], '', false),
-            ],
-            [
                 'Magento\Setup\Model\ObjectManagerProvider',
                 $this->getMock('Magento\Setup\Model\ObjectManagerProvider', [], [], '', false),
             ],
             [
-                'Magento\Framework\Model\Resource\Db\TransactionManager',
-                $this->getMock('Magento\Framework\Model\Resource\Db\TransactionManager', [], [], '', false),
+                'Magento\Framework\Model\ResourceModel\Db\TransactionManager',
+                $this->getMock('Magento\Framework\Model\ResourceModel\Db\TransactionManager', [], [], '', false),
             ],
             [
-                'Magento\Framework\Model\Resource\Db\ObjectRelationProcessor',
-                $this->getMock('Magento\Framework\Model\Resource\Db\ObjectRelationProcessor', [], [], '', false),
+                'Magento\Framework\Model\ResourceModel\Db\ObjectRelationProcessor',
+                $this->getMock('Magento\Framework\Model\ResourceModel\Db\ObjectRelationProcessor', [], [], '', false),
             ],
             [
                 'Magento\Setup\Model\ConfigModel',
@@ -81,19 +77,32 @@ class InstallerFactoryTest extends \PHPUnit_Framework_TestCase
                 'Magento\Setup\Validator\DbValidator',
                 $this->getMock('Magento\Setup\Validator\DbValidator', [], [], '', false),
             ],
+            [
+                'Magento\Setup\Module\SetupFactory',
+                $this->getMock('Magento\Setup\Module\SetupFactory', [], [], '', false),
+            ],
+            [
+                'Magento\Setup\Module\DataSetupFactory',
+                $this->getMock('Magento\Setup\Module\DataSetupFactory', [], [], '', false),
+            ],
+            [
+                'Magento\Framework\Setup\SampleData\State',
+                $this->getMock('Magento\Framework\Setup\SampleData\State', [], [], '', false),
+            ],
+            [
+                'Magento\Setup\Model\PhpReadinessCheck',
+                $this->getMock('Magento\Setup\Model\PhpReadinessCheck', [], [], '', false),
+            ],
         ];
         $serviceLocatorMock = $this->getMockForAbstractClass('Zend\ServiceManager\ServiceLocatorInterface', ['get']);
-        $serviceLocatorMock
-            ->expects($this->any())
-            ->method('get')
-            ->will($this->returnValueMap($returnValueMap));
+        $serviceLocatorMock->expects($this->any())->method('get')->will($this->returnValueMap($returnValueMap));
 
         $log = $this->getMockForAbstractClass('Magento\Framework\Setup\LoggerInterface');
         $resourceFactoryMock = $this->getMock('Magento\Setup\Module\ResourceFactory', [], [], '', false);
         $resourceFactoryMock
             ->expects($this->any())
             ->method('create')
-            ->will($this->returnValue($this->getMock('Magento\Framework\App\Resource', [], [], '', false)));
+            ->will($this->returnValue($this->getMock('Magento\Framework\App\ResourceConnection', [], [], '', false)));
         $installerFactory = new InstallerFactory($serviceLocatorMock, $resourceFactoryMock);
         $installer = $installerFactory->create($log);
         $this->assertInstanceOf('Magento\Setup\Model\Installer', $installer);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Edit\Tab;
@@ -64,7 +64,7 @@ class OrdersTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRowUrl()
     {
-        $row = new \Magento\Framework\Object(['id' => 1]);
+        $row = new \Magento\Framework\DataObject(['id' => 1]);
         $this->assertContains('sales/order/view/order_id/1', $this->block->getRowUrl($row));
     }
 

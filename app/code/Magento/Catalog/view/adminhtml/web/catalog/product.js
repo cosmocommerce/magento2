@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 require([
@@ -79,5 +79,5 @@ require([
     window.onUrlkeyChanged = onUrlkeyChanged;
     window.toogleFieldEditMode = toogleFieldEditMode;
 
-    $(window).load(onCompleteDisableInited);
+    $(onCompleteDisableInited);
 });

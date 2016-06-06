@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogImportExport\Model\Import\Product;
@@ -8,17 +8,12 @@ namespace Magento\CatalogImportExport\Model\Import\Product;
 class CategoryProcessor
 {
     /**
-     * Delimiter in import file between categories.
-     */
-    const DELIMITER_CATEGORIES = '|';
-
-    /**
      * Delimiter in category path.
      */
     const DELIMITER_CATEGORY = '/';
 
     /**
-     * @var \Magento\Catalog\Model\Resource\Category\CollectionFactory
+     * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
      */
     protected $categoryColFactory;
 
@@ -30,6 +25,13 @@ class CategoryProcessor
     protected $categories = [];
 
     /**
+     * Categories id to object cache.
+     *
+     * @var array
+     */
+    protected $categoriesCache = [];
+
+    /**
      * Instance of catalog category factory.
      *
      * @var \Magento\Catalog\Model\CategoryFactory
@@ -37,11 +39,18 @@ class CategoryProcessor
     protected $categoryFactory;
 
     /**
-     * @param \Magento\Catalog\Model\Resource\Category\CollectionFactory $categoryColFactory
+     * Failed categories during creation
+     *
+     * @var array
+     */
+    protected $failedCategories = [];
+
+    /**
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryColFactory
      * @param \Magento\Catalog\Model\CategoryFactory $categoryFactory
      */
     public function __construct(
-        \Magento\Catalog\Model\Resource\Category\CollectionFactory $categoryColFactory,
+        \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryColFactory,
         \Magento\Catalog\Model\CategoryFactory $categoryFactory
     ) {
         $this->categoryColFactory = $categoryColFactory;
@@ -56,11 +65,15 @@ class CategoryProcessor
     {
         if (empty($this->categories)) {
             $collection = $this->categoryColFactory->create();
-            $collection->addNameToResult();
-            /* @var $collection \Magento\Catalog\Model\Resource\Category\Collection */
+            $collection->addAttributeToSelect('name')
+                ->addAttributeToSelect('url_key')
+                ->addAttributeToSelect('url_path');
+            /* @var $collection \Magento\Catalog\Model\ResourceModel\Category\Collection */
             foreach ($collection as $category) {
                 $structure = explode(self::DELIMITER_CATEGORY, $category->getPath());
                 $pathSize = count($structure);
+
+                $this->categoriesCache[$category->getId()] = $category;
                 if ($pathSize > 1) {
                     $path = [];
                     for ($i = 1; $i < $pathSize; $i++) {
@@ -86,7 +99,9 @@ class CategoryProcessor
     {
         /** @var \Magento\Catalog\Model\Category $category */
         $category = $this->categoryFactory->create();
-        $parentCategory = $this->categoryFactory->create()->load($parentId);
+        if (!($parentCategory = $this->getCategoryById($parentId))) {
+            $parentCategory = $this->categoryFactory->create()->load($parentId);
+        }
         $category->setPath($parentCategory->getPath());
         $category->setParentId($parentId);
         $category->setName($name);
@@ -94,6 +109,7 @@ class CategoryProcessor
         $category->setIncludeInMenu(true);
         $category->setAttributeSetId($category->getDefaultAttributeSetId());
         $category->save();
+        $this->categoriesCache[$category->getId()] = $category;
 
         return $category->getId();
     }
@@ -103,7 +119,7 @@ class CategoryProcessor
      * Returns ID of category by string path creating nonexistent ones.
      *
      * @param string $categoryPath
-     * 
+     *
      * @return int
      */
     protected function upsertCategory($categoryPath)
@@ -130,18 +146,63 @@ class CategoryProcessor
      * Returns IDs of categories by string path creating nonexistent ones.
      *
      * @param string $categoriesString
+     * @param string $categoriesSeparator
      *
      * @return array
      */
-    public function upsertCategories($categoriesString)
+    public function upsertCategories($categoriesString, $categoriesSeparator)
     {
         $categoriesIds = [];
-        $categories = explode(self::DELIMITER_CATEGORIES, $categoriesString);
+        $categories = explode($categoriesSeparator, $categoriesString);
 
         foreach ($categories as $category) {
-            $categoriesIds[] = $this->upsertCategory($category);
+            try {
+                $categoriesIds[] = $this->upsertCategory($category);
+            } catch (\Magento\Framework\Exception\AlreadyExistsException $e) {
+                $this->addFailedCategory($category, $e);
+            }
         }
 
         return $categoriesIds;
+    }
+
+    /**
+     * Add failed category
+     *
+     * @param string $category
+     * @param \Magento\Framework\Exception\AlreadyExistsException $exception
+     *
+     * @return array
+     */
+    private function addFailedCategory($category, $exception)
+    {
+        $this->failedCategories[] =
+            [
+                'category' => $category,
+                'exception' => $exception,
+            ];
+        return $this;
+    }
+
+    /**
+     * Return failed categories
+     *
+     * @return array
+     */
+    public function getFailedCategories()
+    {
+        return  $this->failedCategories;
+    }
+
+    /**
+     * Get category by Id
+     *
+     * @param int $categoryId
+     *
+     * @return \Magento\Catalog\Model\Category|null
+     */
+    public function getCategoryById($categoryId)
+    {
+        return isset($this->categoriesCache[$categoryId]) ? $this->categoriesCache[$categoryId] : null;
     }
 }

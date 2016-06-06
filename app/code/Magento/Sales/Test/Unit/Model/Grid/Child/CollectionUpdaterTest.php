@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -32,7 +32,7 @@ class CollectionUpdaterTest extends \PHPUnit_Framework_TestCase
     public function testUpdateIfOrderExists()
     {
         $collectionMock = $this->getMock(
-            'Magento\Sales\Model\Resource\Order\Payment\Transaction\Collection', [], [], '', false
+            'Magento\Sales\Model\ResourceModel\Order\Payment\Transaction\Collection', [], [], '', false
         );
         $transactionMock = $this->getMock('Magento\Sales\Model\Order\Payment\Transaction', [], [], '', false);
         $this->registryMock

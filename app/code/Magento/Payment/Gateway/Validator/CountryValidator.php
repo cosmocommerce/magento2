@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Gateway\Validator;
@@ -9,7 +9,12 @@ use Magento\Framework\Exception\NotFoundException;
 use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Gateway\Validator\ResultInterfaceFactory;
 
-class CountryValidator implements ValidatorInterface
+/**
+ * Class CountryValidator
+ * @package Magento\Payment\Gateway\Validator
+ * @api
+ */
+class CountryValidator extends AbstractValidator
 {
     /**
      * @var \Magento\Payment\Gateway\ConfigInterface
@@ -17,20 +22,15 @@ class CountryValidator implements ValidatorInterface
     private $config;
 
     /**
-     * @var ResultInterfaceFactory
-     */
-    private $resultFactory;
-
-    /**
-     * @param \Magento\Payment\Gateway\ConfigInterface $config
      * @param ResultInterfaceFactory $resultFactory
+     * @param \Magento\Payment\Gateway\ConfigInterface $config
      */
     public function __construct(
-        ConfigInterface $config,
-        ResultInterfaceFactory $resultFactory
+        ResultInterfaceFactory $resultFactory,
+        ConfigInterface $config
     ) {
         $this->config = $config;
-        $this->resultFactory = $resultFactory;
+        parent::__construct($resultFactory);
     }
 
     /**
@@ -55,10 +55,6 @@ class CountryValidator implements ValidatorInterface
             }
         }
 
-        return $this->resultFactory->create(
-            [
-                'isValid' => $isValid
-            ]
-        );
+        return $this->createResult($isValid);
     }
 }

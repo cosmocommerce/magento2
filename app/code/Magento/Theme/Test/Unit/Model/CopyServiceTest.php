@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -174,7 +174,7 @@ class CopyServiceTest extends \PHPUnit_Framework_TestCase
             $this->returnValue($this->dirWriteMock)
         );
 
-        /* Init \Magento\Widget\Model\Resource\Layout\Update\Collection model  */
+        /* Init \Magento\Widget\Model\ResourceModel\Layout\Update\Collection model  */
         $this->updateFactory = $this->getMock(
             'Magento\Widget\Model\Layout\UpdateFactory',
             ['create'],
@@ -191,7 +191,7 @@ class CopyServiceTest extends \PHPUnit_Framework_TestCase
         );
         $this->updateFactory->expects($this->at(0))->method('create')->will($this->returnValue($this->update));
         $this->updateCollection = $this->getMock(
-            'Magento\Widget\Model\Resource\Layout\Update\Collection',
+            'Magento\Widget\Model\ResourceModel\Layout\Update\Collection',
             ['addThemeFilter', 'delete', 'getIterator'],
             [],
             '',
@@ -214,7 +214,7 @@ class CopyServiceTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->linkCollection = $this->getMock(
-            'Magento\Widget\Model\Resource\Layout\Link\Collection',
+            'Magento\Widget\Model\ResourceModel\Layout\Link\Collection',
             ['addThemeFilter', 'getIterator'],
             [],
             '',

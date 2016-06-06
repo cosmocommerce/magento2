@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Email\Controller\Adminhtml\Email\Template;
@@ -19,10 +19,10 @@ class Delete extends \Magento\Email\Controller\Adminhtml\Email\Template
         if ($template->getId()) {
             try {
                 // check if the template is currently used
-                if (count($template->getSystemConfigPathsWhereUsedCurrently()) == 0) {
+                if (count($template->getSystemConfigPathsWhereCurrentlyUsed()) == 0) {
                     $template->delete();
                     // display success message
-                    $this->messageManager->addSuccess(__('The email template has been deleted.'));
+                    $this->messageManager->addSuccess(__('You deleted the email template.'));
                     $this->_objectManager->get('Magento\Framework\App\ReinitableConfig')->reinit();
                     // go to grid
                     $this->_redirect('adminhtml/*/');

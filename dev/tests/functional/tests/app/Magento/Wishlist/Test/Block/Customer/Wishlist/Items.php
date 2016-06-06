@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -21,7 +21,7 @@ class Items extends Block
      *
      * @var string
      */
-    protected $itemBlock = '//li[.//a[contains(.,"%s")]]';
+    protected $itemBlock = './/li[.//a[contains(.,"%s")]]';
 
     /**
      * Selector for 'Remove item' button.

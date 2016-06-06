@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Block\Product\View;
@@ -23,7 +23,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     protected $_optionsBlock;
 
     /**
-     * @var \Magento\Catalog\Model\Resource\Product\Option
+     * @var \Magento\Catalog\Model\ResourceModel\Product\Option
      */
     protected $_optionResource;
 
@@ -31,7 +31,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->_objectHelper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->_optionResource = $this->getMock(
-            'Magento\Catalog\Model\Resource\Product\Option',
+            'Magento\Catalog\Model\ResourceModel\Product\Option',
             [],
             [],
             '',

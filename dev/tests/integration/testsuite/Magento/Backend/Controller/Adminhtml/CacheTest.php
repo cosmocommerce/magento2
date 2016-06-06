@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml;
@@ -8,7 +8,7 @@ namespace Magento\Backend\Controller\Adminhtml;
 /**
  * @magentoAppArea adminhtml
  */
-class CacheTest extends \Magento\Backend\Utility\Controller
+class CacheTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * @magentoDataFixture Magento/Backend/controllers/_files/cache/application_cache.php

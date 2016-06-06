@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Category;
@@ -136,6 +136,30 @@ class Attribute extends \Magento\Catalog\Model\Entity\Attribute implements
     public function getIsFilterableInSearch()
     {
         return $this->getData(self::IS_FILTERABLE_IN_SEARCH);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIsUsedInGrid()
+    {
+        return (bool)$this->getData(self::IS_USED_IN_GRID);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIsVisibleInGrid()
+    {
+        return (bool)$this->getData(self::IS_VISIBLE_IN_GRID);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIsFilterableInGrid()
+    {
+        return (bool)$this->getData(self::IS_FILTERABLE_IN_GRID);
     }
 
     /**

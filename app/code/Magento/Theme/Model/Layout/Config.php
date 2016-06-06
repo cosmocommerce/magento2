@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Model\Layout;
@@ -41,7 +41,7 @@ class Config
             $this->_pageLayouts = [];
             foreach ($this->_dataStorage->get(null) as $layoutCode => $layoutConfig) {
                 $layoutConfig['label'] = __($layoutConfig['label']);
-                $this->_pageLayouts[$layoutCode] = new \Magento\Framework\Object($layoutConfig);
+                $this->_pageLayouts[$layoutCode] = new \Magento\Framework\DataObject($layoutConfig);
             }
         }
         return $this;
@@ -50,7 +50,7 @@ class Config
     /**
      * Retrieve available page layouts
      *
-     * @return \Magento\Framework\Object[]
+     * @return \Magento\Framework\DataObject[]
      */
     public function getPageLayouts()
     {
@@ -62,7 +62,7 @@ class Config
      * Retrieve page layout by code
      *
      * @param string $layoutCode
-     * @return \Magento\Framework\Object|boolean
+     * @return \Magento\Framework\DataObject|boolean
      */
     public function getPageLayout($layoutCode)
     {

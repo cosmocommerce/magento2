@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Controller\Adminhtml\Order\Creditmemo;
@@ -101,7 +101,7 @@ class UpdateQtyTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->creditmemoMock = $this->getMockBuilder('Magento\Sales\Model\Order\Creditmemo')
             ->disableOriginalConstructor()
@@ -232,7 +232,7 @@ class UpdateQtyTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteException()
     {
-        $message = 'Cannot update the item\'s quantity.';
+        $message = 'We can\'t update the item\'s quantity right now.';
         $e = new \Exception($message);
         $response = ['error' => true, 'message' => $message];
 

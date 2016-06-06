@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Block\Cart;
@@ -12,6 +12,7 @@ class Coupon extends \Magento\Checkout\Block\Cart\AbstractCart
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param array $data
+     * @codeCoverageIgnore
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
@@ -25,6 +26,7 @@ class Coupon extends \Magento\Checkout\Block\Cart\AbstractCart
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     public function getCouponCode()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -51,7 +51,7 @@ class BookmarkManagement implements \Magento\Ui\Api\BookmarkManagementInterface
      */
     public function loadByNamespace($namespace)
     {
-        $this->searchCriteriaBuilder->addFilter(
+        $this->searchCriteriaBuilder->addFilters(
             [
                 $this->filterBuilder
                     ->setField('user_id')
@@ -77,7 +77,7 @@ class BookmarkManagement implements \Magento\Ui\Api\BookmarkManagementInterface
      */
     public function getByIdentifierNamespace($identifier, $namespace)
     {
-        $this->searchCriteriaBuilder->addFilter(
+        $this->searchCriteriaBuilder->addFilters(
             [
                 $this->filterBuilder
                     ->setField('user_id')

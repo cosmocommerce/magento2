@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -98,7 +98,7 @@ class ManagementTest extends \PHPUnit_Framework_TestCase
         $this->filterBuilder->expects($this->exactly(2))->method('create')->willReturn($filter);
         $this->searchCriteriaBuilder
             ->expects($this->exactly(2))
-            ->method('addFilter')
+            ->method('addFilters')
             ->with([$filter])
             ->willReturnSelf();
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Order\Pdf;
@@ -18,7 +18,7 @@ class Creditmemo extends AbstractPdf
 
     /**
      * @param \Magento\Payment\Helper\Data $paymentData
-     * @param \Magento\Framework\Stdlib\String $string
+     * @param \Magento\Framework\Stdlib\StringUtils $string
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Framework\Filesystem $filesystem
      * @param Config $pdfConfig
@@ -36,7 +36,7 @@ class Creditmemo extends AbstractPdf
      */
     public function __construct(
         \Magento\Payment\Helper\Data $paymentData,
-        \Magento\Framework\Stdlib\String $string,
+        \Magento\Framework\Stdlib\StringUtils $string,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Framework\Filesystem $filesystem,
         Config $pdfConfig,

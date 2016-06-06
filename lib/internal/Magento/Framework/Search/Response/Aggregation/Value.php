@@ -1,11 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Response\Aggregation;
 
-class Value
+use Magento\Framework\Api\Search\AggregationValueInterface;
+
+class Value implements AggregationValueInterface
 {
     /**
      * @var string|array
@@ -28,9 +30,7 @@ class Value
     }
 
     /**
-     * Get aggregation
-     *
-     * @return string|array
+     * {@inheritdoc}
      */
     public function getValue()
     {
@@ -38,9 +38,7 @@ class Value
     }
 
     /**
-     * Get metrics
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getMetrics()
     {

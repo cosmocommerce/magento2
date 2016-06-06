@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Session\Test\Unit\SaveHandler;
@@ -82,7 +82,7 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
         );
 
         $resource = $this->getMock(
-            'Magento\Framework\App\Resource',
+            'Magento\Framework\App\ResourceConnection',
             [],
             [],
             '',
@@ -106,7 +106,7 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
     public function testCheckConnectionNoConnection()
     {
         $resource = $this->getMock(
-            'Magento\Framework\App\Resource',
+            'Magento\Framework\App\ResourceConnection',
             [],
             [],
             '',
@@ -147,7 +147,7 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
         );
 
         $resource = $this->getMock(
-            'Magento\Framework\App\Resource',
+            'Magento\Framework\App\ResourceConnection',
             [],
             [],
             '',
@@ -184,7 +184,7 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
     protected function _prepareResourceMock($connection)
     {
         $resource = $this->getMock(
-            'Magento\Framework\App\Resource',
+            'Magento\Framework\App\ResourceConnection',
             [],
             [],
             '',

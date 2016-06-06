@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,14 +8,22 @@
 
 namespace Magento\Catalog\Model\Product\Attribute\Backend\GroupPrice;
 
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product\Attribute\Backend\Price;
 use Magento\Customer\Api\GroupManagementInterface;
 
 /**
  * Catalog product abstract group price backend attribute model
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractGroupPrice extends Price
 {
+    /**
+     * @var \Magento\Framework\EntityManager\MetadataPool
+     */
+    protected $metadataPool;
+
     /**
      * Website currency codes and rates
      *
@@ -48,6 +56,7 @@ abstract class AbstractGroupPrice extends Price
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Catalog\Helper\Data $catalogData
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
+     * @param \Magento\Framework\Locale\FormatInterface $localeFormat
      * @param \Magento\Catalog\Model\Product\Type $catalogProductType
      * @param GroupManagementInterface $groupManagement
      */
@@ -56,12 +65,13 @@ abstract class AbstractGroupPrice extends Price
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Catalog\Helper\Data $catalogData,
         \Magento\Framework\App\Config\ScopeConfigInterface $config,
+        \Magento\Framework\Locale\FormatInterface $localeFormat,
         \Magento\Catalog\Model\Product\Type $catalogProductType,
         GroupManagementInterface $groupManagement
     ) {
         $this->_catalogProductType = $catalogProductType;
         $this->_groupManagement = $groupManagement;
-        parent::__construct($currencyFactory, $storeManager, $catalogData, $config);
+        parent::__construct($currencyFactory, $storeManager, $catalogData, $config, $localeFormat);
     }
 
     /**
@@ -103,7 +113,7 @@ abstract class AbstractGroupPrice extends Price
     /**
      * Retrieve resource instance
      *
-     * @return \Magento\Catalog\Model\Resource\Product\Attribute\Backend\GroupPrice
+     * @return \Magento\Catalog\Model\ResourceModel\Product\Attribute\Backend\Tierprice
      */
     abstract protected function _getResource();
 
@@ -143,6 +153,8 @@ abstract class AbstractGroupPrice extends Price
     {
         $attribute = $this->getAttribute();
         $priceRows = $object->getData($attribute->getName());
+        $priceRows = array_filter((array)$priceRows);
+
         if (empty($priceRows)) {
             return true;
         }
@@ -153,7 +165,7 @@ abstract class AbstractGroupPrice extends Price
             if (!empty($priceRow['delete'])) {
                 continue;
             }
-            $compare = join(
+            $compare = implode(
                 '-',
                 array_merge(
                     [$priceRow['website_id'], $priceRow['cust_group']],
@@ -164,7 +176,7 @@ abstract class AbstractGroupPrice extends Price
                 throw new \Magento\Framework\Exception\LocalizedException(__($this->_getDuplicateErrorMessage()));
             }
 
-            if (!preg_match('/^\d*(\.|,)?\d{0,4}$/i', $priceRow['price']) || $priceRow['price'] < 0) {
+            if (!$this->isPositiveOrZero($priceRow['price'])) {
                 return __('Group price must be a number greater than 0.');
             }
 
@@ -174,11 +186,11 @@ abstract class AbstractGroupPrice extends Price
         // if attribute scope is website and edit in store view scope
         // add global group prices for duplicates find
         if (!$attribute->isScopeGlobal() && $object->getStoreId()) {
-            $origGroupPrices = $object->getOrigData($attribute->getName());
-            if ($origGroupPrices) {
-                foreach ($origGroupPrices as $price) {
+            $origPrices = $object->getOrigData($attribute->getName());
+            if ($origPrices) {
+                foreach ($origPrices as $price) {
                     if ($price['website_id'] == 0) {
-                        $compare = join(
+                        $compare = implode(
                             '-',
                             array_merge(
                                 [$price['website_id'], $price['cust_group']],
@@ -202,7 +214,7 @@ abstract class AbstractGroupPrice extends Price
                 continue;
             }
 
-            $globalCompare = join(
+            $globalCompare = implode(
                 '-',
                 array_merge([0, $priceRow['cust_group']], $this->_getAdditionalUniqueFields($priceRow))
             );
@@ -230,7 +242,10 @@ abstract class AbstractGroupPrice extends Price
         $data = [];
         $price = $this->_catalogProductType->priceFactory($productTypeId);
         foreach ($priceData as $v) {
-            $key = join('-', array_merge([$v['cust_group']], $this->_getAdditionalUniqueFields($v)));
+            if (!array_filter($v)) {
+                continue;
+            }
+            $key = implode('-', array_merge([$v['cust_group']], $this->_getAdditionalUniqueFields($v)));
             if ($v['website_id'] == $websiteId) {
                 $data[$key] = $v;
                 $data[$key]['website_price'] = $v['price'];
@@ -263,7 +278,10 @@ abstract class AbstractGroupPrice extends Price
             $websiteId = $this->_storeManager->getStore($storeId)->getWebsiteId();
         }
 
-        $data = $this->_getResource()->loadPriceData($object->getId(), $websiteId);
+        $data = $this->_getResource()->loadPriceData(
+            $object->getData($this->getMetadataPool()->getMetadata(ProductInterface::class)->getLinkField()),
+            $websiteId
+        );
         foreach ($data as $k => $v) {
             $data[$k]['website_price'] = $v['price'];
             if ($v['all_groups']) {
@@ -300,21 +318,23 @@ abstract class AbstractGroupPrice extends Price
         $isGlobal = $this->getAttribute()->isScopeGlobal() || $websiteId == 0;
 
         $priceRows = $object->getData($this->getAttribute()->getName());
-        if ($priceRows === null) {
+        if (null === $priceRows) {
             return $this;
         }
+
+        $priceRows = array_filter((array)$priceRows);
 
         $old = [];
         $new = [];
 
         // prepare original data for compare
-        $origGroupPrices = $object->getOrigData($this->getAttribute()->getName());
-        if (!is_array($origGroupPrices)) {
-            $origGroupPrices = [];
+        $origPrices = $object->getOrigData($this->getAttribute()->getName());
+        if (!is_array($origPrices)) {
+            $origPrices = [];
         }
-        foreach ($origGroupPrices as $data) {
+        foreach ($origPrices as $data) {
             if ($data['website_id'] > 0 || $data['website_id'] == '0' && $isGlobal) {
-                $key = join(
+                $key = implode(
                     '-',
                     array_merge(
                         [$data['website_id'], $data['cust_group']],
@@ -345,7 +365,7 @@ abstract class AbstractGroupPrice extends Price
                 continue;
             }
 
-            $key = join(
+            $key = implode(
                 '-',
                 array_merge([$data['website_id'], $data['cust_group']], $this->_getAdditionalUniqueFields($data))
             );
@@ -369,7 +389,7 @@ abstract class AbstractGroupPrice extends Price
         $update = array_intersect_key($new, $old);
 
         $isChanged = false;
-        $productId = $object->getId();
+        $productId = $object->getData($this->getMetadataPool()->getMetadata(ProductInterface::class)->getLinkField());
 
         if (!empty($delete)) {
             foreach ($delete as $data) {
@@ -380,8 +400,11 @@ abstract class AbstractGroupPrice extends Price
 
         if (!empty($insert)) {
             foreach ($insert as $data) {
-                $price = new \Magento\Framework\Object($data);
-                $price->setEntityId($productId);
+                $price = new \Magento\Framework\DataObject($data);
+                $price->setData(
+                    $this->getMetadataPool()->getMetadata(ProductInterface::class)->getLinkField(),
+                    $productId
+                );
                 $this->_getResource()->savePriceData($price);
 
                 $isChanged = true;
@@ -391,7 +414,7 @@ abstract class AbstractGroupPrice extends Price
         if (!empty($update)) {
             foreach ($update as $k => $v) {
                 if ($old[$k]['price'] != $v['value']) {
-                    $price = new \Magento\Framework\Object(['value_id' => $old[$k]['price_id'], 'value' => $v['value']]);
+                    $price = new \Magento\Framework\DataObject(['value_id' => $old[$k]['price_id'], 'value' => $v['value']]);
                     $this->_getResource()->savePriceData($price);
 
                     $isChanged = true;
@@ -416,9 +439,9 @@ abstract class AbstractGroupPrice extends Price
     public function getAffectedFields($object)
     {
         $data = [];
-        $groupPrices = (array)$object->getData($this->getAttribute()->getName());
+        $prices = (array)$object->getData($this->getAttribute()->getName());
         $tableName = $this->_getResource()->getMainTable();
-        foreach ($groupPrices as $value) {
+        foreach ($prices as $value) {
             $data[$tableName][] = [
                 'attribute_id' => $this->getAttribute()->getAttributeId(),
                 'entity_id' => $object->getId(),
@@ -427,5 +450,27 @@ abstract class AbstractGroupPrice extends Price
         }
 
         return $data;
+    }
+
+    /**
+     * Get resource model instance
+     *
+     * @return \Magento\Catalog\Model\ResourceModel\Product\Attribute\Backend\GroupPrice\AbstractGroupPrice
+     */
+    public function getResource()
+    {
+        return $this->_getResource();
+    }
+
+    /**
+     * @return \Magento\Framework\EntityManager\MetadataPool
+     */
+    private function getMetadataPool()
+    {
+        if (null === $this->metadataPool) {
+            $this->metadataPool = \Magento\Framework\App\ObjectManager::getInstance()
+                ->get('Magento\Framework\EntityManager\MetadataPool');
+        }
+        return $this->metadataPool;
     }
 }

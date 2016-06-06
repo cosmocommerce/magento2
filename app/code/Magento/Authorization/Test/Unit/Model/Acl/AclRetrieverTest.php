@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,10 +8,10 @@ namespace Magento\Authorization\Test\Unit\Model\Acl;
 
 use \Magento\Authorization\Model\Acl\AclRetriever;
 
-use Magento\Authorization\Model\Resource\Role\Collection as RoleCollection;
-use Magento\Authorization\Model\Resource\Role\CollectionFactory as RoleCollectionFactory;
-use Magento\Authorization\Model\Resource\Rules\Collection as RulesCollection;
-use Magento\Authorization\Model\Resource\Rules\CollectionFactory as RulesCollectionFactory;
+use Magento\Authorization\Model\ResourceModel\Role\Collection as RoleCollection;
+use Magento\Authorization\Model\ResourceModel\Role\CollectionFactory as RoleCollectionFactory;
+use Magento\Authorization\Model\ResourceModel\Rules\Collection as RulesCollection;
+use Magento\Authorization\Model\ResourceModel\Rules\CollectionFactory as RulesCollectionFactory;
 use Magento\Authorization\Model\Role;
 use Magento\Authorization\Model\UserContextInterface;
 
@@ -57,7 +57,7 @@ class AclRetrieverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Magento\Framework\Exception\AuthorizationException
-     * @expectedExceptionMessage The role associated with the specified user cannot be found.
+     * @expectedExceptionMessage We can't find the role for the user you wanted.
      */
     public function testGetAllowedResourcesByUserRoleNotFound()
     {
@@ -87,7 +87,7 @@ class AclRetrieverTest extends \PHPUnit_Framework_TestCase
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|RoleCollection $roleCollectionMock */
         $roleCollectionMock = $this->getMock(
-            'Magento\Authorization\Model\Resource\Role\Collection',
+            'Magento\Authorization\Model\ResourceModel\Role\Collection',
             ['setUserFilter', 'getFirstItem'],
             [],
             '',
@@ -98,7 +98,7 @@ class AclRetrieverTest extends \PHPUnit_Framework_TestCase
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|RoleCollectionFactory $roleCollectionFactoryMock */
         $roleCollectionFactoryMock = $this->getMock(
-            'Magento\Authorization\Model\Resource\Role\CollectionFactory',
+            'Magento\Authorization\Model\ResourceModel\Role\CollectionFactory',
             ['create'],
             [],
             '',
@@ -131,7 +131,7 @@ class AclRetrieverTest extends \PHPUnit_Framework_TestCase
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|RulesCollection $rulesCollectionMock */
         $rulesCollectionMock = $this->getMock(
-            'Magento\Authorization\Model\Resource\Rules\Collection',
+            'Magento\Authorization\Model\ResourceModel\Rules\Collection',
             ['getByRoles', 'load', 'getItems'],
             [],
             '',
@@ -145,7 +145,7 @@ class AclRetrieverTest extends \PHPUnit_Framework_TestCase
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|RulesCollectionFactory $rulesCollectionFactoryMock */
         $rulesCollectionFactoryMock = $this->getMock(
-            'Magento\Authorization\Model\Resource\Rules\CollectionFactory',
+            'Magento\Authorization\Model\ResourceModel\Rules\CollectionFactory',
             ['create'],
             [],
             '',

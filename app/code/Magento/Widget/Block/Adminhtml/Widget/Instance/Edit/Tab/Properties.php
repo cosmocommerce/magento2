@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -105,7 +105,7 @@ class Properties extends \Magento\Widget\Block\Adminhtml\Widget\Options implemen
     /**
      * Add field to Options form based on option configuration
      *
-     * @param \Magento\Framework\Object $parameter
+     * @param \Magento\Framework\DataObject $parameter
      * @return \Magento\Framework\Data\Form\Element\AbstractElement
      */
     protected function _addField($parameter)

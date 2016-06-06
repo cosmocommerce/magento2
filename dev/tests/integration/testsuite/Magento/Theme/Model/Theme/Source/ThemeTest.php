@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Model\Theme\Source;
@@ -19,7 +19,8 @@ class ThemeTest extends \PHPUnit_Framework_TestCase
         $model = Bootstrap::getObjectManager()->create('Magento\Theme\Model\Theme\Source\Theme');
 
         /** @var $expectedCollection \Magento\Theme\Model\Theme\Collection */
-        $expectedCollection = Bootstrap::getObjectManager()->create('Magento\Theme\Model\Resource\Theme\Collection');
+        $expectedCollection = Bootstrap::getObjectManager()
+            ->create('Magento\Theme\Model\ResourceModel\Theme\Collection');
         $expectedCollection->addFilter('area', 'frontend');
 
         $expectedItemsCount = count($expectedCollection);

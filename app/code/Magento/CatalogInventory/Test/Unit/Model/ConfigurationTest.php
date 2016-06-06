@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Test\Unit\Model;
@@ -61,17 +61,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDefaultWebsiteId()
     {
-        $id = 1;
-        $websiteMock = $this->getMockBuilder('Magento\Store\Model\Website')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $websiteMock->expects($this->once())
-            ->method('getId')
-            ->willReturn($id);
-        $this->storeManagerMock->expects($this->once())
-            ->method('getWebsite')
-            ->willReturn($websiteMock);
-        $this->assertEquals($id, $this->model->getDefaultWebsiteId());
+        $this->assertEquals(0, $this->model->getDefaultScopeId());
     }
 
     public function testGetIsQtyTypeIds()
@@ -258,5 +248,15 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'is_decimal_divided',
         ];
         $this->assertEquals($fields, $this->model->getConfigItemOptions());
+    }
+
+    public function testGetManageStock()
+    {
+        $store = 1;
+        $this->scopeConfigMock->expects($this->once())
+            ->method('isSetFlag')
+            ->with(Configuration::XML_PATH_MANAGE_STOCK, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store)
+            ->willReturn(1);
+        $this->assertEquals(1, $this->model->getManageStock($store));
     }
 }

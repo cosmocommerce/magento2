@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -9,7 +9,10 @@
 namespace Magento\Customer\Test\Unit\Model;
 
 use Magento\Customer\Model\Attribute;
-
+use Magento\Customer\Model\Customer;
+use Magento\Eav\Api\Data\AttributeInterface;
+use Magento\Framework\Indexer\IndexerInterface;
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 /**
  * @SuppressWarnings(PHPMD.TooManyFields)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -52,7 +55,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     protected $storeManagerMock;
 
     /**
-     * @var \Magento\Eav\Model\Resource\Helper|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Eav\Model\ResourceModel\Helper|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $helperMock;
 
@@ -67,7 +70,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     protected $timezoneMock;
 
     /**
-     * @var \Magento\Framework\Model\Resource\AbstractResource|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Model\ResourceModel\AbstractResource|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resourceMock;
 
@@ -107,9 +110,24 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     private $dataObjectHelperMock;
 
     /**
+     * @var \Magento\Framework\Indexer\IndexerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $indexerRegistryMock;
+
+    /**
      * @var \Magento\Framework\Api\ExtensionAttributesFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     private $extensionAttributesFactory;
+
+    /**
+     * @var \Magento\Framework\Stdlib\DateTime\DateTimeFormatterInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $dateTimeFormatter;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $attributeCacheMock;
 
     /**
      * Test method
@@ -135,7 +153,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->storeManagerMock = $this->getMockBuilder('Magento\Store\Model\StoreManagerInterface')
             ->getMock();
-        $this->helperMock = $this->getMockBuilder('Magento\Eav\Model\Resource\Helper')
+        $this->helperMock = $this->getMockBuilder('Magento\Eav\Model\ResourceModel\Helper')
             ->disableOriginalConstructor()
             ->getMock();
         $this->universalFactoryMock = $this->getMockBuilder('Magento\Framework\Validator\UniversalFactory')
@@ -158,10 +176,11 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->resolverMock = $this->getMockBuilder('Magento\Framework\Locale\ResolverInterface')
             ->getMock();
+        $this->dateTimeFormatter = $this->getMock('Magento\Framework\Stdlib\DateTime\DateTimeFormatterInterface');
 
-        $this->resourceMock = $this->getMockBuilder('Magento\Framework\Model\Resource\AbstractResource')
-            ->setMethods(['_construct', '_getReadAdapter', '_getWriteAdapter', 'getIdFieldName', 'saveInSetIncluding'])
-            ->getMock();
+        $this->resourceMock = $this->getMockBuilder('Magento\Framework\Model\ResourceModel\AbstractResource')
+            ->setMethods(['_construct', 'getConnection', 'getIdFieldName', 'saveInSetIncluding'])
+            ->getMockForAbstractClass();
         $this->cacheManager = $this->getMockBuilder('Magento\Framework\App\CacheInterface')
             ->getMock();
         $this->eventDispatcher = $this->getMockBuilder('Magento\Framework\Event\ManagerInterface')
@@ -176,23 +195,36 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
             ->method('getEventDispatcher')
             ->willReturn($this->eventDispatcher);
 
-        $this->attribute = new Attribute(
-            $this->contextMock,
-            $this->registryMock,
-            $this->extensionAttributesFactory,
-            $this->attributeValueFactoryMock,
-            $this->configMock,
-            $this->typeFactoryMock,
-            $this->storeManagerMock,
-            $this->helperMock,
-            $this->universalFactoryMock,
-            $this->attributeOptionFactoryMock,
-            $this->dataObjectProcessorMock,
-            $this->dataObjectHelperMock,
-            $this->timezoneMock,
-            $this->reservedAttributeListMock,
-            $this->resolverMock,
-            $this->resourceMock
+        $this->indexerRegistryMock = $this->getMockBuilder('Magento\Framework\Indexer\IndexerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->attributeCacheMock = $this->getMockBuilder(\Magento\Eav\Model\Entity\AttributeCache::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $objectManagerHelper = new ObjectManagerHelper($this);
+        $this->attribute = $objectManagerHelper->getObject(
+            Attribute::class,
+            [
+                'context' => $this->contextMock,
+                'registry' => $this->registryMock,
+                'extensionFactory' => $this->extensionAttributesFactory,
+                'attributeValueFactory' => $this->attributeValueFactoryMock,
+                'eavConfig' => $this->configMock,
+                'typeFactory' => $this->typeFactoryMock,
+                'storeManager' => $this->storeManagerMock,
+                'helper' => $this->helperMock,
+                'universalFactory' => $this->universalFactoryMock,
+                'attributeOptionFactory' => $this->attributeOptionFactoryMock,
+                'dataObjectProcessor' => $this->dataObjectProcessorMock,
+                'dataObjectHelper' => $this->dataObjectHelperMock,
+                'timezone' => $this->timezoneMock,
+                'reservedAttributeList' => $this->reservedAttributeListMock,
+                'resolver' => $this->resolverMock,
+                'dateTimeFormatter' => $this->dateTimeFormatter,
+                'indexerRegistry' => $this->indexerRegistryMock,
+                'resource' => $this->resourceMock,
+                'attributeCache' => $this->attributeCacheMock,
+            ]
         );
     }
 
@@ -218,5 +250,96 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
             ->method('clear');
 
         $this->attribute->afterDelete();
+    }
+
+    public function testInvalidate()
+    {
+        /** @var IndexerInterface|\PHPUnit_Framework_MockObject_MockObject $indexerMock */
+        $indexerMock = $this->getMockBuilder('Magento\Framework\Indexer\IndexerInterface')
+            ->getMockForAbstractClass();
+
+        $this->indexerRegistryMock->expects($this->once())
+            ->method('get')
+            ->with(Customer::CUSTOMER_GRID_INDEXER_ID)
+            ->willReturn($indexerMock);
+
+        $indexerMock->expects($this->once())
+            ->method('invalidate');
+
+        $this->attribute->invalidate();
+    }
+
+    /**
+     * @param int $isSearchableInGrid
+     * @param string $frontendInput
+     * @param bool $result
+     * @dataProvider dataProviderCanBeSearchableInGrid
+     */
+    public function testCanBeSearchableInGrid($isSearchableInGrid, $frontendInput, $result)
+    {
+        $this->attribute->setData('is_searchable_in_grid', $isSearchableInGrid);
+        $this->attribute->setData(AttributeInterface::FRONTEND_INPUT, $frontendInput);
+
+        $this->assertEquals($result, $this->attribute->canBeSearchableInGrid());
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderCanBeSearchableInGrid()
+    {
+        return [
+            [0, 'text', false],
+            [0, 'textarea', false],
+            [1, 'text', true],
+            [1, 'textarea', true],
+            [1, 'date', false],
+            [1, 'boolean', false],
+            [1, 'select', false],
+            [1, 'media_image', false],
+            [1, 'gallery', false],
+            [1, 'multiselect', false],
+            [1, 'image', false],
+            [1, 'price', false],
+            [1, 'weight', false],
+        ];
+    }
+
+    /**
+     * @param int $isFilterableInGrid
+     * @param string $frontendInput
+     * @param bool $result
+     * @dataProvider dataProviderCanBeFilterableInGrid
+     */
+    public function testCanBeFilterableInGrid($isFilterableInGrid, $frontendInput, $result)
+    {
+        $this->attribute->setData('is_filterable_in_grid', $isFilterableInGrid);
+        $this->attribute->setData(AttributeInterface::FRONTEND_INPUT, $frontendInput);
+
+        $this->assertEquals($result, $this->attribute->canBeFilterableInGrid());
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderCanBeFilterableInGrid()
+    {
+        return [
+            [0, 'text', false],
+            [0, 'date', false],
+            [0, 'select', false],
+            [0, 'boolean', false],
+            [1, 'text', true],
+            [1, 'date', true],
+            [1, 'select', true],
+            [1, 'boolean', true],
+            [1, 'textarea', false],
+            [1, 'media_image', false],
+            [1, 'gallery', false],
+            [1, 'multiselect', false],
+            [1, 'image', false],
+            [1, 'price', false],
+            [1, 'weight', false],
+        ];
     }
 }

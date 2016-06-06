@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -22,7 +22,7 @@ class Addresses extends Block
     protected $newAddress = '[data-role="add-new-address"]';
 
     /**
-     * 'Continue to Shipping Information' button.
+     * Locator value for "Go to Shipping Information" button.
      *
      * @var string
      */

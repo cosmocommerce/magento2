@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -27,7 +27,7 @@ class Price extends \Magento\Catalog\Test\Block\AbstractPriceBlock
             'selector' => '.special-price .price',
         ],
         'old_price' => [
-            'selector' => '.old-price .price-wrapper',
+            'selector' => '.old-price .price-wrapper ',
         ],
         'price_from' => [
             'selector' => '.price-from .price',

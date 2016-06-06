@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -35,7 +35,7 @@ class ObserverTest extends \PHPUnit_Framework_TestCase
     /** @var string */
     protected $allowedCurrenciesPath = 'currency/options/allow';
 
-    /** @var \Magento\Config\Model\Resource\Config */
+    /** @var \Magento\Config\Model\ResourceModel\Config */
     protected $configResource;
 
     public function setUp()
@@ -47,7 +47,7 @@ class ObserverTest extends \PHPUnit_Framework_TestCase
         $this->scopeConfig->setValue(Observer::CRON_STRING_PATH, 'cron-string-path', ScopeInterface::SCOPE_STORE);
         $this->scopeConfig->setValue(Observer::IMPORT_SERVICE, 'webservicex', ScopeInterface::SCOPE_STORE);
 
-        $this->configResource = $this->objectManager->get('Magento\Config\Model\Resource\Config');
+        $this->configResource = $this->objectManager->get('Magento\Config\Model\ResourceModel\Config');
         $this->configResource->saveConfig(
             $this->baseCurrencyPath,
             $this->baseCurrency,

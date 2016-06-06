@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Filter;
@@ -19,7 +19,7 @@ class Factory extends AbstractFactory
         'email' => 'Magento\Framework\Filter\Email',
         'money' => 'Magento\Framework\Filter\Money',
         'simple' => 'Magento\Framework\Filter\Template\Simple',
-        'object' => 'Magento\Framework\Filter\Object',
+        'object' => 'Magento\Framework\Filter\DataObject',
         'sprintf' => 'Magento\Framework\Filter\Sprintf',
         'template' => 'Magento\Framework\Filter\Template',
         'arrayFilter' => 'Magento\Framework\Filter\ArrayFilter',

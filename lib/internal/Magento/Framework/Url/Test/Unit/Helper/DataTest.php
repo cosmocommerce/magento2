@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Url\Test\Unit\Helper;
@@ -12,7 +12,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
      */
     protected $objectManager;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
     }
@@ -126,7 +126,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
                 'http://example.com?null&string=value&array[]=arrayVal1&array[]=arrayVal2&array[]=arrayVal3',
             ],
             'object' => [
-                ['object' => new \Magento\Framework\Object()],
+                ['object' => new \Magento\Framework\DataObject()],
                 'http://example.com',
             ]
         ];

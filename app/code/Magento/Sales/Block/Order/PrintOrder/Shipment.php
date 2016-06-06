@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Order\PrintOrder;
@@ -22,7 +22,7 @@ class Shipment extends \Magento\Sales\Block\Items\AbstractItems
     /**
      * Order shipments collection
      *
-     * @var array|\Magento\Sales\Model\Resource\Order\Shipment\Collection
+     * @var array|\Magento\Sales\Model\ResourceModel\Order\Shipment\Collection
      */
     protected $shipmentsCollection;
 
@@ -151,7 +151,7 @@ class Shipment extends \Magento\Sales\Block\Items\AbstractItems
     /**
      * Retrieve order shipments collection
      *
-     * @return array|\Magento\Sales\Model\Resource\Order\Shipment\Collection
+     * @return array|\Magento\Sales\Model\ResourceModel\Order\Shipment\Collection
      */
     public function getShipmentsCollection()
     {

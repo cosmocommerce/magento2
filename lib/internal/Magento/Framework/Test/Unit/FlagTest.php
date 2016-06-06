@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Test\Unit;
@@ -17,7 +17,7 @@ class FlagTest extends \PHPUnit_Framework_TestCase
      */
     protected $flag;
 
-    public function setUp()
+    protected function setUp()
     {
         $data = ['flag_code' => 'synchronize'];
         $this->createInstance($data);
@@ -32,12 +32,19 @@ class FlagTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($eventManager));
         $registry = $this->getMock('Magento\Framework\Registry', [], [], '', false, false);
 
-        $adapter = $this->getMock('Magento\Framework\DB\Adapter\Adapter', ['beginTransaction'], [], '', false, false);
-        $adapter->expects($this->any())
+        $connection = $this->getMock(
+            'Magento\Framework\DB\Adapter\Adapter',
+            ['beginTransaction'],
+            [],
+            '',
+            false,
+            false
+        );
+        $connection->expects($this->any())
             ->method('beginTransaction')
             ->will($this->returnSelf());
         $appResource = $this->getMock(
-            'Magento\Framework\App\Resource',
+            'Magento\Framework\App\ResourceConnection',
             [],
             [],
             '',
@@ -46,12 +53,12 @@ class FlagTest extends \PHPUnit_Framework_TestCase
         );
         $appResource->expects($this->any())
             ->method('getConnection')
-            ->will($this->returnValue($adapter));
+            ->will($this->returnValue($connection));
 
-        $dbContextMock = $this->getMock('\Magento\Framework\Model\Resource\Db\Context', [], [], '', false);
+        $dbContextMock = $this->getMock('\Magento\Framework\Model\ResourceModel\Db\Context', [], [], '', false);
         $dbContextMock->expects($this->once())->method('getResources')->willReturn($appResource);
         $resource = $this->getMock(
-            '\Magento\Framework\Flag\Resource',
+            '\Magento\Framework\Flag\FlagResource',
             ['__wakeup', 'load', 'save', 'addCommitCallback', 'commit', 'rollBack'],
             ['context' => $dbContextMock],
             '',

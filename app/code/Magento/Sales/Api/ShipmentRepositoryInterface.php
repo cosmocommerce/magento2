@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Api;
@@ -17,10 +17,14 @@ interface ShipmentRepositoryInterface
     /**
      * Lists shipments that match specified search criteria.
      *
-     * @param \Magento\Framework\Api\SearchCriteria $criteria The search criteria.
+     * This call returns an array of objects, but detailed information about each object’s attributes might not be
+     * included. See http://devdocs.magento.com/codelinks/attributes.html#ShipmentRepositoryInterface to
+     * determine which call to use to get detailed information about all attributes for an object.
+     *
+     * @param \Magento\Framework\Api\SearchCriteria $searchCriteria The search criteria.
      * @return \Magento\Sales\Api\Data\ShipmentSearchResultInterface Shipment search results interface.
      */
-    public function getList(\Magento\Framework\Api\SearchCriteria $criteria);
+    public function getList(\Magento\Framework\Api\SearchCriteria $searchCriteria);
 
     /**
      * Loads a specified shipment.
@@ -45,4 +49,11 @@ interface ShipmentRepositoryInterface
      * @return \Magento\Sales\Api\Data\ShipmentInterface Shipment interface.
      */
     public function save(\Magento\Sales\Api\Data\ShipmentInterface $entity);
+
+    /**
+     * Creates new shipment instance.
+     *
+     * @return \Magento\Sales\Api\Data\ShipmentInterface Shipment interface.
+     */
+    public function create();
 }

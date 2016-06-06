@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -67,18 +67,15 @@ class Price extends \Magento\Framework\Data\Form\Element\Text
     public function getAfterElementHtml()
     {
         $html = parent::getAfterElementHtml();
-        /**
-         * getEntityAttribute - use __call
-         */
+
         $addJsObserver = false;
         if ($attribute = $this->getEntityAttribute()) {
-            if (!($storeId = $attribute->getStoreId())) {
-                $storeId = $this->getForm()->getDataObject()->getStoreId();
+            $store = $this->getStore($attribute);
+            if ($this->getType() !== 'hidden') {
+                $html .= '<strong>'
+                    . $this->_localeCurrency->getCurrency($store->getBaseCurrencyCode())->getSymbol()
+                    . '</strong>';
             }
-            $store = $this->_storeManager->getStore($storeId);
-            $html .= '<strong>' . $this->_localeCurrency->getCurrency(
-                $store->getBaseCurrencyCode()
-            )->getSymbol() . '</strong>';
             if ($this->_taxData->priceIncludesTax($store)) {
                 if ($attribute->getAttributeCode() !== 'cost') {
                     $addJsObserver = true;
@@ -107,6 +104,19 @@ class Price extends \Magento\Framework\Data\Form\Element\Text
     }
 
     /**
+     * @param mixed $attribute
+     * @return \Magento\Store\Model\Store
+     */
+    protected function getStore($attribute)
+    {
+        if (!($storeId = $attribute->getStoreId())) {
+            $storeId = $this->getForm()->getDataObject()->getStoreId();
+        }
+        $store = $this->_storeManager->getStore($storeId);
+        return $store;
+    }
+
+    /**
      * @param null|int|string $index
      * @return null|string
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -119,6 +129,16 @@ class Price extends \Magento\Framework\Data\Form\Element\Text
             return null;
         }
 
-        return number_format($value, 2, null, '');
+        if ($attribute = $this->getEntityAttribute()) {
+            // honor the currency format of the store
+            $store = $this->getStore($attribute);
+            $currency = $this->_localeCurrency->getCurrency($store->getBaseCurrencyCode());
+            $value = $currency->toCurrency($value, ['display' => \Magento\Framework\Currency::NO_SYMBOL]);
+        } else {
+            // default format:  1234.56
+            $value = number_format($value, 2, null, '');
+        }
+
+        return $value;
     }
 }

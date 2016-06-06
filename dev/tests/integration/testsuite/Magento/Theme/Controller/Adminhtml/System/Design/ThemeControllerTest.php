@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Controller\Adminhtml\System\Design;
@@ -11,7 +11,7 @@ use Magento\Framework\Filesystem\DirectoryList;
 /**
  * @magentoAppArea adminhtml
  */
-class ThemeControllerTest extends \Magento\Backend\Utility\Controller
+class ThemeControllerTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     public function testUploadJsAction()
     {

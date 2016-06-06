@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -23,8 +23,8 @@ class AssertSuccessInstall extends AbstractConstraint
      */
     protected $adminFieldsList = [
         ['pageData' => 'username', 'fixture' => 'username'],
-        ['pageData' => 'e-mail', 'fixture' => 'email'],
-        ['pageData' => 'your_store_address', 'fixture' => 'web'],
+        ['pageData' => 'email', 'fixture' => 'email'],
+        ['pageData' => 'your_store_address', 'fixture' => 'baseUrl'],
         ['pageData' => 'magento_admin_address', 'fixture' => 'admin']
     ];
 
@@ -48,6 +48,11 @@ class AssertSuccessInstall extends AbstractConstraint
      */
     public function processAssert(Install $installPage, InstallConfig $installConfig, User $user)
     {
+        //TODO Nginx server does't make redirect after installation (random fail)
+        sleep(5);
+        if ($installPage->getInstallBlock()->isInstallationCompleted()) {
+            return;
+        }
         $adminData = $installPage->getInstallBlock()->getAdminInfo();
         $dbData = $installPage->getInstallBlock()->getDbInfo();
 
@@ -57,9 +62,22 @@ class AssertSuccessInstall extends AbstractConstraint
             $allData[$key] = isset($value['value']) ? $value['value'] : $value;
         }
 
-        $allData['web'] = (isset($allData['https']) ? $allData['https'] : $allData['web']);
-        $allData['admin'] = $allData['web'] . $allData['admin'] . '/';
+        $allData['baseUrl'] = (isset($allData['https']) ? $allData['https'] : $allData['baseUrl']);
+        $allData['admin'] = $allData['baseUrl'] . $allData['admin'] . '/';
 
+        $this->checkInstallData($allData, $adminData, $dbData);
+    }
+
+    /**
+     * Check data on success installation page.
+     *
+     * @param array $allData
+     * @param array $adminData
+     * @param array $dbData
+     * @return void
+     */
+    private function checkInstallData(array $allData, array $adminData, array $dbData)
+    {
         foreach ($this->adminFieldsList as $field) {
             \PHPUnit_Framework_Assert::assertEquals(
                 $allData[$field['fixture']],

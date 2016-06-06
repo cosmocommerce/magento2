@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Order;
@@ -16,7 +16,7 @@ class History extends \Magento\Framework\View\Element\Template
     protected $_template = 'order/history.phtml';
 
     /**
-     * @var \Magento\Sales\Model\Resource\Order\CollectionFactory
+     * @var \Magento\Sales\Model\ResourceModel\Order\CollectionFactory
      */
     protected $_orderCollectionFactory;
 
@@ -30,19 +30,19 @@ class History extends \Magento\Framework\View\Element\Template
      */
     protected $_orderConfig;
 
-    /** @var \Magento\Sales\Model\Resource\Order\Collection */
+    /** @var \Magento\Sales\Model\ResourceModel\Order\Collection */
     protected $orders;
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Sales\Model\Resource\Order\CollectionFactory $orderCollectionFactory
+     * @param \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Sales\Model\Order\Config $orderConfig
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Sales\Model\Resource\Order\CollectionFactory $orderCollectionFactory,
+        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Sales\Model\Order\Config $orderConfig,
         array $data = []
@@ -63,7 +63,7 @@ class History extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @return bool|\Magento\Sales\Model\Resource\Order\Collection
+     * @return bool|\Magento\Sales\Model\ResourceModel\Order\Collection
      */
     public function getOrders()
     {

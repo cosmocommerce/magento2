@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,7 +8,7 @@ namespace Magento\Customer\Api;
 
 use Magento\Customer\Model\Data\Group as CustomerGroup;
 use Magento\Customer\Model\GroupRegistry;
-use Magento\Customer\Model\Resource\GroupRepository;
+use Magento\Customer\Model\ResourceModel\GroupRepository;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\WebapiAbstract;
 
@@ -38,7 +38,7 @@ class GroupManagementTest extends WebapiAbstract
     {
         $objectManager = Bootstrap::getObjectManager();
         $this->groupRegistry = $objectManager->get('Magento\Customer\Model\GroupRegistry');
-        $this->groupRepository = $objectManager->get('Magento\Customer\Model\Resource\GroupRepository');
+        $this->groupRepository = $objectManager->get('Magento\Customer\Model\ResourceModel\GroupRepository');
     }
 
     /**

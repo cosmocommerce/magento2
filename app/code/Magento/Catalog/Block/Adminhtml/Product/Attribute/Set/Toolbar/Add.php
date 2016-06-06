@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -30,7 +30,7 @@ class Add extends \Magento\Backend\Block\Template
                 'save_button',
                 'Magento\Backend\Block\Widget\Button',
                 [
-                    'label' => __('Save Attribute Set'),
+                    'label' => __('Save'),
                     'class' => 'save primary save-attribute-set',
                     'data_attribute' => [
                         'mage-init' => ['button' => ['event' => 'save', 'target' => '#set-prop-form']],

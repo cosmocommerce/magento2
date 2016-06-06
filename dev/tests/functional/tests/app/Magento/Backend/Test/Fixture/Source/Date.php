@@ -1,34 +1,28 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Backend\Test\Fixture\Source;
 
-use Magento\Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\DataSource;
 
 /**
- * Class Date
+ * Class Date.
  *
  * Data keys:
- *  - pattern (Format a local time/date with delta, e.g. 'm-d-Y -3 days' = current day - 3 days)
+ *  - pattern (Format a local time/date with delta, e.g. 'm/d/Y -3 days' = current day - 3 days)
  */
-class Date implements FixtureInterface
+class Date extends DataSource
 {
     /**
-     * Date for fill on form
-     *
-     * @var string
-     */
-    protected $data;
-
-    /**
+     * @constructor
      * @param array $params
-     * @param array $data
+     * @param array|string $data
      * @throws \Exception
      */
-    public function __construct(array $params, array $data = [])
+    public function __construct(array $params, $data = [])
     {
         $this->params = $params;
         if (isset($data['pattern']) && $data['pattern'] !== '-') {
@@ -46,39 +40,8 @@ class Date implements FixtureInterface
                 $date = date('m/d/Y');
             }
             $this->data = $date;
+        } else {
+            $this->data = $data;
         }
-    }
-
-    /**
-     * Persists prepared data into application
-     *
-     * @return void
-     */
-    public function persist()
-    {
-        //
-    }
-
-    /**
-     * Return prepared data set
-     *
-     * @param $key [optional]
-     * @return mixed
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function getData($key = null)
-    {
-        return $this->data;
-    }
-
-    /**
-     * Return data set configuration settings
-     *
-     * @return string
-     */
-    public function getDataConfig()
-    {
-        return $this->params;
     }
 }

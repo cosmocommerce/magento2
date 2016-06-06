@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Store\Model\System;
@@ -10,7 +10,7 @@ use Magento\Framework\Data\OptionSourceInterface;
 /**
  * Core System Store Model
  */
-class Store extends \Magento\Framework\Object implements OptionSourceInterface
+class Store extends \Magento\Framework\DataObject implements OptionSourceInterface
 {
     /**
      * Website collection

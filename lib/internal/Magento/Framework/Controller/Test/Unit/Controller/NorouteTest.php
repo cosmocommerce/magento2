@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Controller\Test\Unit\Controller;
@@ -32,7 +32,7 @@ class NorouteTest extends \PHPUnit_Framework_TestCase
         $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->_requestMock = $this->getMock('Magento\Framework\App\Request\Http', [], [], '', false);
         $this->_viewMock = $this->getMock('\Magento\Framework\App\ViewInterface');
-        $this->_statusMock = $this->getMock('Magento\Framework\Object', ['getLoaded'], [], '', false);
+        $this->_statusMock = $this->getMock('Magento\Framework\DataObject', ['getLoaded'], [], '', false);
         $this->_controller = $helper->getObject(
             'Magento\Framework\Controller\Noroute\Index',
             ['request' => $this->_requestMock, 'view' => $this->_viewMock]

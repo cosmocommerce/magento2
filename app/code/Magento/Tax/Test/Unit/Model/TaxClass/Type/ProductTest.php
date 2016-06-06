@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Test\Unit\Model\TaxClass\Type;
@@ -9,7 +9,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsAssignedToObjects()
     {
-        $collectionMock = $this->getMockBuilder('Magento\Framework\Model\Resource\Db\Collection\AbstractCollection')
+        $collectionClassName = 'Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection';
+        $collectionMock = $this->getMockBuilder($collectionClassName)
             ->setMethods(['addAttributeToFilter', 'getSize'])->disableOriginalConstructor()->getMock();
         $collectionMock->expects($this->once())->method('addAttributeToFilter')
             ->with($this->equalTo('tax_class_id'), $this->equalTo(1))->will($this->returnSelf());

@@ -2,7 +2,7 @@
 /**
  * Magento session manager
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Session;
@@ -238,7 +238,7 @@ class SessionManager implements SessionManagerInterface
     public function getData($key = '', $clear = false)
     {
         $data = $this->storage->getData($key);
-        if ($clear && $data) {
+        if ($clear && isset($data)) {
             $this->storage->unsetData($key);
         }
         return $data;
@@ -469,7 +469,12 @@ class SessionManager implements SessionManagerInterface
         if (headers_sent()) {
             return $this;
         }
-        session_regenerate_id(true);
+        if ($this->isSessionExists()) {
+            session_regenerate_id(false);
+        } else {
+            session_start();
+        }
+        $this->storage->init(isset($_SESSION) ? $_SESSION : []);
 
         if ($this->sessionConfig->getUseCookies()) {
             $this->clearSubDomainSessionCookie();

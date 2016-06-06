@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,6 +8,8 @@
  * Retrieving collection data from cache, failing over to another fetch strategy, if cache not yet exists
  */
 namespace Magento\Framework\Data\Collection\Db\FetchStrategy;
+
+use Magento\Framework\DB\Select;
 
 class Cache implements \Magento\Framework\Data\Collection\Db\FetchStrategyInterface
 {
@@ -62,7 +64,7 @@ class Cache implements \Magento\Framework\Data\Collection\Db\FetchStrategyInterf
     /**
      * {@inheritdoc}
      */
-    public function fetchAll(\Zend_Db_Select $select, array $bindParams = [])
+    public function fetchAll(Select $select, array $bindParams = [])
     {
         $cacheId = $this->_getSelectCacheId($select);
         $result = $this->_cache->load($cacheId);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Request\Query;
@@ -63,6 +63,7 @@ class Filter implements QueryInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getType()
     {
@@ -71,6 +72,7 @@ class Filter implements QueryInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -89,6 +91,7 @@ class Filter implements QueryInterface
      * Get Reference
      *
      * @return mixed
+     * @codeCoverageIgnore
      */
     public function getReference()
     {
@@ -99,6 +102,7 @@ class Filter implements QueryInterface
      * Get Reference Type
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getReferenceType()
     {

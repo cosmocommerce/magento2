@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Test\Unit\Api;
@@ -48,7 +48,7 @@ class StockStateTest extends \PHPUnit_Framework_TestCase
     protected $stockStatus;
 
     /**
-     * @var \Magento\Framework\Object|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\DataObject|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $objectResult;
 
@@ -82,7 +82,7 @@ class StockStateTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->objectResult = $this->getMock(
-            '\Magento\Framework\Object',
+            '\Magento\Framework\DataObject',
             [],
             [],
             '',

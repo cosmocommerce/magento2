@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Indexer\Test\Unit\Block\Backend\Grid\Column\Renderer;
@@ -16,8 +16,8 @@ class ScheduledTest extends \PHPUnit_Framework_TestCase
     public function testRender($rowValue, $class, $text)
     {
         $html = '<span class="' . $class . '"><span>' . $text . '</span></span>';
-        $row = new \Magento\Framework\Object();
-        $column = new \Magento\Framework\Object();
+        $row = new \Magento\Framework\DataObject();
+        $column = new \Magento\Framework\DataObject();
         $context = $this->getMockBuilder('\Magento\Backend\Block\Context')
             ->disableOriginalConstructor()
             ->getMock();
@@ -39,5 +39,4 @@ class ScheduledTest extends \PHPUnit_Framework_TestCase
             ['', 'grid-severity-major', __('Update on Save')],
         ];
     }
-
 }

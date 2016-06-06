@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Adminhtml\Wishlist\Product\Composite\Wishlist;
@@ -18,11 +18,11 @@ class Update extends \Magento\Customer\Controller\Adminhtml\Wishlist\Product\Com
     public function execute()
     {
         // Update wishlist item
-        $updateResult = new \Magento\Framework\Object();
+        $updateResult = new \Magento\Framework\DataObject();
         try {
             $this->_initData();
 
-            $buyRequest = new \Magento\Framework\Object($this->getRequest()->getParams());
+            $buyRequest = new \Magento\Framework\DataObject($this->getRequest()->getParams());
 
             $this->_wishlist->updateItem($this->_wishlistItem->getId(), $buyRequest)->save();
 

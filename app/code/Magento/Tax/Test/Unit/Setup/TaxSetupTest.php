@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Test\Unit\Setup;
@@ -19,11 +19,19 @@ class TaxSetupTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->typeConfigMock = $this->getMock('Magento\Catalog\Model\ProductTypes\ConfigInterface');
+
+        $salesSetup = $this->getMock('\Magento\Sales\Setup\SalesSetup', [], [], '', false);
+        $salesSetupFactory = $this->getMock('Magento\Sales\Setup\SalesSetupFactory', ['create'], [], '', false);
+        $salesSetupFactory->expects($this->any())->method('create')->will($this->returnValue($salesSetup));
+
+        $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->taxSetup = $helper->getObject(
             'Magento\Tax\Setup\TaxSetup',
-            ['productTypeConfig' => $this->typeConfigMock]
+            [
+                'productTypeConfig' => $this->typeConfigMock,
+                'salesSetupFactory' => $salesSetupFactory,
+            ]
         );
     }
 

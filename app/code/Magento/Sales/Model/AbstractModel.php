@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model;
@@ -21,7 +21,7 @@ abstract class AbstractModel extends AbstractExtensibleModel
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory
      * @param AttributeValueFactory $customAttributeFactory
-     * @param \Magento\Framework\Model\Resource\AbstractResource $resource
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
      * @param array $data
      */
@@ -30,7 +30,7 @@ abstract class AbstractModel extends AbstractExtensibleModel
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory,
         AttributeValueFactory $customAttributeFactory,
-        \Magento\Framework\Model\Resource\AbstractResource $resource = null,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
@@ -43,16 +43,6 @@ abstract class AbstractModel extends AbstractExtensibleModel
             $resourceCollection,
             $data
         );
-    }
-
-    /**
-     * Returns _eventPrefix
-     *
-     * @return string
-     */
-    public function getEventPrefix()
-    {
-        return $this->_eventPrefix;
     }
 
     /**

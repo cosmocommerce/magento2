@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Persistent\Helper;
@@ -85,6 +85,7 @@ class Session extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @param \Magento\Persistent\Model\Session $sessionModel
      * @return \Magento\Persistent\Model\Session
+     * @codeCoverageIgnore
      */
     public function setSession($sessionModel)
     {
@@ -131,6 +132,7 @@ class Session extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @param bool $checked
      * @return void
+     * @codeCoverageIgnore
      */
     public function setRememberMeChecked($checked = true)
     {

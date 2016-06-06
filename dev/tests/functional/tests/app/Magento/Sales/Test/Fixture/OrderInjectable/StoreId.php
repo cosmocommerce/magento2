@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -32,7 +32,7 @@ class StoreId extends DataSource
     {
         $this->params = $params;
 
-        $storeData =  isset($data['dataSet']) ? ['dataSet' => $data['dataSet']] : [];
+        $storeData =  isset($data['dataset']) ? ['dataset' => $data['dataset']] : [];
         if (isset($data['data'])) {
             $storeData = array_replace_recursive($storeData, $data);
         }

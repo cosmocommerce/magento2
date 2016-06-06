@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\MediaStorage\Model\File\Storage;
@@ -42,16 +42,23 @@ class Database extends \Magento\MediaStorage\Model\File\Storage\Database\Abstrac
     protected $_mediaHelper;
 
     /**
+     * Store media base directory path
+     *
+     * @var string
+     */
+    protected $mediaBaseDirectory = null;
+
+    /**
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\MediaStorage\Helper\File\Storage\Database $coreFileStorageDb
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateModel
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $configuration
      * @param \Magento\MediaStorage\Helper\File\Media $mediaHelper
-     * @param \Magento\MediaStorage\Model\Resource\File\Storage\Database $resource
+     * @param \Magento\MediaStorage\Model\ResourceModel\File\Storage\Database $resource
      * @param Directory\DatabaseFactory $directoryFactory
      * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
-     * @param null $connectionName
+     * @param string $connectionName
      * @param array $data
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
@@ -62,7 +69,7 @@ class Database extends \Magento\MediaStorage\Model\File\Storage\Database\Abstrac
         \Magento\Framework\Stdlib\DateTime\DateTime $dateModel,
         \Magento\Framework\App\Config\ScopeConfigInterface $configuration,
         \Magento\MediaStorage\Helper\File\Media $mediaHelper,
-        \Magento\MediaStorage\Model\Resource\File\Storage\Database $resource,
+        \Magento\MediaStorage\Model\ResourceModel\File\Storage\Database $resource,
         \Magento\MediaStorage\Model\File\Storage\Directory\DatabaseFactory $directoryFactory,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         $connectionName = null,
@@ -351,5 +358,18 @@ class Database extends \Magento\MediaStorage\Model\File\Storage\Database\Abstrac
         $this->_getResource()->deleteFile($filename, $directory);
 
         return $this;
+    }
+
+    /**
+     * Retrieve media base directory path
+     *
+     * @return string
+     */
+    public function getMediaBaseDirectory()
+    {
+        if ($this->mediaBaseDirectory === null) {
+            $this->mediaBaseDirectory = $this->_coreFileStorageDb->getMediaBaseDir();
+        }
+        return $this->mediaBaseDirectory;
     }
 }

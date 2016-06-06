@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -545,10 +545,10 @@ class RateRepositoryTest extends \PHPUnit_Framework_TestCase
         $searchBuilder = Bootstrap::getObjectManager()
             ->create('Magento\Framework\Api\SearchCriteriaBuilder');
         foreach ($filters as $filter) {
-            $searchBuilder->addFilter([$filter]);
+            $searchBuilder->addFilters([$filter]);
         }
         if ($filterGroup !== null) {
-            $searchBuilder->addFilter($filterGroup);
+            $searchBuilder->addFilters($filterGroup);
         }
         $searchCriteria = $searchBuilder->create();
 

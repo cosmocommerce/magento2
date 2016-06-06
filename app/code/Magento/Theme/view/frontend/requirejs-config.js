@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,8 +12,6 @@ var config = {
             "sticky":                 "mage/sticky",
             "tabs":                   "mage/tabs",
             "zoom":                   "mage/zoom",
-            "gallery":                "mage/gallery",
-            "galleryFullScreen":      "mage/gallery-fullscreen",
             "collapsible":            "mage/collapsible",
             "dropdownDialog":         "mage/dropdown",
             "dropdown":               "mage/dropdowns",

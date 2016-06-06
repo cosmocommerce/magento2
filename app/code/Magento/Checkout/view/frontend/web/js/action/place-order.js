@@ -1,51 +1,36 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-/*global define*/
 define(
     [
-        '../model/quote',
-        '../model/url-builder',
-        '../model/payment-service',
-        'mage/storage',
-        'mage/url',
-        'Magento_Ui/js/model/errorlist',
+        'Magento_Checkout/js/model/quote',
+        'Magento_Checkout/js/model/url-builder',
         'Magento_Customer/js/model/customer',
-        'underscore'
+        'Magento_Checkout/js/model/place-order'
     ],
-    function(quote, urlBuilder, paymentService, storage, url, errorList, customer, _) {
-        "use strict";
-        return function(customParams, callback) {
-            var payload;
-            customParams = customParams || {
+    function (quote, urlBuilder, customer, placeOrderService) {
+        'use strict';
+
+        return function (paymentData, messageContainer) {
+            var serviceUrl, payload;
+
+            payload = {
                 cartId: quote.getQuoteId(),
-                paymentMethod: paymentService.getSelectedPaymentData()
+                billingAddress: quote.billingAddress(),
+                paymentMethod: paymentData
             };
-            /**
-             * Checkout for guest and registered customer.
-             */
-            var serviceUrl;
-            if (quote.getCheckoutMethod()() === 'guest') {
-                serviceUrl =  urlBuilder.createUrl('/guest-carts/:quoteId/order', {quoteId: quote.getQuoteId()});
+
+            if (customer.isLoggedIn()) {
+                serviceUrl = urlBuilder.createUrl('/carts/mine/payment-information', {});
             } else {
-                serviceUrl = urlBuilder.createUrl('/carts/mine/order', {});
+                serviceUrl = urlBuilder.createUrl('/guest-carts/:quoteId/payment-information', {
+                    quoteId: quote.getQuoteId()
+                });
+                payload.email = quote.guestEmail;
             }
-            payload = customParams;
-            storage.put(
-                serviceUrl, JSON.stringify(payload)
-            ).done(
-                function() {
-                    if (!_.isFunction(callback) || callback()) {
-                        window.location.replace(url.build('checkout/onepage/success/'));
-                    }
-                }
-            ).fail(
-                function(response) {
-                    var error = JSON.parse(response.responseText);
-                    errorList.add(error);
-                }
-            );
+
+            return placeOrderService(serviceUrl, payload, messageContainer);
         };
     }
 );

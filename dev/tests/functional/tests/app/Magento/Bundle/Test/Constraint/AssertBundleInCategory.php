@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -27,11 +27,11 @@ class AssertBundleInCategory extends AssertProductInCategory
     protected function assertPrice(FixtureInterface $bundle, CatalogCategoryView $catalogCategoryView)
     {
         /** @var BundleProduct $bundle */
-        $priceData = $bundle->getDataFieldConfig('price')['source']->getPreset();
+        $priceData = $bundle->getDataFieldConfig('price')['source']->getPriceData();
         //Price from/to verification
         $priceBlock = $catalogCategoryView->getListProductBlock()->getProductItem($bundle)->getPriceBlock();
 
-        if ($bundle->hasData('special_price') || $bundle->hasData('group_price')) {
+        if ($bundle->hasData('special_price')) {
             $priceLow = $priceBlock->getPrice();
         } else {
             $priceLow = ($bundle->getPriceView() == 'Price Range')

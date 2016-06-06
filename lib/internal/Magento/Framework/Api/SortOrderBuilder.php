@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -9,7 +9,7 @@ namespace Magento\Framework\Api;
 
 /**
  * Builder for sort order data object.
- *
+ * @method SortOrder create()
  */
 class SortOrderBuilder extends AbstractSimpleObjectBuilder
 {
@@ -34,6 +34,24 @@ class SortOrderBuilder extends AbstractSimpleObjectBuilder
     public function setDirection($direction)
     {
         $this->_set(SortOrder::DIRECTION, $direction);
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setAscendingDirection()
+    {
+        $this->setDirection(SortOrder::SORT_ASC);
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setDescendingDirection()
+    {
+        $this->setDirection(SortOrder::SORT_DESC);
         return $this;
     }
 }

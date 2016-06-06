@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -19,7 +19,7 @@ class AssertOrderStatusSuccessCreateMessage extends AbstractConstraint
     const SEVERITY = 'low';
     /* end tags */
 
-    const SUCCESS_MESSAGE = 'You have saved the order status.';
+    const SUCCESS_MESSAGE = 'You saved the order status.';
 
     /**
      * Assert that success message is displayed after order status saved.
@@ -29,7 +29,7 @@ class AssertOrderStatusSuccessCreateMessage extends AbstractConstraint
      */
     public function processAssert(OrderStatusIndex $orderStatusIndexPage)
     {
-        $actualMessage = $orderStatusIndexPage->getMessagesBlock()->getSuccessMessages();
+        $actualMessage = $orderStatusIndexPage->getMessagesBlock()->getSuccessMessage();
         \PHPUnit_Framework_Assert::assertEquals(
             self::SUCCESS_MESSAGE,
             $actualMessage,

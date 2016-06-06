@@ -1,12 +1,14 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Integration\Model\Config;
 
 /**
  * Service config data reader.
+ *
+ * @deprecated
  */
 class Reader extends \Magento\Framework\Config\Reader\Filesystem
 {
@@ -32,7 +34,7 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
         \Magento\Integration\Model\Config\Converter $converter,
         \Magento\Integration\Model\Config\SchemaLocator $schemaLocator,
         \Magento\Framework\Config\ValidationStateInterface $validationState,
-        $fileName = 'integration\config.xml',
+        $fileName = 'integration/config.xml',
         $idAttributes = [],
         $domDocumentClass = 'Magento\Framework\Config\Dom',
         $defaultScope = 'global'

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Model\TaxClass\Type;
@@ -61,7 +61,7 @@ class Customer extends \Magento\Tax\Model\TaxClass\AbstractType
     public function isAssignedToObjects()
     {
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter(
+            ->addFilters(
                 [
                     $this->filterBuilder->setField(CustomerGroup::TAX_CLASS_ID)->setValue($this->getId())->create(),
                 ]

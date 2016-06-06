@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -51,7 +51,7 @@ class AssertCmsPagePreview extends AbstractConstraint
             'Wrong content is displayed.'
         );
         if (isset($fixtureContent['widget'])) {
-            foreach ($fixtureContent['widget']['preset'] as $widget) {
+            foreach ($fixtureContent['widget']['dataset'] as $widget) {
                 \PHPUnit_Framework_Assert::assertTrue(
                     $frontCmsPage->getCmsPageBlock()->isWidgetVisible($widget['widget_type'], $widget['anchor_text']),
                     'Widget \'' . $widget['widget_type'] . '\' is not displayed.'

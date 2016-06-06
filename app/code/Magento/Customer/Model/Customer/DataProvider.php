@@ -1,41 +1,29 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model\Customer;
 
+use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Type;
 use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Customer;
-use Magento\Ui\DataProvider\EavValidationRul;
-use Magento\Customer\Model\Resource\Customer\Collection;
-use Magento\Framework\View\Element\UiComponent\DataProvider\DataProviderInterface;
-use Magento\Customer\Model\Resource\Customer\CollectionFactory as CustomerCollectionFactory;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Ui\Component\Form\Field;
+use Magento\Ui\DataProvider\EavValidationRules;
+use Magento\Customer\Model\ResourceModel\Customer\Collection;
+use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollectionFactory;
+use Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool;
 
 /**
  * Class DataProvider
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class DataProvider implements DataProviderInterface
+class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
-    /**
-     * Data Provider name
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    protected $primaryFieldName;
-
-    /**
-     * @var string
-     */
-    protected $requestFieldName;
-
     /**
      * @var Collection
      */
@@ -47,16 +35,9 @@ class DataProvider implements DataProviderInterface
     protected $eavConfig;
 
     /**
-     * @var array
+     * @var FilterPool
      */
-    protected $meta = [];
-
-    /**
-     * Provider configuration data
-     *
-     * @var array
-     */
-    protected $data = [];
+    protected $filterPool;
 
     /**
      * @var array
@@ -75,7 +56,7 @@ class DataProvider implements DataProviderInterface
         'sortOrder' => 'sort_order',
         'notice' => 'note',
         'default' => 'default_value',
-        'size' => 'scope_multiline_count'
+        'size' => 'multiline_count',
     ];
 
     /**
@@ -90,9 +71,14 @@ class DataProvider implements DataProviderInterface
     ];
 
     /**
-     * @var EavValidationRul
+     * @var EavValidationRules
      */
-    protected $eavValidationRul;
+    protected $eavValidationRules;
+
+    /**
+     * @var SessionManagerInterface
+     */
+    protected $session;
 
     /**
      * Constructor
@@ -100,9 +86,10 @@ class DataProvider implements DataProviderInterface
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
-     * @param EavValidationRul $eavValidationRul
+     * @param EavValidationRules $eavValidationRules
      * @param CustomerCollectionFactory $customerCollectionFactory
      * @param Config $eavConfig
+     * @param FilterPool $filterPool
      * @param array $meta
      * @param array $data
      */
@@ -110,170 +97,38 @@ class DataProvider implements DataProviderInterface
         $name,
         $primaryFieldName,
         $requestFieldName,
-        EavValidationRul $eavValidationRul,
+        EavValidationRules $eavValidationRules,
         CustomerCollectionFactory $customerCollectionFactory,
         Config $eavConfig,
+        FilterPool $filterPool,
         array $meta = [],
         array $data = []
     ) {
-        $this->name = $name;
-        $this->primaryFieldName = $primaryFieldName;
-        $this->requestFieldName = $requestFieldName;
-        $this->eavValidationRul = $eavValidationRul;
+        parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
+        $this->eavValidationRules = $eavValidationRules;
         $this->collection = $customerCollectionFactory->create();
         $this->collection->addAttributeToSelect('*');
         $this->eavConfig = $eavConfig;
-        $this->meta = $meta;
-        $this->meta['customer']['fields'] = $this->getAttributesMeta(
+        $this->filterPool = $filterPool;
+        $this->meta['customer']['children'] = $this->getAttributesMeta(
             $this->eavConfig->getEntityType('customer')
         );
-        $this->meta['address']['fields'] = $this->getAttributesMeta(
+        $this->meta['address']['children'] = $this->getAttributesMeta(
             $this->eavConfig->getEntityType('customer_address')
         );
-        $this->data = $data;
     }
 
     /**
-     * Get Data Provider name
+     * Get session object
      *
-     * @return string
+     * @return SessionManagerInterface
      */
-    public function getName()
+    protected function getSession()
     {
-        return $this->name;
-    }
-
-    /**
-     * Get primary field name
-     *
-     * @return string
-     */
-    public function getPrimaryFieldName()
-    {
-        return $this->primaryFieldName;
-    }
-
-    /**
-     * Get field name in request
-     *
-     * @return string
-     */
-    public function getRequestFieldName()
-    {
-        return $this->requestFieldName;
-    }
-
-    /**
-     * Get meta data
-     *
-     * @return array
-     */
-    public function getMeta()
-    {
-        return $this->meta;
-    }
-
-    /**
-     * Get field meta info
-     *
-     * @param string $fieldSetName
-     * @param string $fieldName
-     * @return array
-     */
-    public function getFieldMetaInfo($fieldSetName, $fieldName)
-    {
-        return isset($this->meta[$fieldSetName]['fields'][$fieldName])
-            ? $this->meta[$fieldSetName]['fields'][$fieldName]
-            : [];
-    }
-
-    /**
-     * Get fields meta info
-     *
-     * @param string $fieldSetName
-     * @return array
-     */
-    public function getFieldsMetaInfo($fieldSetName)
-    {
-        return isset($this->meta[$fieldSetName]['fields']) ? $this->meta[$fieldSetName]['fields'] : [];
-    }
-
-    /**
-     * Get field Set meta info
-     *
-     * @param string $fieldSetName
-     * @return array
-     */
-    public function getFieldSetMetaInfo($fieldSetName)
-    {
-        return isset($this->meta[$fieldSetName]) ? $this->meta[$fieldSetName] : [];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function addFilter($field, $condition = null)
-    {
-        $this->collection->addFieldToFilter($field, $condition);
-    }
-
-    /**
-     * Add field to select
-     *
-     * @param string|array $field
-     * @param string|null $alias
-     * @return void
-     */
-    public function addField($field, $alias = null)
-    {
-        $this->collection->addAttributeToSelect($field);
-    }
-
-    /**
-     * self::setOrder() alias
-     *
-     * @param string $field
-     * @param string $direction
-     * @return void
-     */
-    public function addOrder($field, $direction)
-    {
-        $this->collection->addOrder($field, $direction);
-    }
-
-    /**
-     * Set Query limit
-     *
-     * @param int $offset
-     * @param int $size
-     * @return void
-     */
-    public function setLimit($offset, $size)
-    {
-        $this->collection->setPageSize($size);
-        $this->collection->setCurPage($offset);
-    }
-
-    /**
-     * Removes field from select
-     *
-     * @param string|null $field
-     * @param bool $isAlias Alias identifier
-     * @return void
-     */
-    public function removeField($field, $isAlias = false)
-    {
-        $this->collection->removeAttributeToSelect($field);
-    }
-
-    /**
-     * Removes all fields from select
-     *
-     * @return void
-     */
-    public function removeAllFields()
-    {
-        $this->collection->removeAttributeToSelect();
+        if ($this->session === null) {
+            $this->session = ObjectManager::getInstance()->get('Magento\Framework\Session\SessionManagerInterface');
+        }
+        return $this->session;
     }
 
     /**
@@ -286,59 +141,30 @@ class DataProvider implements DataProviderInterface
         if (isset($this->loadedData)) {
             return $this->loadedData;
         }
-
         $items = $this->collection->getItems();
         /** @var Customer $customer */
         foreach ($items as $customer) {
             $result['customer'] = $customer->getData();
+            unset($result['address']);
 
-            $addresses = [];
             /** @var Address $address */
             foreach ($customer->getAddresses() as $address) {
                 $addressId = $address->getId();
                 $address->load($addressId);
-                $addresses[$addressId] = $address->getData();
-                $this->prepareAddressData($addressId, $addresses, $result['customer']);
+                $result['address'][$addressId] = $address->getData();
+                $this->prepareAddressData($addressId, $result['address'], $result['customer']);
             }
-            if (!empty($addresses)) {
-                $result['address'] = $addresses;
-            }
-
             $this->loadedData[$customer->getId()] = $result;
         }
 
+        $data = $this->getSession()->getCustomerFormData();
+        if (!empty($data)) {
+            $customerId = isset($data['customer']['entity_id']) ? $data['customer']['entity_id'] : null;
+            $this->loadedData[$customerId] = $data;
+            $this->getSession()->unsCustomerFormData();
+        }
+
         return $this->loadedData;
-    }
-
-    /**
-     * Retrieve count of loaded items
-     *
-     * @return int
-     */
-    public function count()
-    {
-        return $this->collection->count();
-    }
-
-    /**
-     * Get config data
-     *
-     * @return mixed
-     */
-    public function getConfigData()
-    {
-        return isset($this->data['config']) ? $this->data['config'] : [];
-    }
-
-    /**
-     * Set data
-     *
-     * @param mixed $config
-     * @return void
-     */
-    public function setConfigData($config)
-    {
-        $this->data['config'] = $config;
     }
 
     /**
@@ -354,27 +180,50 @@ class DataProvider implements DataProviderInterface
         $attributes = $entityType->getAttributeCollection();
         /* @var \Magento\Eav\Model\Entity\Attribute\AbstractAttribute $attribute */
         foreach ($attributes as $attribute) {
+            $this->processFrontendInput($attribute, $meta);
+
             $code = $attribute->getAttributeCode();
             // use getDataUsingMethod, since some getters are defined and apply additional processing of returning value
             foreach ($this->metaProperties as $metaName => $origName) {
                 $value = $attribute->getDataUsingMethod($origName);
-                $meta[$code][$metaName] = $value;
+                $meta[$code]['arguments']['data']['config'][$metaName] = ($metaName === 'label') ? __($value) : $value;
                 if ('frontend_input' === $origName) {
-                    $meta[$code]['formElement'] = isset($this->formElement[$value])
+                    $meta[$code]['arguments']['data']['config']['formElement'] = isset($this->formElement[$value])
                         ? $this->formElement[$value]
                         : $value;
                 }
-                if ($attribute->usesSource()) {
-                    $meta[$code]['options'] = $attribute->getSource()->getAllOptions();
-                }
             }
 
-            $rules = $this->eavValidationRul->build($attribute, $meta[$code]);
-            if (!empty($rules)) {
-                $meta[$code]['validation'] = $rules;
+            if ($attribute->usesSource()) {
+                $meta[$code]['arguments']['data']['config']['options'] = $attribute->getSource()->getAllOptions();
             }
+
+            $rules = $this->eavValidationRules->build($attribute, $meta[$code]['arguments']['data']['config']);
+            if (!empty($rules)) {
+                $meta[$code]['arguments']['data']['config']['validation'] = $rules;
+            }
+            $meta[$code]['arguments']['data']['config']['componentType'] = Field::NAME;
         }
         return $meta;
+    }
+
+    /**
+     * Process attributes by frontend input type
+     *
+     * @param AttributeInterface $attribute
+     * @param array $meta
+     * @return array
+     */
+    private function processFrontendInput(AttributeInterface $attribute, array &$meta)
+    {
+        $code = $attribute->getAttributeCode();
+        if ($attribute->getFrontendInput() === 'boolean') {
+            $meta[$code]['arguments']['data']['config']['prefer'] = 'toggle';
+            $meta[$code]['arguments']['data']['config']['valueMap'] = [
+                'true' => '1',
+                'false' => '0',
+            ];
+        }
     }
 
     /**
@@ -397,7 +246,7 @@ class DataProvider implements DataProviderInterface
         ) {
             $addresses[$addressId]['default_shipping'] = $customer['default_shipping'];
         }
-        if (isset($addresses[$addressId]['street'])) {
+        if (isset($addresses[$addressId]['street']) && !is_array($addresses[$addressId]['street'])) {
             $addresses[$addressId]['street'] = explode("\n", $addresses[$addressId]['street']);
         }
     }

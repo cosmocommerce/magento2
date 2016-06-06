@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Model\Product\Attribute;
@@ -181,7 +181,7 @@ class SetRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->filterBuilderMock->expects($this->once())->method('create')->willReturn($filterMock);
 
         $this->searchCriteriaBuilderMock->expects($this->once())
-            ->method('addFilter')
+            ->method('addFilters')
             ->with([$filterMock])
             ->willReturnSelf();
         $this->searchCriteriaBuilderMock->expects($this->once())

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -32,7 +32,7 @@ class CouponTest extends \PHPUnit_Framework_TestCase
     {
         /** @var $block \Magento\Sales\Block\Adminhtml\Report\Filter\Form\Coupon */
         $block = $this->_layout->createBlock('Magento\Sales\Block\Adminhtml\Report\Filter\Form\Coupon');
-        $block->setFilterData(new \Magento\Framework\Object());
+        $block->setFilterData(new \Magento\Framework\DataObject());
         $html = $block->toHtml();
 
         $expectedStrings = [

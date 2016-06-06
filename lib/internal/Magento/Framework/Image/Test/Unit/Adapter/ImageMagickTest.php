@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Image\Test\Unit\Adapter;
@@ -85,7 +85,9 @@ class ImageMagickTest extends \PHPUnit_Framework_TestCase
      */
     public function testSaveWithException()
     {
-        $exception = new FileSystemException(new \Magento\Framework\Phrase(''));
+        $exception = new FileSystemException(
+            new \Magento\Framework\Phrase('Unable to write file into directory product/cache. Access forbidden.')
+        );
         $this->writeMock->method('create')->will($this->throwException($exception));
         $this->loggerMock->expects($this->once())->method('critical')->with($exception);
         $this->imageMagic->save('product/cache', 'sample.jpg');

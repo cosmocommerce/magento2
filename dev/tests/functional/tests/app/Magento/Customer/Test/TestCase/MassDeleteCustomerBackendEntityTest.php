@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -74,6 +74,8 @@ class MassDeleteCustomerBackendEntityTest extends Injectable
         $this->fixtureFactory = $fixtureFactory;
         $this->customerIndexPage = $customerIndexPage;
         $this->customerIndexEditPage = $customerIndexEditPage;
+        $customerIndexPage->open();
+        $customerIndexPage->getCustomerGridBlock()->massaction([], 'Delete', true, 'Select All');
     }
 
     /**
@@ -108,7 +110,7 @@ class MassDeleteCustomerBackendEntityTest extends Injectable
     {
         $customers = [];
         for ($i = 0; $i < $customersQty; $i++) {
-            $customer = $this->fixtureFactory->createByCode('customer', ['dataSet' => 'default']);
+            $customer = $this->fixtureFactory->createByCode('customer', ['dataset' => 'default']);
             $customer->persist();
             $customers[] = $customer;
         }

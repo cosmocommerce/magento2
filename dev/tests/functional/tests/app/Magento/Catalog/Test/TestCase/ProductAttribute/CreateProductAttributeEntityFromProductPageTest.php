@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -44,7 +44,7 @@ class CreateProductAttributeEntityFromProductPageTest extends Scenario
     {
         $product = $fixtureFactory->createByCode(
             'catalogProductSimple',
-            ['dataSet' => 'product_with_category_with_anchor']
+            ['dataset' => 'product_with_category_with_anchor']
         );
         $product->persist();
         return ['product' => $product];

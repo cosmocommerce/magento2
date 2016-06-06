@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -15,12 +15,14 @@ use Magento\Mtf\Fixture\FixtureInterface;
  */
 class FormPageActions extends \Magento\Catalog\Test\Block\Adminhtml\Product\FormPageActions
 {
+    // @codingStandardsIgnoreStart
     /**
-     * Selector for "Affected Attribute Set" popup form
+     * Selector for "Affected Attribute Set" modal window
      *
      * @var string
      */
-    protected $affectedAttributeSetForm = '//ancestor::body//div[div[@id="affected-attribute-set-form"]]';
+    protected $affectedAttributeSetForm = '.product_form_product_form_configurable_attribute_set_handler_modal [data-role="focusable-scope"]';
+    // @codingStandardsIgnoreEnd
 
     /**
      * Click on "Save" button
@@ -46,7 +48,7 @@ class FormPageActions extends \Magento\Catalog\Test\Block\Adminhtml\Product\Form
     {
         return $this->blockFactory->create(
             '\Magento\ConfigurableProduct\Test\Block\Adminhtml\Product\AffectedAttributeSet',
-            ['element' => $this->_rootElement->find($this->affectedAttributeSetForm, Locator::SELECTOR_XPATH)]
+            ['element' => $this->browser->find($this->affectedAttributeSetForm)]
         );
     }
 }

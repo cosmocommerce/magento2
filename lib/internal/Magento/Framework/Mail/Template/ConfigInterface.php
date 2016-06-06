@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Mail\Template;
@@ -44,10 +44,19 @@ interface ConfigInterface
     public function getTemplateModule($templateId);
 
     /**
-     * Retrieve full path to an email template file
+     * Retrieve the area an email template belongs to
      *
      * @param string $templateId
      * @return string
      */
-    public function getTemplateFilename($templateId);
+    public function getTemplateArea($templateId);
+
+    /**
+     * Retrieve full path to an email template file
+     *
+     * @param string $templateId
+     * @param array|null $designParams
+     * @return string
+     */
+    public function getTemplateFilename($templateId, $designParams = []);
 }

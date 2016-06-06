@@ -2,7 +2,7 @@
 /**
  * Prevents path info processing for admin store
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\App\Request;
@@ -41,9 +41,9 @@ class PathInfoProcessor implements \Magento\Framework\App\Request\PathInfoProces
     public function process(\Magento\Framework\App\RequestInterface $request, $pathInfo)
     {
         $pathParts = explode('/', ltrim($pathInfo, '/'), 2);
-        $storeCode = $pathParts[0];
+        $firstPart = $pathParts[0];
 
-        if ($storeCode != $this->_helper->getAreaFrontName()) {
+        if ($firstPart != $this->_helper->getAreaFrontName()) {
             return $this->_subject->process($request, $pathInfo);
         }
         return $pathInfo;

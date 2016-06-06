@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Service\V1;
@@ -32,7 +32,7 @@ class ShipmentGetTest extends WebapiAbstract
     public function testShipmentGet()
     {
         /** @var \Magento\Sales\Model\Order\Shipment $shipment */
-        $shipmentCollection = $this->objectManager->get('Magento\Sales\Model\Resource\Order\Shipment\Collection');
+        $shipmentCollection = $this->objectManager->get('Magento\Sales\Model\ResourceModel\Order\Shipment\Collection');
         $shipment = $shipmentCollection->getFirstItem();
         $shipment->load($shipment->getId());
         $serviceInfo = [

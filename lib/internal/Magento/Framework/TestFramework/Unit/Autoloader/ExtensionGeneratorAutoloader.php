@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -41,7 +41,7 @@ class ExtensionGeneratorAutoloader
                 return false;
             }
 
-            $resultFileName = $this->generatorIo->getResultFileName($className);
+            $resultFileName = $this->generatorIo->generateResultFileName($className);
 
             if (!$this->generatorIo->fileExists($resultFileName)) {
                 $this->generatorIo->makeResultFileDirectory($className);

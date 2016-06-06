@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,8 +12,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetAllOptions()
     {
-        /** @var \Magento\Tax\Model\Resource\TaxClass\Collection $collection */
-        $collection = Bootstrap::getObjectManager()->get('Magento\Tax\Model\Resource\TaxClass\Collection');
+        /** @var \Magento\Tax\Model\ResourceModel\TaxClass\Collection $collection */
+        $collection = Bootstrap::getObjectManager()->get('Magento\Tax\Model\ResourceModel\TaxClass\Collection');
         $expectedResult = [];
         /** @var \Magento\Tax\Model\ClassModel $taxClass */
         foreach ($collection as $taxClass) {
@@ -35,8 +35,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllOptionsWithDefaultValues()
     {
-        /** @var \Magento\Tax\Model\Resource\TaxClass\Collection $collection */
-        $collection = Bootstrap::getObjectManager()->get('Magento\Tax\Model\Resource\TaxClass\Collection');
+        /** @var \Magento\Tax\Model\ResourceModel\TaxClass\Collection $collection */
+        $collection = Bootstrap::getObjectManager()->get('Magento\Tax\Model\ResourceModel\TaxClass\Collection');
         $expectedResult = [];
         /** @var \Magento\Tax\Model\ClassModel $taxClass */
         foreach ($collection as $taxClass) {

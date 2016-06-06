@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Backup\Db;
@@ -14,4 +14,11 @@ interface BackupDbInterface
      * @return void
      */
     public function createBackup(\Magento\Framework\Backup\Db\BackupInterface $backup);
+
+    /**
+     * Get database backup size
+     *
+     * @return int
+     */
+    public function getDBBackupSize();
 }

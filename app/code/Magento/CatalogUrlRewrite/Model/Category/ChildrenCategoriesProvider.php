@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogUrlRewrite\Model\Category;
@@ -35,7 +35,7 @@ class ChildrenCategoriesProvider
     {
         $cacheKey = $category->getId() . '_' . (int)$recursive;
         if (!isset($this->childrenIds[$cacheKey])) {
-            $connection = $category->getResource()->getReadConnection();
+            $connection = $category->getResource()->getConnection();
             $select = $connection->select()
                 ->from($category->getResource()->getEntityTable(), 'entity_id')
                 ->where($connection->quoteIdentifier('path') . ' LIKE :c_path');

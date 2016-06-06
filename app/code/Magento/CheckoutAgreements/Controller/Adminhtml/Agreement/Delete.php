@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CheckoutAgreements\Controller\Adminhtml\Agreement;
@@ -23,7 +23,7 @@ class Delete extends \Magento\CheckoutAgreements\Controller\Adminhtml\Agreement
 
         try {
             $model->delete();
-            $this->messageManager->addSuccess(__('The condition has been deleted.'));
+            $this->messageManager->addSuccess(__('You deleted the condition.'));
             $this->_redirect('checkout/*/');
             return;
         } catch (\Magento\Framework\Exception\LocalizedException $e) {

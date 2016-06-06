@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Controller\Adminhtml\Order\Invoice;
@@ -84,8 +84,12 @@ class NewActionTest extends \PHPUnit_Framework_TestCase
      */
     protected $resultRedirectFactoryMock;
 
+    /**
+     * @var \Magento\Sales\Model\Service\InvoiceService|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $invoiceServiceMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $objectManager = new ObjectManager($this);
 
@@ -192,11 +196,16 @@ class NewActionTest extends \PHPUnit_Framework_TestCase
             ->method('getTitle')
             ->willReturn($this->pageTitleMock);
 
+        $this->invoiceServiceMock = $this->getMockBuilder('Magento\Sales\Model\Service\InvoiceService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->controller = $objectManager->getObject(
             'Magento\Sales\Controller\Adminhtml\Order\Invoice\NewAction',
             [
                 'context' => $contextMock,
-                'resultPageFactory' => $this->resultPageFactoryMock
+                'resultPageFactory' => $this->resultPageFactoryMock,
+                'invoiceService' => $this->invoiceServiceMock
             ]
         );
     }
@@ -239,12 +248,9 @@ class NewActionTest extends \PHPUnit_Framework_TestCase
             ->method('canInvoice')
             ->willReturn(true);
 
-        $orderService = $this->getMockBuilder('Magento\Sales\Model\Service\Order')
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
-        $orderService->expects($this->once())
+        $this->invoiceServiceMock->expects($this->once())
             ->method('prepareInvoice')
+            ->with($orderMock, [])
             ->willReturn($invoiceMock);
 
         $menuBlockMock = $this->getMockBuilder('Magento\Backend\Block\Menu')
@@ -269,10 +275,6 @@ class NewActionTest extends \PHPUnit_Framework_TestCase
             ->with('Magento\Sales\Model\Order')
             ->willReturn($orderMock);
         $this->objectManagerMock->expects($this->at(1))
-            ->method('create')
-            ->with('Magento\Sales\Model\Service\Order')
-            ->willReturn($orderService);
-        $this->objectManagerMock->expects($this->at(2))
             ->method('get')
             ->with('Magento\Backend\Model\Session')
             ->will($this->returnValue($this->sessionMock));

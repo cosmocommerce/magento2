@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Controller\Adminhtml\Order\Creditmemo;
@@ -30,6 +30,11 @@ class PrintActionTest extends \PHPUnit_Framework_TestCase
      * @var \Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $creditmemoLoaderMock;
+
+    /**
+     * @var \Magento\Sales\Api\CreditmemoRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $creditmemoRepositoryMock;
 
     /**
      * @var \Magento\Framework\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -76,7 +81,7 @@ class PrintActionTest extends \PHPUnit_Framework_TestCase
      */
     protected $resultForwardMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->requestMock = $this->getMockBuilder('Magento\Framework\App\RequestInterface')
             ->getMock();
@@ -94,6 +99,13 @@ class PrintActionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->objectManagerMock = $this->getMockBuilder('Magento\Framework\ObjectManagerInterface')
             ->getMock();
+        $this->creditmemoRepositoryMock = $this->getMock(
+            'Magento\Sales\Api\CreditmemoRepositoryInterface',
+            [],
+            [],
+            '',
+            false
+        );
         $this->creditmemoMock = $this->getMockBuilder('Magento\Sales\Model\Order\Creditmemo')
             ->disableOriginalConstructor()
             ->getMock();
@@ -132,8 +144,9 @@ class PrintActionTest extends \PHPUnit_Framework_TestCase
             [
                 'context' => $this->context,
                 'fileFactory' => $this->fileFactoryMock,
+                'resultForwardFactory' => $this->resultForwardFactoryMock,
                 'creditmemoLoader' => $this->creditmemoLoaderMock,
-                'resultForwardFactory' => $this->resultForwardFactoryMock
+                'creditmemoRepository' => $this->creditmemoRepositoryMock,
             ]
         );
     }
@@ -157,10 +170,10 @@ class PrintActionTest extends \PHPUnit_Framework_TestCase
                     ['Magento\Sales\Model\Order\Pdf\Creditmemo', [], $this->creditmemoPdfMock]
                 ]
             );
-        $this->creditmemoMock->expects($this->once())
-            ->method('load')
+        $this->creditmemoRepositoryMock->expects($this->once())
+            ->method('get')
             ->with($creditmemoId)
-            ->willReturnSelf();
+            ->willReturn($this->creditmemoMock);
         $this->creditmemoPdfMock->expects($this->once())
             ->method('getPdf')
             ->with([$this->creditmemoMock])

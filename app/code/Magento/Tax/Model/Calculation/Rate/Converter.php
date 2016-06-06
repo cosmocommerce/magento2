@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Model\Calculation\Rate;
@@ -73,6 +73,10 @@ class Converter
             'rate' => $taxRate->getRate(),
             'zip_is_range' => $returnNumericLogic?0:false,
         ];
+
+        if ($taxRateFormData['tax_region_id'] === '0') {
+            $taxRateFormData['tax_region_id'] = '';
+        }
 
         if ($taxRate->getZipFrom() && $taxRate->getZipTo()) {
             $taxRateFormData['zip_is_range'] = $returnNumericLogic?1:true;

@@ -1,13 +1,14 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\AbstractController;
 
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Sales\Api\CreditmemoRepositoryInterface;
 
 abstract class PrintCreditmemo extends \Magento\Framework\App\Action\Action
 {
@@ -27,20 +28,28 @@ abstract class PrintCreditmemo extends \Magento\Framework\App\Action\Action
     protected $resultPageFactory;
 
     /**
+     * @var CreditmemoRepositoryInterface
+     */
+    protected $creditmemoRepository;
+
+    /**
      * @param Context $context
      * @param OrderViewAuthorizationInterface $orderAuthorization
      * @param \Magento\Framework\Registry $registry
      * @param PageFactory $resultPageFactory
+     * @param CreditmemoRepositoryInterface $creditmemoRepository
      */
     public function __construct(
         Context $context,
         OrderViewAuthorizationInterface $orderAuthorization,
         \Magento\Framework\Registry $registry,
-        PageFactory $resultPageFactory
+        PageFactory $resultPageFactory,
+        CreditmemoRepositoryInterface $creditmemoRepository
     ) {
         $this->orderAuthorization = $orderAuthorization;
         $this->_coreRegistry = $registry;
         $this->resultPageFactory = $resultPageFactory;
+        $this->creditmemoRepository = $creditmemoRepository;
         parent::__construct($context);
     }
 
@@ -53,7 +62,7 @@ abstract class PrintCreditmemo extends \Magento\Framework\App\Action\Action
     {
         $creditmemoId = (int)$this->getRequest()->getParam('creditmemo_id');
         if ($creditmemoId) {
-            $creditmemo = $this->_objectManager->create('Magento\Sales\Model\Order\Creditmemo')->load($creditmemoId);
+            $creditmemo = $this->creditmemoRepository->get($creditmemoId);
             $order = $creditmemo->getOrder();
         } else {
             $orderId = (int)$this->getRequest()->getParam('order_id');

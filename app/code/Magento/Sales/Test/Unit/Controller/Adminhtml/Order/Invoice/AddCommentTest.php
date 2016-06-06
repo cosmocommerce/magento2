@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Controller\Adminhtml\Order\Invoice;
@@ -84,7 +84,7 @@ class AddCommentTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp()
     {
         $objectManager = new ObjectManager($this);
 
@@ -217,14 +217,17 @@ class AddCommentTest extends \PHPUnit_Framework_TestCase
             ->with($data['comment'], false, false);
         $invoiceMock->expects($this->once())
             ->method('save');
-        $invoiceMock->expects($this->once())
-            ->method('load')
-            ->willReturnSelf();
 
+        $invoiceRepository = $this->getMockBuilder('Magento\Sales\Api\InvoiceRepositoryInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $invoiceRepository->expects($this->any())
+            ->method('get')
+            ->willReturn($invoiceMock);
         $this->objectManagerMock->expects($this->once())
             ->method('create')
-            ->with('Magento\Sales\Model\Order\Invoice')
-            ->willReturn($invoiceMock);
+            ->with('Magento\Sales\Api\InvoiceRepositoryInterface')
+            ->willReturn($invoiceRepository);
 
         $commentsBlockMock = $this->getMockBuilder('Magento\Sales\Block\Adminhtml\Order\Invoice\View\Comments')
             ->disableOriginalConstructor()

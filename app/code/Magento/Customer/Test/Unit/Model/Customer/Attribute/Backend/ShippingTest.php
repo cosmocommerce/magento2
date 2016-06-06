@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -15,7 +15,7 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
      */
     protected $testable;
 
-    public function setUp()
+    protected function setUp()
     {
         $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')->getMock();
         /** @var \Psr\Log\LoggerInterface $logger */
@@ -24,14 +24,14 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
 
     public function testBeforeSave()
     {
-        $object = $this->getMockBuilder('Magento\Framework\Object')
+        $object = $this->getMockBuilder('Magento\Framework\DataObject')
             ->disableOriginalConstructor()
             ->setMethods(['getDefaultShipping', 'unsetDefaultShipping'])
             ->getMock();
 
         $object->expects($this->once())->method('getDefaultShipping')->will($this->returnValue(null));
         $object->expects($this->once())->method('unsetDefaultShipping')->will($this->returnSelf());
-        /** @var \Magento\Framework\Object $object */
+        /** @var \Magento\Framework\DataObject $object */
 
         $this->testable->beforeSave($object);
     }
@@ -41,12 +41,12 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
         $addressId = 1;
         $attributeCode = 'attribute_code';
         $defaultShipping = 'default Shipping address';
-        $object = $this->getMockBuilder('Magento\Framework\Object')
+        $object = $this->getMockBuilder('Magento\Framework\DataObject')
             ->disableOriginalConstructor()
             ->setMethods(['getDefaultShipping', 'getAddresses', 'setDefaultShipping'])
             ->getMock();
 
-        $address = $this->getMockBuilder('Magento\Framework\Object')
+        $address = $this->getMockBuilder('Magento\Framework\DataObject')
             ->disableOriginalConstructor()
             ->setMethods(['getPostIndex', 'getId'])
             ->getMock();
@@ -69,7 +69,7 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
         $object->expects($this->once())->method('getDefaultShipping')->will($this->returnValue($defaultShipping));
         $object->expects($this->once())->method('setDefaultShipping')->with($addressId)->will($this->returnSelf());
         $object->expects($this->once())->method('getAddresses')->will($this->returnValue([$address]));
-        /** @var \Magento\Framework\Object $object */
+        /** @var \Magento\Framework\DataObject $object */
         /** @var \Magento\Eav\Model\Entity\Attribute\AbstractAttribute $attribute */
 
         $this->testable->setAttribute($attribute);

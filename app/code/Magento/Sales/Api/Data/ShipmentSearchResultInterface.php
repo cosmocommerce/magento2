@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Api\Data;
@@ -29,5 +29,5 @@ interface ShipmentSearchResultInterface extends SearchResultsInterface
      * @param \Magento\Sales\Api\Data\ShipmentInterface[] $items
      * @return $this
      */
-    public function setItems(array $items = null);
+    public function setItems(array $items);
 }

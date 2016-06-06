@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Downloadable\Block\Adminhtml\Catalog\Product\Edit\Tab\Downloadable;
@@ -30,7 +30,7 @@ class SamplesTest extends \PHPUnit_Framework_TestCase
             'Magento\Framework\Registry'
         )->register(
             'current_product',
-            new \Magento\Framework\Object(['type_id' => 'simple'])
+            new \Magento\Framework\DataObject(['type_id' => 'simple'])
         );
         $block = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
             'Magento\Framework\View\LayoutInterface'
@@ -59,7 +59,7 @@ class SamplesTest extends \PHPUnit_Framework_TestCase
             'Magento\Framework\Registry'
         )->register(
             'current_product',
-            new \Magento\Framework\Object(
+            new \Magento\Framework\DataObject(
                 [
                     'type_id' => $productType,
                     'id' => '1',

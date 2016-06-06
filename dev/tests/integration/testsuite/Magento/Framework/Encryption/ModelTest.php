@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Encryption;
@@ -46,7 +46,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
     public function testGetValidateHash()
     {
         $password = uniqid();
-        $hash = $this->_model->getHash($password);
+        $hash = $this->_model->getHash($password, true);
 
         $this->assertTrue(is_string($hash));
         $this->assertTrue($this->_model->validateHash($password, $hash));

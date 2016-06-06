@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Test\Unit\Controller\Adminhtml\Block;
@@ -139,7 +139,7 @@ class DeleteTest extends \PHPUnit_Framework_TestCase
 
         $this->messageManagerMock->expects($this->once())
             ->method('addSuccess')
-            ->with(__('The block has been deleted.'));
+            ->with(__('You deleted the block.'));
         $this->messageManagerMock->expects($this->never())
             ->method('addError');
 

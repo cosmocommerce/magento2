@@ -1,13 +1,13 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model;
 
-use Magento\Eav\Model\Resource\Entity\Attribute\Collection;
-use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\Collection;
+use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
@@ -23,12 +23,12 @@ class AttributeRepository implements \Magento\Eav\Api\AttributeRepositoryInterfa
     protected $eavConfig;
 
     /**
-     * @var \Magento\Eav\Model\Resource\Entity\Attribute
+     * @var \Magento\Eav\Model\ResourceModel\Entity\Attribute
      */
     protected $eavResource;
 
     /**
-     * @var \Magento\Eav\Model\Resource\Entity\Attribute\CollectionFactory
+     * @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory
      */
     protected $attributeCollectionFactory;
 
@@ -49,16 +49,17 @@ class AttributeRepository implements \Magento\Eav\Api\AttributeRepositoryInterfa
 
     /**
      * @param Config $eavConfig
-     * @param Resource\Entity\Attribute $eavResource
-     * @param Resource\Entity\Attribute\CollectionFactory $attributeCollectionFactory
+     * @param \Magento\Eav\Model\ResourceModel\Entity\Attribute $eavResource
+     * @param \Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory $attributeCollectionFactory
      * @param \Magento\Eav\Api\Data\AttributeSearchResultsInterfaceFactory $searchResultsFactory
      * @param Entity\AttributeFactory $attributeFactory
      * @param \Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface $joinProcessor
+     * @codeCoverageIgnore
      */
     public function __construct(
         \Magento\Eav\Model\Config $eavConfig,
-        \Magento\Eav\Model\Resource\Entity\Attribute $eavResource,
-        \Magento\Eav\Model\Resource\Entity\Attribute\CollectionFactory $attributeCollectionFactory,
+        \Magento\Eav\Model\ResourceModel\Entity\Attribute $eavResource,
+        \Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory $attributeCollectionFactory,
         \Magento\Eav\Api\Data\AttributeSearchResultsInterfaceFactory $searchResultsFactory,
         \Magento\Eav\Model\Entity\AttributeFactory $attributeFactory,
         \Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface $joinProcessor
@@ -93,7 +94,7 @@ class AttributeRepository implements \Magento\Eav\Api\AttributeRepositoryInterfa
             throw InputException::requiredField('entity_type_code');
         }
 
-        /** @var \Magento\Eav\Model\Resource\Entity\Attribute\Collection $attributeCollection */
+        /** @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\Collection $attributeCollection */
         $attributeCollection = $this->attributeCollectionFactory->create();
         $this->joinProcessor->process($attributeCollection);
         $attributeCollection->addFieldToFilter('entity_type_code', ['eq' => $entityTypeCode]);
@@ -102,25 +103,30 @@ class AttributeRepository implements \Magento\Eav\Api\AttributeRepositoryInterfa
             'main_table.entity_type_id = entity_type.entity_type_id',
             []
         );
-        $attributeCollection->join(
+        $attributeCollection->joinLeft(
             ['eav_entity_attribute' => $attributeCollection->getTable('eav_entity_attribute')],
             'main_table.attribute_id = eav_entity_attribute.attribute_id',
             []
         );
-        $attributeCollection->join(
-            ['additional_table' => $attributeCollection->getTable('catalog_eav_attribute')],
-            'main_table.attribute_id = additional_table.attribute_id',
-            []
-        );
+        $entityType = $this->eavConfig->getEntityType($entityTypeCode);
+
+        $additionalTable = $entityType->getAdditionalAttributeTable();
+        if ($additionalTable) {
+            $attributeCollection->join(
+                ['additional_table' => $attributeCollection->getTable($additionalTable)],
+                'main_table.attribute_id = additional_table.attribute_id',
+                []
+            );
+        }
         //Add filters from root filter group to the collection
         foreach ($searchCriteria->getFilterGroups() as $group) {
             $this->addFilterGroupToCollection($group, $attributeCollection);
         }
-        /** @var \Magento\Framework\Api\SortOrder $sortOrder */
+        /** @var SortOrder $sortOrder */
         foreach ((array)$searchCriteria->getSortOrders() as $sortOrder) {
             $attributeCollection->addOrder(
                 $sortOrder->getField(),
-                ($sortOrder->getDirection() == SearchCriteriaInterface::SORT_ASC) ? 'ASC' : 'DESC'
+                ($sortOrder->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
             );
         }
 
@@ -192,7 +198,7 @@ class AttributeRepository implements \Magento\Eav\Api\AttributeRepositoryInterfa
      * Helper function that adds a FilterGroup to the collection.
      *
      * @param \Magento\Framework\Api\Search\FilterGroup $filterGroup
-     * @param \Magento\Eav\Model\Resource\Entity\Attribute\Collection $collection
+     * @param \Magento\Eav\Model\ResourceModel\Entity\Attribute\Collection $collection
      * @return void
      * @throws \Magento\Framework\Exception\InputException
      */
@@ -200,11 +206,15 @@ class AttributeRepository implements \Magento\Eav\Api\AttributeRepositoryInterfa
         \Magento\Framework\Api\Search\FilterGroup $filterGroup,
         Collection $collection
     ) {
-        /** @var \Magento\Framework\Api\Search\FilterGroup $filter */
         foreach ($filterGroup->getFilters() as $filter) {
             $condition = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
+            $field = $filter->getField();
+            // Prevent ambiguity during filtration
+            if ($field == \Magento\Eav\Api\Data\AttributeInterface::ATTRIBUTE_ID) {
+                $field = 'main_table.' . $field;
+            }
             $collection->addFieldToFilter(
-                $filter->getField(),
+                $field,
                 [$condition => $filter->getValue()]
             );
         }

@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Shipment\AbstractShipment;
@@ -10,63 +10,71 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Response\Http\FileFactory;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use Magento\Ui\Component\MassAction\Filter;
+use Magento\Sales\Model\Order\Pdf\Shipment;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Sales\Model\ResourceModel\Order\Shipment\CollectionFactory;
 
-abstract class Pdfshipments extends \Magento\Backend\App\Action
+abstract class Pdfshipments extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMassAction
 {
+    /**
+     * Authorization level of a basic admin session
+     *
+     * @see _isAllowed()
+     */
+    const ADMIN_RESOURCE = 'Magento_Sales::shipment';
+
     /**
      * @var FileFactory
      */
-    protected $_fileFactory;
+    protected $fileFactory;
+
+    /**
+     * @var DateTime
+     */
+    protected $dateTime;
+
+    /**
+     * @var Shipment
+     */
+    protected $pdfShipment;
 
     /**
      * @param Context $context
+     * @param Filter $filter
+     * @param DateTime $dateTime
      * @param FileFactory $fileFactory
+     * @param Shipment $shipment
+     * @param CollectionFactory $collectionFactory
      */
-    public function __construct(Context $context, FileFactory $fileFactory)
-    {
-        $this->_fileFactory = $fileFactory;
-        parent::__construct($context);
+    public function __construct(
+        Context $context,
+        Filter $filter,
+        DateTime $dateTime,
+        FileFactory $fileFactory,
+        Shipment $shipment,
+        CollectionFactory $collectionFactory
+    ) {
+        $this->fileFactory = $fileFactory;
+        $this->dateTime = $dateTime;
+        $this->pdfShipment = $shipment;
+        $this->collectionFactory = $collectionFactory;
+        parent::__construct($context, $filter);
     }
 
     /**
-     * @return bool
+     * @param AbstractCollection $collection
+     * @return $this|ResponseInterface
+     * @throws \Exception
      */
-    protected function _isAllowed()
+    public function massAction(AbstractCollection $collection)
     {
-        return $this->_authorization->isAllowed('Magento_Sales::shipment');
-    }
-
-    /**
-     * @return ResponseInterface|\Magento\Backend\Model\View\Result\Redirect
-     */
-    public function execute()
-    {
-        $shipmentIds = $this->getRequest()->getPost('shipment_ids');
-        if (!empty($shipmentIds)) {
-            $shipments = $this->_objectManager->create(
-                'Magento\Sales\Model\Resource\Order\Shipment\Collection'
-            )->addAttributeToSelect(
-                '*'
-            )->addAttributeToFilter(
-                'entity_id',
-                ['in' => $shipmentIds]
-            )->load();
-            if (!isset($pdf)) {
-                $pdf = $this->_objectManager->create('Magento\Sales\Model\Order\Pdf\Shipment')->getPdf($shipments);
-            } else {
-                $pages = $this->_objectManager->create('Magento\Sales\Model\Order\Pdf\Shipment')->getPdf($shipments);
-                $pdf->pages = array_merge($pdf->pages, $pages->pages);
-            }
-            $date = $this->_objectManager->get('Magento\Framework\Stdlib\DateTime\DateTime')->date('Y-m-d_H-i-s');
-            return $this->_fileFactory->create(
-                'packingslip' . $date . '.pdf',
-                $pdf->render(),
-                DirectoryList::VAR_DIR,
-                'application/pdf'
-            );
-        }
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
-        $resultRedirect = $this->resultRedirectFactory->create();
-        return $resultRedirect->setPath('sales/*/');
+        return $this->fileFactory->create(
+            sprintf('packingslip%s.pdf', $this->dateTime->date('Y-m-d_H-i-s')),
+            $this->pdfShipment->getPdf($collection)->render(),
+            DirectoryList::VAR_DIR,
+            'application/pdf'
+        );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Model\Product;
@@ -29,10 +29,10 @@ class CopyConstructorFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(
             '\InvalidArgumentException',
-            'Magento\Framework\Object does not implement \Magento\Catalog\Model\Product\CopyConstructorInterface'
+            'Magento\Framework\DataObject does not implement \Magento\Catalog\Model\Product\CopyConstructorInterface'
         );
         $this->_objectManagerMock->expects($this->never())->method('create');
-        $this->_model->create('Magento\Framework\Object');
+        $this->_model->create('Magento\Framework\DataObject');
     }
 
     public function testCreateWithValidType()

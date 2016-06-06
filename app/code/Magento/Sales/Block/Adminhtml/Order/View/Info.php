@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\View;
@@ -265,6 +265,20 @@ class Info extends \Magento\Sales\Block\Adminhtml\Order\AbstractOrder
     public function getCreatedAtStoreDate($store, $createdAt)
     {
         return $this->_localeDate->scopeDate($store, $createdAt, true);
+    }
+
+    /**
+     * Get timezone for store
+     *
+     * @param mixed $store
+     * @return string
+     */
+    public function getTimezoneForStore($store)
+    {
+        return $this->_localeDate->getConfigTimezone(
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $store->getCode()
+        );
     }
 
     /**

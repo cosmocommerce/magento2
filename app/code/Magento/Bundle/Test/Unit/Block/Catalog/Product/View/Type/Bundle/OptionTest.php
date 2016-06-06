@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -65,7 +65,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
         $this->product->expects($this->atLeastOnce())
             ->method('getPreconfiguredValues')
             ->will($this->returnValue(
-                new \Magento\Framework\Object(['bundle_option' => [15 => 315, 16 => 316]]))
+                new \Magento\Framework\DataObject(['bundle_option' => [15 => 315, 16 => 316]]))
             );
 
         $option = $this->getMock('\Magento\Bundle\Model\Option', [], [], '', false);

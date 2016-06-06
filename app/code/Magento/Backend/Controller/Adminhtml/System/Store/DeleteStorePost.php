@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml\System\Store;
@@ -22,7 +22,7 @@ class DeleteStorePost extends \Magento\Backend\Controller\Adminhtml\System\Store
         /** @var \Magento\Backend\Model\View\Result\Redirect $redirectResult */
         $redirectResult = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         if (!($model = $this->_objectManager->create('Magento\Store\Model\Store')->load($itemId))) {
-            $this->messageManager->addError(__('Unable to proceed. Please, try again'));
+            $this->messageManager->addError(__('Something went wrong. Please try again.'));
             return $redirectResult->setPath('adminhtml/*/');
         }
         if (!$model->isCanDelete()) {
@@ -39,12 +39,12 @@ class DeleteStorePost extends \Magento\Backend\Controller\Adminhtml\System\Store
 
             $this->_eventManager->dispatch('store_delete', ['store' => $model]);
 
-            $this->messageManager->addSuccess(__('The store view has been deleted.'));
+            $this->messageManager->addSuccess(__('You deleted the store view.'));
             return $redirectResult->setPath('adminhtml/*/');
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
-            $this->messageManager->addException($e, __('Unable to delete store view. Please, try again later.'));
+            $this->messageManager->addException($e, __('Unable to delete the store view. Please try again later.'));
         }
         return $redirectResult->setPath('adminhtml/*/editStore', ['store_id' => $itemId]);
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -100,7 +100,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
         /** @var \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteria */
         $searchCriteria = Bootstrap::getObjectManager()
             ->create('Magento\Framework\Api\SearchCriteriaBuilder')
-            ->addFilter([$builder->setField('code')->setValue('custom_group')->create()]);
+            ->addFilters([$builder->setField('code')->setValue('custom_group')->create()]);
         /** @var GroupInterface $customerGroup */
         $customerGroup = $this->groupRepository->getList($searchCriteria->create())->getItems()[0];
         $this->registry->register(RegistryConstants::CURRENT_GROUP_ID, $customerGroup->getId());

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ConfigurableProduct\Test\Unit\Model\Product\Validator;
@@ -89,7 +89,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->responseMock = $this->getMock(
-            'Magento\Framework\Object',
+            'Magento\Framework\DataObject',
             ['setError', 'setMessage', 'setAttributes'],
             [],
             '',

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,6 +8,9 @@ namespace Magento\AdminNotification\Model\System\Message;
 
 use Magento\Store\Model\Store;
 
+/**
+ * @deprecated 
+ */
 class Baseurl implements \Magento\Framework\Notification\MessageInterface
 {
     /**
@@ -65,7 +68,7 @@ class Baseurl implements \Magento\Framework\Notification\MessageInterface
         ) {
             $output = $this->_urlBuilder->getUrl('adminhtml/system_config/edit', ['section' => 'web']);
         } else {
-            /** @var $dataCollection \Magento\Config\Model\Resource\Config\Data\Collection */
+            /** @var $dataCollection \Magento\Config\Model\ResourceModel\Config\Data\Collection */
             $dataCollection = $this->_configValueFactory->create()->getCollection();
             $dataCollection->addValueFilter(\Magento\Store\Model\Store::BASE_URL_PLACEHOLDER);
 
@@ -120,7 +123,7 @@ class Baseurl implements \Magento\Framework\Notification\MessageInterface
     {
         return __(
             '{{base_url}} is not recommended to use in a production environment to declare the Base Unsecure '
-            . 'URL / Base Secure URL. It is highly recommended to change this value in your Magento '
+            . 'URL / Base Secure URL. We highly recommend changing this value in your Magento '
             . '<a href="%1">configuration</a>.',
             $this->_getConfigUrl()
         );

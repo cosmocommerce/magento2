@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute\Backend;
@@ -15,7 +15,7 @@ class ArrayBackend extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractB
     /**
      * Prepare data for save
      *
-     * @param \Magento\Framework\Object $object
+     * @param \Magento\Framework\DataObject $object
      * @return \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend
      */
     public function beforeSave($object)

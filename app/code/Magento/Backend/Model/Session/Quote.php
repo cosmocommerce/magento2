@@ -1,12 +1,14 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Model\Session;
 
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\GroupManagementInterface;
+use Magento\Framework\App\ObjectManager;
+use Magento\Quote\Api\CartManagementInterface;
 
 /**
  * Adminhtml quote session
@@ -60,7 +62,7 @@ class Quote extends \Magento\Framework\Session\SessionManager
     /**
      * Sales quote repository
      *
-     * @var \Magento\Quote\Model\QuoteRepository
+     * @var \Magento\Quote\Api\CartRepositoryInterface
      */
     protected $quoteRepository;
 
@@ -75,6 +77,16 @@ class Quote extends \Magento\Framework\Session\SessionManager
     protected $groupManagement;
 
     /**
+     * @var \Magento\Quote\Model\QuoteFactory
+     */
+    protected $quoteFactory;
+
+    /**
+     * @var \Magento\Quote\Api\CartManagementInterface;
+     */
+    private $cartManagement;
+
+    /**
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\Session\SidResolverInterface $sidResolver
      * @param \Magento\Framework\Session\Config\ConfigInterface $sessionConfig
@@ -85,11 +97,11 @@ class Quote extends \Magento\Framework\Session\SessionManager
      * @param \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory
      * @param \Magento\Framework\App\State $appState
      * @param CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Quote\Model\QuoteRepository $quoteRepository
+     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
      * @param \Magento\Sales\Model\OrderFactory $orderFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param GroupManagementInterface $groupManagement
-     * @throws \Magento\Framework\Exception\SessionException
+     * @param \Magento\Quote\Model\QuoteFactory $quoteFactory
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
@@ -103,16 +115,18 @@ class Quote extends \Magento\Framework\Session\SessionManager
         \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
         \Magento\Framework\App\State $appState,
         CustomerRepositoryInterface $customerRepository,
-        \Magento\Quote\Model\QuoteRepository $quoteRepository,
+        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        GroupManagementInterface $groupManagement
+        GroupManagementInterface $groupManagement,
+        \Magento\Quote\Model\QuoteFactory $quoteFactory
     ) {
         $this->customerRepository = $customerRepository;
         $this->quoteRepository = $quoteRepository;
         $this->_orderFactory = $orderFactory;
         $this->_storeManager = $storeManager;
         $this->groupManagement = $groupManagement;
+        $this->quoteFactory = $quoteFactory;
         parent::__construct(
             $request,
             $sidResolver,
@@ -136,15 +150,15 @@ class Quote extends \Magento\Framework\Session\SessionManager
      */
     public function getQuote()
     {
+        $cartManagement = $this->getCartManagement();
+
         if ($this->_quote === null) {
-            $this->_quote = $this->quoteRepository->create();
             if ($this->getStoreId()) {
                 if (!$this->getQuoteId()) {
-                    $this->_quote->setCustomerGroupId($this->groupManagement->getDefaultGroup()->getId())
-                        ->setIsActive(false)
-                        ->setStoreId($this->getStoreId());
-                    $this->quoteRepository->save($this->_quote);
-                    $this->setQuoteId($this->_quote->getId());
+                    $this->setQuoteId($cartManagement->createEmptyCart());
+                    $this->_quote = $this->quoteRepository->get($this->getQuoteId(), [$this->getStoreId()]);
+                    $this->_quote->setCustomerGroupId($this->groupManagement->getDefaultGroup()->getId());
+                    $this->_quote->setIsActive(false);
                 } else {
                     $this->_quote = $this->quoteRepository->get($this->getQuoteId(), [$this->getStoreId()]);
                     $this->_quote->setStoreId($this->getStoreId());
@@ -160,6 +174,18 @@ class Quote extends \Magento\Framework\Session\SessionManager
         }
 
         return $this->_quote;
+    }
+
+    /**
+     * @return CartManagementInterface
+     * @deprecated
+     */
+    private function getCartManagement()
+    {
+        if ($this->cartManagement === null) {
+            $this->cartManagement = ObjectManager::getInstance()->get(CartManagementInterface::class);
+        }
+        return $this->cartManagement;
     }
 
     /**

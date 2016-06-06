@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -57,12 +57,12 @@ class RowTest extends \PHPUnit_Framework_TestCase
      */
     protected $flatTableBuilder;
 
-    public function setUp()
+    protected function setUp()
     {
         $objectManager = new ObjectManager($this);
 
         $this->connection = $this->getMock('\Magento\Framework\DB\Adapter\AdapterInterface');
-        $this->resource = $this->getMock('Magento\Framework\App\Resource', [], [], '', false);
+        $this->resource = $this->getMock('Magento\Framework\App\ResourceConnection', [], [], '', false);
         $this->resource->expects($this->any())->method('getConnection')
             ->with('default')
             ->will($this->returnValue($this->connection));
@@ -95,7 +95,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Magento\Framework\Exception\LocalizedException
-     * @expectedExceptionMessage Could not rebuild index for undefined product
+     * @expectedExceptionMessage We can't rebuild the index for an undefined product.
      */
     public function testExecuteWithEmptyId()
     {

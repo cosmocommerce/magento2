@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -31,7 +31,7 @@ class StatusTest extends \PHPUnit_Framework_TestCase
     {
         $this->objectManagerHelper = new ObjectManagerHelper($this);
         $this->collection = $this->getMock(
-            '\Magento\Catalog\Model\Resource\Product\Collection',
+            '\Magento\Catalog\Model\ResourceModel\Product\Collection',
             [
                 '__wakeup',
                 'getSelect',

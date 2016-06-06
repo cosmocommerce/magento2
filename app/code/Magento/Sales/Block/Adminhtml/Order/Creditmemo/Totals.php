@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\Creditmemo;
@@ -59,7 +59,7 @@ class Totals extends \Magento\Sales\Block\Adminhtml\Totals
     {
         parent::_initTotals();
         $this->addTotal(
-            new \Magento\Framework\Object(
+            new \Magento\Framework\DataObject(
                 [
                     'code' => 'adjustment_positive',
                     'value' => $this->getSource()->getAdjustmentPositive(),
@@ -69,7 +69,7 @@ class Totals extends \Magento\Sales\Block\Adminhtml\Totals
             )
         );
         $this->addTotal(
-            new \Magento\Framework\Object(
+            new \Magento\Framework\DataObject(
                 [
                     'code' => 'adjustment_negative',
                     'value' => $this->getSource()->getAdjustmentNegative(),

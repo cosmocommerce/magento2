@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -24,11 +24,7 @@ abstract class AbstractCacheSetCommand extends AbstractCacheManageCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $isEnable = $this->isEnable();
-        if ($input->getOption(self::INPUT_KEY_ALL)) {
-            $types = $this->cacheManager->getAvailableTypes();
-        } else {
-            $types = $this->getRequestedTypes($input);
-        }
+        $types = $this->getRequestedTypes($input);
         $changedTypes = $this->cacheManager->setEnabled($types, $isEnable);
         if ($changedTypes) {
             $output->writeln('Changed cache status:');

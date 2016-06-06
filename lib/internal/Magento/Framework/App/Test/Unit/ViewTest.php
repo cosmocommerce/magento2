@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Test\Unit;
@@ -187,8 +187,8 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     public function testGenerateLayoutBlocksWhenFlagIsNotSet()
     {
         $valueMap = [
-            ['', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH_BLOCK_EVENT, false],
-            ['', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH_BLOCK_EVENT, false],
+            ['', \Magento\Framework\App\ActionInterface::FLAG_NO_DISPATCH_BLOCK_EVENT, false],
+            ['', \Magento\Framework\App\ActionInterface::FLAG_NO_DISPATCH_BLOCK_EVENT, false],
         ];
         $this->_actionFlagMock->expects($this->any())->method('get')->will($this->returnValueMap($valueMap));
         $this->_view->generateLayoutBlocks();
@@ -197,8 +197,8 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     public function testGenerateLayoutBlocksWhenFlagIsSet()
     {
         $valueMap = [
-            ['', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH_BLOCK_EVENT, true],
-            ['', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH_BLOCK_EVENT, true],
+            ['', \Magento\Framework\App\ActionInterface::FLAG_NO_DISPATCH_BLOCK_EVENT, true],
+            ['', \Magento\Framework\App\ActionInterface::FLAG_NO_DISPATCH_BLOCK_EVENT, true],
         ];
         $this->_actionFlagMock->expects($this->any())->method('get')->will($this->returnValueMap($valueMap));
 

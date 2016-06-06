@@ -1,13 +1,14 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml\Dashboard;
 
 use Magento\Backend\App\Action;
 use Magento\Framework\Controller\Result;
+use Magento\Framework\Encryption\Helper\Security;
 
 class Tunnel extends \Magento\Backend\Controller\Adminhtml\Dashboard
 {
@@ -47,8 +48,12 @@ class Tunnel extends \Magento\Backend\Controller\Adminhtml\Dashboard
             /** @var $helper \Magento\Backend\Helper\Dashboard\Data */
             $helper = $this->_objectManager->get('Magento\Backend\Helper\Dashboard\Data');
             $newHash = $helper->getChartDataHash($gaData);
-            if ($newHash == $gaHash) {
-                $params = json_decode(base64_decode(urldecode($gaData)), true);
+            if (Security::compareStrings($newHash, $gaHash)) {
+                $params = null;
+                $paramsJson = base64_decode(urldecode($gaData));
+                if ($paramsJson) {
+                    $params = json_decode($paramsJson, true);
+                }
                 if ($params) {
                     try {
                         /** @var $httpClient \Magento\Framework\HTTP\ZendClient */

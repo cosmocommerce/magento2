@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogUrlRewrite\Model;
@@ -114,7 +114,7 @@ class ProductUrlPathGenerator
      * @param \Magento\Catalog\Model\Product $product
      * @return string
      */
-    public function generateUrlKey($product)
+    public function getUrlKey($product)
     {
         return $product->getUrlKey() === false ? false : $this->prepareProductUrlKey($product);
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Model\Session;
@@ -24,7 +24,7 @@ class QuoteTest extends \PHPUnit_Framework_TestCase
         $backendQuoteSession->setCustomerId($fixtureCustomerId);
         /** @var \Magento\Backend\Model\Session\Quote $quoteSession */
         $quoteSession = $objectManager->create('Magento\Backend\Model\Session\Quote');
-        $quoteSession->setEntity(new \Magento\Framework\Object());
+        $quoteSession->setEntity(new \Magento\Framework\DataObject());
 
         /** SUT execution */
         $quote = $quoteSession->getQuote();

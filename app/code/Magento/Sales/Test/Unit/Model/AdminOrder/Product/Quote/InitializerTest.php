@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -27,7 +27,7 @@ class InitializerTest extends \PHPUnit_Framework_TestCase
     protected $productMock;
 
     /**
-     * @var \Magento\Framework\Object|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\DataObject|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $configMock;
 
@@ -63,7 +63,7 @@ class InitializerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->configMock = $this->getMock(
-            'Magento\Framework\Object',
+            'Magento\Framework\DataObject',
             ['getQty', 'setQty'],
             [],
             '',

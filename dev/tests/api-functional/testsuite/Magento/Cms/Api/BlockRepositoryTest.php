@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Api;
@@ -222,13 +222,14 @@ class BlockRepositoryTest extends WebapiAbstract
         $this->currentBlock = $this->blockRepository->save($blockDataObject);
 
         $filterBuilder = Bootstrap::getObjectManager()->create('Magento\Framework\Api\FilterBuilder');
+        /** @var \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder */
         $searchCriteriaBuilder = Bootstrap::getObjectManager()
             ->create('Magento\Framework\Api\SearchCriteriaBuilder');
         $filter = $filterBuilder
             ->setField(BlockInterface::IDENTIFIER)
             ->setValue($blockIdentifier)
             ->create();
-        $searchCriteriaBuilder->addFilter([$filter]);
+        $searchCriteriaBuilder->addFilters([$filter]);
 
         $searchData = $searchCriteriaBuilder->create()->__toArray();
         $requestData = ['searchCriteria' => $searchData];

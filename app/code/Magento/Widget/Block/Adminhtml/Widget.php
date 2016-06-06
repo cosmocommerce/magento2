@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -34,6 +34,7 @@ class Widget extends \Magento\Backend\Block\Widget\Form\Container
         $this->buttonList->update('save', 'id', 'insert_button');
         $this->buttonList->update('save', 'onclick', 'wWidget.insertWidget()');
         $this->buttonList->update('save', 'region', 'footer');
+        $this->buttonList->update('save', 'data_attribute', []);
 
         $this->_formScripts[] = 'require(["mage/adminhtml/wysiwyg/widget"], function(){wWidget = new WysiwygWidget.Widget(' .
             '"widget_options_form", "select_widget_type", "widget_options", "' .

@@ -1,11 +1,9 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Adminhtml\Index;
-
-use Magento\Customer\Controller\RegistryConstants;
 
 class ProductReviews extends \Magento\Customer\Controller\Adminhtml\Index
 {
@@ -16,11 +14,10 @@ class ProductReviews extends \Magento\Customer\Controller\Adminhtml\Index
      */
     public function execute()
     {
-        $this->_initCustomer();
+        $customerId = $this->initCurrentCustomer();
         $resultLayout = $this->resultLayoutFactory->create();
         $block = $resultLayout->getLayout()->getBlock('admin.customer.reviews');
-        $block->setCustomerId($this->_coreRegistry->registry(RegistryConstants::CURRENT_CUSTOMER_ID))
-            ->setUseAjax(true);
+        $block->setCustomerId($customerId)->setUseAjax(true);
         return $resultLayout;
     }
 }

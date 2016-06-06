@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogImportExport\Test\Unit\Model\Import\Product;
@@ -47,12 +47,12 @@ class TaxClassProcessorTest extends \PHPUnit_Framework_TestCase
 
         $taxClassCollection =
             $this->objectManagerHelper->getCollectionMock(
-                'Magento\Tax\Model\Resource\TaxClass\Collection',
+                'Magento\Tax\Model\ResourceModel\TaxClass\Collection',
                 [$taxClass]
             );
 
         $taxClassCollectionFactory = $this->getMock(
-            'Magento\Tax\Model\Resource\TaxClass\CollectionFactory',
+            'Magento\Tax\Model\ResourceModel\TaxClass\CollectionFactory',
             ['create'],
             [],
             '',

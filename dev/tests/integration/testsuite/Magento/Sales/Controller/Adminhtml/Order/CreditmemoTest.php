@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order;
@@ -8,7 +8,7 @@ namespace Magento\Sales\Controller\Adminhtml\Order;
 /**
  * @magentoAppArea adminhtml
  */
-class CreditmemoTest extends \Magento\Backend\Utility\Controller
+class CreditmemoTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * @magentoConfigFixture current_store cataloginventory/item_options/auto_return 1

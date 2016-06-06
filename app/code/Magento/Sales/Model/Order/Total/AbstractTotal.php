@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Order\Total;
@@ -10,7 +10,7 @@ namespace Magento\Sales\Model\Order\Total;
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-abstract class AbstractTotal extends \Magento\Framework\Object
+abstract class AbstractTotal extends \Magento\Framework\DataObject
 {
     /**
      * Process model configuration array.

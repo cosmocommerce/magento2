@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Downloadable\Controller\Download;
@@ -58,15 +58,15 @@ class Link extends \Magento\Downloadable\Controller\Download
                 );
                 if ($product->getId()) {
                     $notice = __(
-                        'Please log in to download your product or purchase <a href="%1">%2</a>.',
+                        'Please sign in to download your product or purchase <a href="%1">%2</a>.',
                         $product->getProductUrl(),
                         $product->getName()
                     );
                 } else {
-                    $notice = __('Please log in to download your product.');
+                    $notice = __('Please sign in to download your product.');
                 }
                 $this->messageManager->addNotice($notice);
-                $session->authenticate($this);
+                $session->authenticate();
                 $session->setBeforeAuthUrl(
                     $this->_objectManager->create(
                         'Magento\Framework\UrlInterface'

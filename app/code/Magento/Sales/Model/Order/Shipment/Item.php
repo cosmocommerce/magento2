@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,8 +13,8 @@ use Magento\Sales\Api\Data\ShipmentItemInterface;
 use Magento\Sales\Model\AbstractModel;
 
 /**
- * @method \Magento\Sales\Model\Resource\Order\Shipment\Item _getResource()
- * @method \Magento\Sales\Model\Resource\Order\Shipment\Item getResource()
+ * @method \Magento\Sales\Model\ResourceModel\Order\Shipment\Item _getResource()
+ * @method \Magento\Sales\Model\ResourceModel\Order\Shipment\Item getResource()
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Item extends AbstractModel implements ShipmentItemInterface
@@ -50,7 +50,7 @@ class Item extends AbstractModel implements ShipmentItemInterface
      * @param \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory
      * @param AttributeValueFactory $customAttributeFactory
      * @param \Magento\Sales\Model\Order\ItemFactory $orderItemFactory
-     * @param \Magento\Framework\Model\Resource\AbstractResource $resource
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
      * @param array $data
      */
@@ -60,7 +60,7 @@ class Item extends AbstractModel implements ShipmentItemInterface
         \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory,
         AttributeValueFactory $customAttributeFactory,
         \Magento\Sales\Model\Order\ItemFactory $orderItemFactory,
-        \Magento\Framework\Model\Resource\AbstractResource $resource = null,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
@@ -83,7 +83,7 @@ class Item extends AbstractModel implements ShipmentItemInterface
      */
     protected function _construct()
     {
-        $this->_init('Magento\Sales\Model\Resource\Order\Shipment\Item');
+        $this->_init('Magento\Sales\Model\ResourceModel\Order\Shipment\Item');
     }
 
     /**
@@ -164,7 +164,7 @@ class Item extends AbstractModel implements ShipmentItemInterface
             $this->setData('qty', $qty);
         } else {
             throw new \Magento\Framework\Exception\LocalizedException(
-                __('We found an invalid qty to ship for item "%1".', $this->getName())
+                __('We found an invalid quantity to ship for item "%1".', $this->getName())
             );
         }
         return $this;

@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Controller\Adminhtml\Bundle\Product\Edit;
@@ -19,14 +19,14 @@ class Form extends \Magento\Catalog\Controller\Adminhtml\Product
     /**
      * @param Action\Context $context
      * @param Product\Builder $productBuilder
-     * @param Product\Initialization\Helper $iniitializationHelper
+     * @param Product\Initialization\Helper $initializationHelper
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         Product\Builder $productBuilder,
-        Product\Initialization\Helper $iniitializationHelper
+        Product\Initialization\Helper $initializationHelper
     ) {
-        $this->initializationHelper = $iniitializationHelper;
+        $this->initializationHelper = $initializationHelper;
         parent::__construct($context, $productBuilder);
     }
 

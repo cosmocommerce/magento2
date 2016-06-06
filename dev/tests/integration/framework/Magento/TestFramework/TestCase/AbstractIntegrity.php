@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -62,7 +62,7 @@ abstract class AbstractIntegrity extends \PHPUnit_Framework_TestCase
         $themeItems = [];
         /** @var $themeCollection \Magento\Theme\Model\Theme\Collection */
         $themeCollection = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-            'Magento\Theme\Model\Resource\Theme\Collection'
+            'Magento\Theme\Model\ResourceModel\Theme\Collection'
         );
         /** @var $theme \Magento\Framework\View\Design\ThemeInterface */
         foreach ($themeCollection as $theme) {

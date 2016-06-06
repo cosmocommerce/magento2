@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Adminhtml\Group;
@@ -23,7 +23,7 @@ class Delete extends \Magento\Customer\Controller\Adminhtml\Group
         if ($id) {
             try {
                 $this->groupRepository->deleteById($id);
-                $this->messageManager->addSuccess(__('The customer group has been deleted.'));
+                $this->messageManager->addSuccess(__('You deleted the customer group.'));
             } catch (NoSuchEntityException $e) {
                 $this->messageManager->addError(__('The customer group no longer exists.'));
                 return $resultRedirect->setPath('customer/*/');

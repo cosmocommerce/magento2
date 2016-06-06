@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -14,11 +14,8 @@ use Magento\Mtf\ObjectManager;
 use Magento\Mtf\TestCase\Injectable;
 
 /**
- * Class DeleteProductFromMiniShoppingCartTest
- * Test delete products from shopping cart
- *
- * Preconditions
- * 1. Create product according to dataSet
+ * Preconditions:
+ * 1. Create product according to dataset
  * 2. Add products to cart
  *
  * Steps:

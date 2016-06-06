@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogSearch\Block\Advanced;
 
 use Magento\Catalog\Model\Layer\Resolver as LayerResolver;
 use Magento\CatalogSearch\Model\Advanced;
-use Magento\CatalogSearch\Model\Resource\Advanced\Collection;
+use Magento\CatalogSearch\Model\ResourceModel\Advanced\Collection;
 use Magento\Framework\UrlFactory;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Template;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\GroupedProduct\Test\Unit\Block\Product\Grouped\AssociatedProducts;
@@ -157,7 +157,7 @@ class ListAssociatedProductsTest extends \PHPUnit_Framework_TestCase
     protected function generateAssociatedProduct($productKey = 0)
     {
         $associatedProduct = $this->getMock(
-            'Magento\Framework\Object',
+            'Magento\Framework\DataObject',
             ['getQty', 'getPosition', 'getId', 'getSku', 'getName', 'getPrice'],
             [],
             '',

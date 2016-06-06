@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -23,7 +23,7 @@ class MethodsMapTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up helper.
      */
-    public function setUp()
+    protected function setUp()
     {
         $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
 
@@ -70,7 +70,6 @@ class MethodsMapTest extends \PHPUnit_Framework_TestCase
     {
         $methodsMap = $this->model->getMethodsMap('Magento\Framework\Reflection\MethodsMap');
         $this->assertEquals(
-            $methodsMap,
             [
                 'getMethodReturnType' => [
                     'type' => 'string',
@@ -86,6 +85,12 @@ class MethodsMapTest extends \PHPUnit_Framework_TestCase
                         . "=> 'boolean' ] </pre>",
                     'parameterCount' => 1,
                 ],
+                'getMethodParams' => [
+                    'type' => 'array',
+                    'isRequired' => true,
+                    'description' => null,
+                    'parameterCount' => 2
+                ],
                 'isMethodValidForDataField' => [
                     'type' => 'bool',
                     'isRequired' => true,
@@ -98,7 +103,8 @@ class MethodsMapTest extends \PHPUnit_Framework_TestCase
                     'description' => null,
                     'parameterCount' => 2,
                 ],
-            ]
+            ],
+            $methodsMap
         );
     }
 

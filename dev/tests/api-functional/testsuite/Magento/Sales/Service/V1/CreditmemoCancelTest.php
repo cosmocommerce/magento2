@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Service\V1;
@@ -23,10 +23,11 @@ class CreditmemoCancelTest extends WebapiAbstract
      */
     public function testCreditmemoCancel()
     {
+        $this->markTestSkipped('You can not cancel Credit Memo');
         $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
 
-        /** @var \Magento\Sales\Model\Resource\Order\Creditmemo\Collection $creditmemoCollection */
-        $creditmemoCollection = $objectManager->get('Magento\Sales\Model\Resource\Order\Creditmemo\Collection');
+        /** @var \Magento\Sales\Model\ResourceModel\Order\Creditmemo\Collection $creditmemoCollection */
+        $creditmemoCollection = $objectManager->get('Magento\Sales\Model\ResourceModel\Order\Creditmemo\Collection');
         $creditmemo = $creditmemoCollection->getFirstItem();
 
         $serviceInfo = [

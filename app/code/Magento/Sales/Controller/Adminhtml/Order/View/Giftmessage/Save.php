@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order\View\Giftmessage;
@@ -26,7 +26,7 @@ class Save extends \Magento\Sales\Controller\Adminhtml\Order\View\Giftmessage
         if ($this->getRequest()->getParam('type') == 'order_item') {
             $this->getResponse()->setBody($this->_getGiftmessageSaveModel()->getSaved() ? 'YES' : 'NO');
         } else {
-            $this->getResponse()->setBody(__('The gift message has been saved.'));
+            $this->getResponse()->setBody(__('You saved the gift card message.'));
         }
     }
 }

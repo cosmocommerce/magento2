@@ -2,7 +2,7 @@
 /**
  * \Magento\Persistent\Model\Persistent\Config
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Persistent\Model\Persistent;
@@ -23,12 +23,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $directoryList = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
             'Magento\Framework\App\Filesystem\DirectoryList',
-            [
-                'root' => DirectoryList::ROOT,
-                'config' => [
-                    DirectoryList::MODULES => [DirectoryList::PATH => dirname(__DIR__)],
-                ]
-            ]
+            ['root' => DirectoryList::ROOT]
         );
         $filesystem = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
             'Magento\Framework\Filesystem',

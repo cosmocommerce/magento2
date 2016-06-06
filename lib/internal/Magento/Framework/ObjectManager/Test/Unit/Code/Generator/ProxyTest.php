@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -34,7 +34,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
         );
         $sampleProxyCode = file_get_contents(__DIR__ . '/_files/SampleProxy.txt');
 
-        $this->ioObjectMock->expects($this->once())->method('getResultFileName')
+        $this->ioObjectMock->expects($this->once())->method('generateResultFileName')
             ->with('\Magento\Framework\ObjectManager\Code\Generator\Sample_Proxy')
             ->will($this->returnValue('sample_file.php'));
         $this->ioObjectMock->expects($this->once())->method('writeResultFile')

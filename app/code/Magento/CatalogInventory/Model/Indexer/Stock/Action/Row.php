@@ -2,7 +2,7 @@
 /**
  * @category    Magento
  * @package     Magento_CatalogInventory
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -27,13 +27,13 @@ class Row extends \Magento\CatalogInventory\Model\Indexer\Stock\AbstractAction
     {
         if (!isset($id) || empty($id)) {
             throw new \Magento\Framework\Exception\LocalizedException(
-                __('Could not rebuild index for undefined product')
+                __('We can\'t rebuild the index for an undefined product.')
             );
         }
         try {
             $this->_reindexRows([$id]);
         } catch (\Exception $e) {
-            throw new \Magento\Framework\Exception\LocalizedException($e->getMessage(), $e->getCode(), $e);
+            throw new \Magento\Framework\Exception\LocalizedException(__($e->getMessage()), $e);
         }
     }
 }

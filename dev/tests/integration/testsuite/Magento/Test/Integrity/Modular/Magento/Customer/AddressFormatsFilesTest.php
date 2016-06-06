@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\Modular\Magento\Customer;
@@ -27,7 +27,10 @@ class AddressFormatsFilesTest extends \PHPUnit_Framework_TestCase
      */
     public function testFileFormat($file)
     {
-        $dom = new \Magento\Framework\Config\Dom(file_get_contents($file));
+        $validationStateMock = $this->getMock('\Magento\Framework\Config\ValidationStateInterface', [], [], '', false);
+        $validationStateMock->method('isValidationRequired')
+            ->willReturn(true);
+        $dom = new \Magento\Framework\Config\Dom(file_get_contents($file), $validationStateMock);
         $result = $dom->validate($this->_schemaFile, $errors);
         $this->assertTrue($result, print_r($errors, true));
     }

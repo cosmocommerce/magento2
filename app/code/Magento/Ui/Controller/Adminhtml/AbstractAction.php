@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Ui\Controller\Adminhtml;
@@ -31,13 +31,6 @@ abstract class AbstractAction extends Action implements UiActionInterface
     }
 
     /**
-     * Execute action
-     *
-     * @return mixed
-     */
-    abstract public function execute();
-
-    /**
      * Getting name
      *
      * @return mixed
@@ -55,5 +48,23 @@ abstract class AbstractAction extends Action implements UiActionInterface
     protected function getComponent()
     {
         return $this->_request->getParam('component');
+    }
+
+    /**
+     * Action for AJAX request
+     *
+     * @return void
+     */
+    public function executeAjaxRequest()
+    {
+        $this->execute();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return true;
     }
 }

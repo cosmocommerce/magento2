@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -34,8 +34,7 @@ class Error extends \Magento\AdminNotification\Model\System\Message\Media\Abstra
     public function getText()
     {
         return __(
-            'One or more media files failed to be synchronized during the media storages synchronization process. '
-            . 'Refer to the log file for details.'
+            'We were unable to synchronize one or more media files. Please refer to the log file for details.'
         );
     }
 }

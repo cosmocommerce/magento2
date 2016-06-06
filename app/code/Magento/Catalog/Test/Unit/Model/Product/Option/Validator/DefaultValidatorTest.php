@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -59,10 +59,10 @@ class DefaultValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $mess = ['option required fields' => 'Missed values for option required fields'];
         return [
-            ['option_title', 'name 1.1', 'fixed', 10, new \Magento\Framework\Object(['store_id' => 1]), [], true],
-            ['option_title', 'name 1.1', 'fixed', 10, new \Magento\Framework\Object(['store_id' => 0]), [], true],
-            [null, 'name 1.1', 'fixed', 10, new \Magento\Framework\Object(['store_id' => 1]), [], true],
-            [null, 'name 1.1', 'fixed', 10, new \Magento\Framework\Object(['store_id' => 0]), $mess, false],
+            ['option_title', 'name 1.1', 'fixed', 10, new \Magento\Framework\DataObject(['store_id' => 1]), [], true],
+            ['option_title', 'name 1.1', 'fixed', 10, new \Magento\Framework\DataObject(['store_id' => 0]), [], true],
+            [null, 'name 1.1', 'fixed', 10, new \Magento\Framework\DataObject(['store_id' => 1]), [], true],
+            [null, 'name 1.1', 'fixed', 10, new \Magento\Framework\DataObject(['store_id' => 0]), $mess, false],
         ];
     }
 
@@ -97,8 +97,8 @@ class DefaultValidatorTest extends \PHPUnit_Framework_TestCase
     public function isValidFailDataProvider()
     {
         return [
-            [new \Magento\Framework\Object(['store_id' => 1])],
-            [new \Magento\Framework\Object(['store_id' => 0])],
+            [new \Magento\Framework\DataObject(['store_id' => 1])],
+            [new \Magento\Framework\DataObject(['store_id' => 0])],
         ];
     }
 
@@ -131,8 +131,8 @@ class DefaultValidatorTest extends \PHPUnit_Framework_TestCase
     public function validationNegativePriceDataProvider()
     {
         return [
-            ['option_title', 'name 1.1', 'fixed', -12, new \Magento\Framework\Object(['store_id' => 1])],
-            ['option_title', 'name 1.1', 'fixed', -12, new \Magento\Framework\Object(['store_id' => 0])],
+            ['option_title', 'name 1.1', 'fixed', -12, new \Magento\Framework\DataObject(['store_id' => 1])],
+            ['option_title', 'name 1.1', 'fixed', -12, new \Magento\Framework\DataObject(['store_id' => 0])],
         ];
     }
 

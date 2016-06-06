@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -23,10 +23,10 @@ class Text extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRe
     /**
      * Renders grid column
      *
-     * @param \Magento\Framework\Object $row
+     * @param \Magento\Framework\DataObject $row
      * @return mixed
      */
-    public function _getValue(\Magento\Framework\Object $row)
+    public function _getValue(\Magento\Framework\DataObject $row)
     {
         $format = $this->getColumn()->getFormat() ? $this->getColumn()->getFormat() : null;
         $defaultValue = $this->getColumn()->getDefault();

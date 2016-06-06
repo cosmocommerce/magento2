@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Request;
@@ -153,7 +153,7 @@ class Mapper
             case QueryInterface::TYPE_BOOL:
                 $aggregatedByType = $this->aggregateQueriesByType($query['queryReference']);
                 $query = $this->objectManager->create(
-                    'Magento\Framework\Search\Request\Query\Bool',
+                    'Magento\Framework\Search\Request\Query\BoolExpression',
                     array_merge(
                         ['name' => $query['name'], 'boost' => isset($query['boost']) ? $query['boost'] : 1],
                         $aggregatedByType
@@ -222,7 +222,7 @@ class Mapper
             case FilterInterface::TYPE_BOOL:
                 $aggregatedByType = $this->aggregateFiltersByType($filter['filterReference']);
                 $filter = $this->objectManager->create(
-                    'Magento\Framework\Search\Request\Filter\Bool',
+                    'Magento\Framework\Search\Request\Filter\BoolExpression',
                     array_merge(
                         ['name' => $filter['name']],
                         $aggregatedByType

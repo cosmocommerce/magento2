@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Shipping\Test\Unit\Block\Adminhtml\Order;
@@ -11,7 +11,7 @@ class TrackingTest extends \PHPUnit_Framework_TestCase
     {
         $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
 
-        $shipment = new \Magento\Framework\Object(['store_id' => 1]);
+        $shipment = new \Magento\Framework\DataObject(['store_id' => 1]);
 
         $registry = $this->getMock('Magento\Framework\Registry', ['registry'], [], '', false);
         $registry->expects(

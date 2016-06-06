@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -29,13 +29,6 @@ class StateTest extends \PHPUnit_Framework_TestCase
             false
         );
         $this->model = new \Magento\Framework\App\State($this->scopeMock);
-    }
-
-    public function testSetGetUpdateMode()
-    {
-        $this->assertFalse($this->model->getUpdateMode());
-        $this->model->setUpdateMode(true);
-        $this->assertTrue($this->model->getUpdateMode());
     }
 
     public function testSetAreaCode()
@@ -78,6 +71,36 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function emulateAreaCodeCallback()
     {
         return $this->model->getAreaCode();
+    }
+
+    public function testIsAreaCodeEmulated()
+    {
+        $areaCode = 'original code';
+        $emulatedCode = 'emulated code';
+        $this->scopeMock->expects($this->once())->method('setCurrentScope')->with($areaCode);
+        $this->model->setAreaCode($areaCode);
+        $this->assertFalse(
+            $this->model->isAreaCodeEmulated(),
+            'By default, area code is not emulated'
+        );
+        $this->assertTrue(
+            $this->model->emulateAreaCode($emulatedCode, [$this, 'isAreaCodeEmulatedCallback']),
+            'isAreaCodeEmulated should return true when being called within the context of an emulated method'
+        );
+        $this->assertFalse(
+            $this->model->isAreaCodeEmulated(),
+            'Now that emulateAreaCode execution has finished, this should return false again'
+        );
+    }
+
+    /**
+     * Used to test whether the isAreaCodeEmulated method returns true within an emulated context
+     *
+     * @return bool
+     */
+    public function isAreaCodeEmulatedCallback()
+    {
+        return $this->model->isAreaCodeEmulated();
     }
 
     /**

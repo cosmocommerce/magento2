@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -22,6 +22,8 @@ class ProductsList extends \Magento\Catalog\Block\Product\AbstractProduct implem
 
     /**
      * Name of request parameter for page number value
+     *
+     * @deprecated
      */
     const PAGE_VAR_NAME = 'np';
 
@@ -57,7 +59,7 @@ class ProductsList extends \Magento\Catalog\Block\Product\AbstractProduct implem
     /**
      * Product collection factory
      *
-     * @var \Magento\Catalog\Model\Resource\Product\CollectionFactory
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
      */
     protected $productCollectionFactory;
 
@@ -78,7 +80,7 @@ class ProductsList extends \Magento\Catalog\Block\Product\AbstractProduct implem
 
     /**
      * @param \Magento\Catalog\Block\Product\Context $context
-     * @param \Magento\Catalog\Model\Resource\Product\CollectionFactory $productCollectionFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
      * @param \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility
      * @param \Magento\Framework\App\Http\Context $httpContext
      * @param \Magento\Rule\Model\Condition\Sql\Builder $sqlBuilder
@@ -88,7 +90,7 @@ class ProductsList extends \Magento\Catalog\Block\Product\AbstractProduct implem
      */
     public function __construct(
         \Magento\Catalog\Block\Product\Context $context,
-        \Magento\Catalog\Model\Resource\Product\CollectionFactory $productCollectionFactory,
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility,
         \Magento\Framework\App\Http\Context $httpContext,
         \Magento\Rule\Model\Condition\Sql\Builder $sqlBuilder,
@@ -142,9 +144,10 @@ class ProductsList extends \Magento\Catalog\Block\Product\AbstractProduct implem
             $this->_storeManager->getStore()->getId(),
             $this->_design->getDesignTheme()->getId(),
             $this->httpContext->getValue(\Magento\Customer\Model\Context::CONTEXT_GROUP),
-            intval($this->getRequest()->getParam(self::PAGE_VAR_NAME, 1)),
+            intval($this->getRequest()->getParam($this->getData('page_var_name'), 1)),
             $this->getProductsPerPage(),
-            $conditions
+            $conditions,
+            serialize($this->getRequest()->getParams())
         ];
     }
 
@@ -197,18 +200,18 @@ class ProductsList extends \Magento\Catalog\Block\Product\AbstractProduct implem
     /**
      * Prepare and return product collection
      *
-     * @return \Magento\Catalog\Model\Resource\Product\Collection
+     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection
      */
     public function createCollection()
     {
-        /** @var $collection \Magento\Catalog\Model\Resource\Product\Collection */
+        /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->productCollectionFactory->create();
         $collection->setVisibility($this->catalogProductVisibility->getVisibleInCatalogIds());
 
         $collection = $this->_addProductAttributesAndPrices($collection)
             ->addStoreFilter()
             ->setPageSize($this->getPageSize())
-            ->setCurPage($this->getRequest()->getParam(self::PAGE_VAR_NAME, 1));
+            ->setCurPage($this->getRequest()->getParam($this->getData('page_var_name'), 1));
 
         $conditions = $this->getConditions();
         $conditions->collectValidatedAttributes($collection);
@@ -305,7 +308,7 @@ class ProductsList extends \Magento\Catalog\Block\Product\AbstractProduct implem
                 $this->pager->setUseContainer(true)
                     ->setShowAmounts(true)
                     ->setShowPerPage(false)
-                    ->setPageVarName(self::PAGE_VAR_NAME)
+                    ->setPageVarName($this->getData('page_var_name'))
                     ->setLimit($this->getProductsPerPage())
                     ->setTotalLimit($this->getProductsCount())
                     ->setCollection($this->getProductCollection());

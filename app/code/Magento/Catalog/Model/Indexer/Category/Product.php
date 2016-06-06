@@ -1,11 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Indexer\Category;
 
-class Product implements \Magento\Indexer\Model\ActionInterface, \Magento\Framework\Mview\ActionInterface
+use Magento\Framework\Indexer\CacheContext;
+
+class Product implements \Magento\Framework\Indexer\ActionInterface, \Magento\Framework\Mview\ActionInterface
 {
     /**
      * Indexer ID in configuration
@@ -22,18 +24,25 @@ class Product implements \Magento\Indexer\Model\ActionInterface, \Magento\Framew
      */
     protected $rowsActionFactory;
 
-    /** @var \Magento\Indexer\Model\IndexerRegistry */
+    /**
+     * @var \Magento\Framework\Indexer\IndexerRegistry
+     */
     protected $indexerRegistry;
+
+    /**
+     * @var \Magento\Framework\Indexer\CacheContext
+     */
+    protected $cacheContext;
 
     /**
      * @param Product\Action\FullFactory $fullActionFactory
      * @param Product\Action\RowsFactory $rowsActionFactory
-     * @param \Magento\Indexer\Model\IndexerRegistry $indexerRegistry
+     * @param \Magento\Framework\Indexer\IndexerRegistry $indexerRegistry
      */
     public function __construct(
         Product\Action\FullFactory $fullActionFactory,
         Product\Action\RowsFactory $rowsActionFactory,
-        \Magento\Indexer\Model\IndexerRegistry $indexerRegistry
+        \Magento\Framework\Indexer\IndexerRegistry $indexerRegistry
     ) {
         $this->fullActionFactory = $fullActionFactory;
         $this->rowsActionFactory = $rowsActionFactory;
@@ -49,6 +58,18 @@ class Product implements \Magento\Indexer\Model\ActionInterface, \Magento\Framew
     public function execute($ids)
     {
         $this->executeAction($ids);
+        $this->registerEntities($ids);
+    }
+
+    /**
+     * Add entities to cache context
+     *
+     * @param int[] $ids
+     * @return void
+     */
+    protected function registerEntities($ids)
+    {
+        $this->getCacheContext()->registerEntities(\Magento\Catalog\Model\Category::CACHE_TAG, $ids);
     }
 
     /**
@@ -59,6 +80,17 @@ class Product implements \Magento\Indexer\Model\ActionInterface, \Magento\Framew
     public function executeFull()
     {
         $this->fullActionFactory->create()->execute();
+        $this->registerTags();
+    }
+
+    /**
+     * Add tags to cache context
+     *
+     * @return void
+     */
+    protected function registerTags()
+    {
+        $this->getCacheContext()->registerTags([\Magento\Catalog\Model\Category::CACHE_TAG]);
     }
 
     /**
@@ -102,5 +134,20 @@ class Product implements \Magento\Indexer\Model\ActionInterface, \Magento\Framew
         $action->execute($ids);
 
         return $this;
+    }
+
+    /**
+     * Get cache context
+     *
+     * @return \Magento\Framework\Indexer\CacheContext
+     * @deprecated
+     */
+    protected function getCacheContext()
+    {
+        if (!($this->cacheContext instanceof CacheContext)) {
+            return \Magento\Framework\App\ObjectManager::getInstance()->get(CacheContext::class);
+        } else {
+            return $this->cacheContext;
+        }
     }
 }

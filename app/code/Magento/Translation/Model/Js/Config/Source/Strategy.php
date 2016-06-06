@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Translation\Model\Js\Config\Source;
@@ -15,8 +15,8 @@ class Strategy implements \Magento\Framework\Option\ArrayInterface
     public function toOptionArray()
     {
         return [
-            ['label' => __('Dictionary (Translation on frontend side)'), 'value' => Config::DICTIONARY_STRATEGY],
-            ['label' => __('Embedded (Translation on backend side)'), 'value' => Config::EMBEDDED_STRATEGY]
+            ['label' => __('Dictionary (Translation on Storefront side)'), 'value' => Config::DICTIONARY_STRATEGY],
+            ['label' => __('Embedded (Translation on Admin side)'), 'value' => Config::EMBEDDED_STRATEGY]
         ];
     }
 }

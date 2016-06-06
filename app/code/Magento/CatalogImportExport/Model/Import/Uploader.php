@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogImportExport\Model\Import;
@@ -135,10 +135,14 @@ class Uploader extends \Magento\MediaStorage\Model\File\Uploader
      * Proceed moving a file from TMP to destination folder
      *
      * @param string $fileName
+     * @param bool $renameFileOff
      * @return array
      */
-    public function move($fileName)
+    public function move($fileName, $renameFileOff = false)
     {
+        if ($renameFileOff) {
+            $this->setAllowRenameFiles(false);
+        }
         if (preg_match('/\bhttps?:\/\//i', $fileName, $matches)) {
             $url = str_replace($matches[0], '', $fileName);
             $read = $this->_readFactory->create($url, DriverPool::HTTP);
@@ -219,7 +223,7 @@ class Uploader extends \Magento\MediaStorage\Model\File\Uploader
                 && method_exists($params['object'], $params['method'])
                 && is_callable([$params['object'], $params['method']])
             ) {
-                $params['object']->{$params['method']}($filePath);
+                $params['object']->{$params['method']}($this->_directory->getAbsolutePath($filePath));
             }
         }
     }
@@ -298,9 +302,24 @@ class Uploader extends \Magento\MediaStorage\Model\File\Uploader
     protected function _moveFile($tmpPath, $destPath)
     {
         if ($this->_directory->isFile($tmpPath)) {
-            return $this->_directory->copyFile($tmpPath, $destPath);
+            $tmpRealPath = $this->_directory->getDriver()->getRealPath(
+                $this->_directory->getAbsolutePath($tmpPath)
+            );
+            $destinationRealPath = $this->_directory->getDriver()->getRealPath(
+                $this->_directory->getAbsolutePath($destPath)
+            );
+            $isSameFile = $tmpRealPath === $destinationRealPath;
+            return $isSameFile ?: $this->_directory->copyFile($tmpPath, $destPath);
         } else {
             return false;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function chmod($file)
+    {
+        return;
     }
 }

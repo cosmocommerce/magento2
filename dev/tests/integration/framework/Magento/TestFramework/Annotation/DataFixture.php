@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -172,7 +172,9 @@ class DataFixture
             }
         } catch (\Exception $e) {
             throw new \Exception(
-                sprintf("Error in fixture: %s.\n %s", json_encode($fixture), $e->getMessage())
+                sprintf("Error in fixture: %s.\n %s", json_encode($fixture), $e->getMessage()),
+                500,
+                $e
             );
         }
     }

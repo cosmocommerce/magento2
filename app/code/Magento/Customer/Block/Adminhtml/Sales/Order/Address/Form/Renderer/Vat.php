@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Sales\Order\Address\Form\Renderer;
@@ -62,7 +62,7 @@ class Vat extends \Magento\Backend\Block\Widget\Form\Renderer\Fieldset\Element
             $validateUrl = $this->_urlBuilder->getUrl('customer/system_config_validatevat/validateAdvanced');
 
             $groupMessage = __(
-                'The customer is currently assigned to Customer Group %s.'
+                'The customer is now assigned to Customer Group %s.'
             ) . ' ' . __(
                 'Would you like to change the Customer Group for this order?'
             );
@@ -82,10 +82,10 @@ class Vat extends \Magento\Backend\Block\Widget\Form\Renderer\Fieldset\Element
                         'The VAT ID is valid but no Customer Group is assigned for it.'
                     ),
                     'vatValidAndGroupChangeMessage' => __(
-                        'Based on the VAT ID, the customer would belong to the Customer Group %s.'
+                        'Based on the VAT ID, the customer belongs to the Customer Group %s.'
                     ) . "\n" . $groupMessage,
                     'vatValidationFailedMessage' => __(
-                        'There was an error validating the VAT ID. '
+                        'Something went wrong while validating the VAT ID.'
                     ),
                     'vatCustomerGroupMessage' => __(
                         'The customer would belong to Customer Group %s.'

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -23,7 +23,7 @@ class PriceTest extends \PHPUnit_Framework_TestCase
     private $price;
 
     /**
-     * @var \Magento\CatalogSearch\Model\Resource\Fulltext\Collection|MockObject
+     * @var \Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection|MockObject
      */
     private $fulltextCollection;
 
@@ -86,7 +86,7 @@ class PriceTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->state));
 
         $this->fulltextCollection = $this->fulltextCollection = $this->getMockBuilder(
-            '\Magento\CatalogSearch\Model\Resource\Fulltext\Collection'
+            '\Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection'
         )
             ->disableOriginalConstructor()
             ->setMethods(['addFieldToFilter', 'getFacetedData'])

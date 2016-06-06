@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\Totals;
@@ -33,7 +33,7 @@ class Item extends \Magento\Sales\Block\Adminhtml\Order\Totals
      */
     public function initTotals()
     {
-        $total = new \Magento\Framework\Object(
+        $total = new \Magento\Framework\DataObject(
             [
                 'code' => $this->getNameInLayout(),
                 'block_name' => $this->getNameInLayout(),

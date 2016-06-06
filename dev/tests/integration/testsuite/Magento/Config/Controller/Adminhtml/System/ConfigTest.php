@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,7 +13,7 @@ use Magento\TestFramework\Helper\Bootstrap;
 /**
  * @magentoAppArea adminhtml
  */
-class ConfigTest extends \Magento\Backend\Utility\Controller
+class ConfigTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     public function testEditAction()
     {

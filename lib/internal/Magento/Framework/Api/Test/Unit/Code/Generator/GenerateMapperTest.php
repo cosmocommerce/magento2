@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Api\Test\Unit\Code\Generator;
@@ -51,7 +51,7 @@ class GenerateMapperTest extends \PHPUnit_Framework_TestCase
         );
         $sampleMapperCode = file_get_contents(__DIR__ . '/_files/SampleMapper.txt');
         $this->ioObjectMock->expects($this->once())
-            ->method('getResultFileName')
+            ->method('generateResultFileName')
             ->with('\Magento\Framework\Api\Code\Generator\SampleMapper')
             ->will($this->returnValue('SampleMapper.php'));
         $this->ioObjectMock->expects($this->once())

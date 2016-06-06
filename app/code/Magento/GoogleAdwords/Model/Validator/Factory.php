@@ -2,13 +2,13 @@
 /**
  * Google AdWords Validator Factory
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 namespace Magento\GoogleAdwords\Model\Validator;
 
-use Magento\Framework\Validator\Int;
+use Magento\Framework\Validator\IntUtils;
 use Magento\Framework\Validator\Regex;
 use Magento\Framework\Validator\UniversalFactory;
 
@@ -83,12 +83,12 @@ class Factory
                     [
                         'alias' => 'Int',
                         'type' => '',
-                        'class' => 'Magento\Framework\Validator\Int',
+                        'class' => 'Magento\Framework\Validator\IntUtils',
                         'options' => [
                             'methods' => [
                                 [
                                     'method' => 'setMessages',
-                                    'arguments' => [[Int::NOT_INT => $message, Int::INVALID => $message]],
+                                    'arguments' => [[IntUtils::NOT_INT => $message, IntUtils::INVALID => $message]],
                                 ],
                             ],
                         ],

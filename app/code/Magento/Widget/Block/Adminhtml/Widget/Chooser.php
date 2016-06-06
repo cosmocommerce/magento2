@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -63,16 +63,16 @@ class Chooser extends \Magento\Backend\Block\Template
     /**
      * Convert Array config to Object
      *
-     * @return \Magento\Framework\Object
+     * @return \Magento\Framework\DataObject
      */
     public function getConfig()
     {
-        if ($this->_getData('config') instanceof \Magento\Framework\Object) {
+        if ($this->_getData('config') instanceof \Magento\Framework\DataObject) {
             return $this->_getData('config');
         }
 
         $configArray = $this->_getData('config');
-        $config = new \Magento\Framework\Object();
+        $config = new \Magento\Framework\DataObject();
         $this->setConfig($config);
         if (!is_array($configArray)) {
             return $this->_getData('config');
@@ -216,11 +216,7 @@ class Chooser extends \Magento\Backend\Block\Template
                         }
                     }
 
-                    if (document.loaded) { //allow load over ajax
-                        instantiateChooser();
-                    } else {
-                        document.observe("dom:loaded", instantiateChooser);
-                    }
+                    jQuery(instantiateChooser);
                 })();
             //]]>
             });

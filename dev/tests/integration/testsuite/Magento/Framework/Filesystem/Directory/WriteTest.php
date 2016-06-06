@@ -2,7 +2,7 @@
 /**
  * Test for \Magento\Framework\Filesystem\Directory\Write
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Filesystem\Directory;
@@ -58,7 +58,7 @@ class WriteTest extends \PHPUnit_Framework_TestCase
         return [
             ['newDir1', 0777, "newDir1"],
             ['newDir1', 0777, "root_dir1/subdir1/subdir2"],
-            ['newDir2', 0755, "root_dir2/subdir"],
+            ['newDir2', 0777, "root_dir2/subdir"],
             ['newDir1', 0777, "."]
         ];
     }
@@ -229,6 +229,19 @@ class WriteTest extends \PHPUnit_Framework_TestCase
         $directory = $this->getDirectoryInstance('newDir1', 0777);
         $directory->create('test_directory');
         $this->assertTrue($directory->changePermissions('test_directory', 0644));
+    }
+
+    /**
+     * Test for changePermissionsRecursively method
+     */
+    public function testChangePermissionsRecursively()
+    {
+        $directory = $this->getDirectoryInstance('newDir1', 0777);
+        $directory->create('test_directory');
+        $directory->create('test_directory/subdirectory');
+        $directory->writeFile('test_directory/subdirectory/test_file.txt', 'Test Content');
+
+        $this->assertTrue($directory->changePermissionsRecursively('test_directory', 0777, 0644));
     }
 
     /**

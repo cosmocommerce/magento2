@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Address;
@@ -15,12 +15,12 @@ class Delete extends \Magento\Customer\Controller\Address
     {
         $addressId = $this->getRequest()->getParam('id', false);
 
-        if ($addressId) {
+        if ($addressId && $this->_formKeyValidator->validate($this->getRequest())) {
             try {
                 $address = $this->_addressRepository->getById($addressId);
                 if ($address->getCustomerId() === $this->_getSession()->getCustomerId()) {
                     $this->_addressRepository->deleteById($addressId);
-                    $this->messageManager->addSuccess(__('The address has been deleted.'));
+                    $this->messageManager->addSuccess(__('You deleted the address.'));
                 } else {
                     $this->messageManager->addError(__('We can\'t delete the address right now.'));
                 }

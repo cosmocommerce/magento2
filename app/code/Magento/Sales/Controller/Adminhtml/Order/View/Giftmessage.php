@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order\View;
@@ -10,7 +10,7 @@ namespace Magento\Sales\Controller\Adminhtml\Order\View;
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Giftmessage extends \Magento\Backend\App\Action
+abstract class Giftmessage extends \Magento\Backend\App\Action
 {
     /**
      * Retrieve gift message save model

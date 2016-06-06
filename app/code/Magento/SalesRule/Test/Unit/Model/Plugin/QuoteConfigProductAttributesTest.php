@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -14,14 +14,14 @@ class QuoteConfigProductAttributesTest extends \PHPUnit_Framework_TestCase
     protected $plugin;
 
     /**
-     * @var \Magento\SalesRule\Model\Resource\Rule|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\SalesRule\Model\ResourceModel\Rule|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $ruleResource;
 
-    public function setUp()
+    protected function setUp()
     {
         $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
-        $this->ruleResource = $this->getMock('Magento\SalesRule\Model\Resource\Rule', [], [], '', false);
+        $this->ruleResource = $this->getMock('Magento\SalesRule\Model\ResourceModel\Rule', [], [], '', false);
 
         $this->plugin = $objectManager->getObject(
             'Magento\SalesRule\Model\Plugin\QuoteConfigProductAttributes',

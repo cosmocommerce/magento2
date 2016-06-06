@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -787,12 +787,11 @@ class Config
      * Return the notification info url
      *
      * @param null|string|bool|int|Store $store
-     * @return bool
-     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     * @return string
      */
     public function getInfoUrl($store = null)
     {
-        return (bool)$this->_scopeConfig->getValue(
+        return (string)$this->_scopeConfig->getValue(
             self::XML_PATH_TAX_NOTIFICATION_INFO_URL,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $store

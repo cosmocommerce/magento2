@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -27,7 +27,7 @@ class Main extends \Magento\Backend\Block\Template
             'addButton',
             'Magento\Backend\Block\Widget\Button',
             [
-                'label' => __('Add New Set'),
+                'label' => __('Add Attribute Set'),
                 'onclick' => 'setLocation(\'' . $this->getUrl('catalog/*/add') . '\')',
                 'class' => 'add primary add-set'
             ]
@@ -48,7 +48,7 @@ class Main extends \Magento\Backend\Block\Template
      */
     protected function _getHeader()
     {
-        return __('Product Templates');
+        return __('Attribute Sets');
     }
 
     /**

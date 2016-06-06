@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Block\Product\Widget;
@@ -49,7 +49,7 @@ class NewWidgetTest extends \PHPUnit_Framework_TestCase
     /** @var \Magento\Framework\Stdlib\DateTime\Timezone|\PHPUnit_Framework_MockObject_MockObject */
     protected $localDate;
 
-    /** @var \Magento\Catalog\Model\Resource\Product\Collection|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection|\PHPUnit_Framework_MockObject_MockObject */
     protected $productCollection;
 
     protected function setUp()
@@ -144,9 +144,11 @@ class NewWidgetTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCurrentPage($pageNumber, $expectedResult)
     {
+        $this->block->setData('page_var_name', 'page_number');
+
         $this->requestMock->expects($this->any())
             ->method('getParam')
-            ->with(\Magento\Catalog\Block\Product\Widget\NewWidget::PAGE_VAR_NAME)
+            ->with('page_number')
             ->willReturn($pageNumber);
 
         $this->assertEquals($expectedResult, $this->block->getCurrentPage());
@@ -187,7 +189,7 @@ class NewWidgetTest extends \PHPUnit_Framework_TestCase
         $this->context->expects($this->once())->method('getCatalogConfig')->willReturn($this->catalogConfig);
         $this->context->expects($this->once())->method('getLocaleDate')->willReturn($this->localDate);
 
-        $this->productCollection = $this->getMockBuilder('Magento\Catalog\Model\Resource\Product\Collection')
+        $this->productCollection = $this->getMockBuilder('Magento\Catalog\Model\ResourceModel\Product\Collection')
             ->setMethods(
                 [
                     'setVisibility', 'addMinimalPrice', 'addFinalPrice',
@@ -229,7 +231,7 @@ class NewWidgetTest extends \PHPUnit_Framework_TestCase
     protected function startTestGetProductCollection($displayType, $pagerEnable, $productsCount, $productsPerPage)
     {
         $productCollectionFactory = $this->getMock(
-            'Magento\Catalog\Model\Resource\Product\CollectionFactory',
+            'Magento\Catalog\Model\ResourceModel\Product\CollectionFactory',
             ['create'],
             [],
             '',

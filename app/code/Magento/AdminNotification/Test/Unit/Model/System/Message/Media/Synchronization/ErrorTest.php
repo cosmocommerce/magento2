@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\AdminNotification\Test\Unit\Model\System\Message\Media\Synchronization;
@@ -39,7 +39,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetText()
     {
-        $messageText = 'One or more media files failed to be synchronized';
+        $messageText = 'We were unable to synchronize one or more media files.';
 
         $this->assertContains($messageText, (string)$this->_model->getText());
     }

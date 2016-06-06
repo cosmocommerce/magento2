@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Adminhtml\Group;
@@ -91,7 +91,7 @@ class Save extends \Magento\Customer\Controller\Adminhtml\Group
 
                 $this->groupRepository->save($customerGroup);
 
-                $this->messageManager->addSuccess(__('The customer group has been saved.'));
+                $this->messageManager->addSuccess(__('You saved the customer group.'));
                 $resultRedirect->setPath('customer/group');
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());

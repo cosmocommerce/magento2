@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Indexer\Test\Unit\Block\Backend\Grid\Column\Renderer;
@@ -18,7 +18,7 @@ class UpdatedTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $model = new \Magento\Indexer\Block\Backend\Grid\Column\Renderer\Updated($context);
-        $obj = new \Magento\Framework\Object();
+        $obj = new \Magento\Framework\DataObject();
         $obj->setGetter('getValue');
         $obj->setDefault($defaultValue);
         $obj->setValue('');

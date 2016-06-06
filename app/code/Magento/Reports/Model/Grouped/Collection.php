@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Model\Grouped;
@@ -19,12 +19,13 @@ class Collection extends \Magento\Framework\Data\Collection
     /**
      * Collection resource
      *
-     * @var \Magento\Framework\Model\Resource\Db\Collection\AbstractCollection
+     * @var \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
      */
     protected $_resourceCollection = null;
 
     /**
      * Set column to group by
+     * @codeCoverageIgnore
      *
      * @param string $column
      * @return $this
@@ -61,6 +62,7 @@ class Collection extends \Magento\Framework\Data\Collection
 
     /**
      * Setter for resource collection
+     * @codeCoverageIgnore
      *
      * @param DbCollection $collection
      * @return $this

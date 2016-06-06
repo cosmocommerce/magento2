@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogImportExport\Test\Unit\Model\Import\Product;
@@ -59,7 +59,7 @@ class CategoryProcessorTest extends \PHPUnit_Framework_TestCase
 
         $categoryCollection =
             $this->objectManagerHelper->getCollectionMock(
-                'Magento\Catalog\Model\Resource\Category\Collection',
+                'Magento\Catalog\Model\ResourceModel\Category\Collection',
                 [
                     self::PARENT_CATEGORY_ID => $parentCategory,
                     self::CHILD_CATEGORY_ID => $childCategory,
@@ -72,9 +72,17 @@ class CategoryProcessorTest extends \PHPUnit_Framework_TestCase
         $categoryCollection->expects($this->any())
             ->method('getItemById')
             ->will($this->returnValueMap($map));
+        $categoryCollection->expects($this->exactly(3))
+            ->method('addAttributeToSelect')
+            ->withConsecutive(
+                ['name'],
+                ['url_key'],
+                ['url_path']
+            )
+            ->will($this->returnSelf());
 
         $categoryColFactory = $this->getMock(
-            'Magento\Catalog\Model\Resource\Category\CollectionFactory',
+            'Magento\Catalog\Model\ResourceModel\Category\CollectionFactory',
             ['create'],
             [],
             '',
@@ -102,7 +110,54 @@ class CategoryProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function testUpsertCategories()
     {
-        $categoryIds = $this->categoryProcessor->upsertCategories(self::CHILD_CATEGORY_NAME);
+        $categoriesSeparator = ',';
+        $categoryIds = $this->categoryProcessor->upsertCategories(self::CHILD_CATEGORY_NAME, $categoriesSeparator);
         $this->assertArrayHasKey(self::CHILD_CATEGORY_ID, array_flip($categoryIds));
+    }
+
+    /**
+     * Cover getCategoryById().
+     *
+     * @dataProvider getCategoryByIdDataProvider
+     */
+    public function testGetCategoryById($categoriesCache, $expectedResult)
+    {
+        $categoryId = 'category_id';
+        $this->setPropertyValue($this->categoryProcessor, 'categoriesCache', $categoriesCache);
+
+        $actualResult = $this->categoryProcessor->getCategoryById($categoryId);
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    public function getCategoryByIdDataProvider()
+    {
+        return [
+            [
+                '$categoriesCache' => [
+                    'category_id' => 'category_id value',
+                ],
+                '$expectedResult' => 'category_id value',
+            ],
+            [
+                '$categoriesCache' => [],
+                '$expectedResult' => null,
+            ],
+        ];
+    }
+
+    /**
+     * Set property for an object.
+     *
+     * @param object $object
+     * @param string $property
+     * @param mixed $value
+     */
+    protected function setPropertyValue(&$object, $property, $value)
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $reflectionProperty = $reflection->getProperty($property);
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($object, $value);
+        return $object;
     }
 }

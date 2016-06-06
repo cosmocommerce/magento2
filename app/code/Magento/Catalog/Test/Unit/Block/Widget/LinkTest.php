@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Block\Widget;
@@ -27,7 +27,7 @@ class LinkTest extends \PHPUnit_Framework_TestCase
     protected $block;
 
     /**
-     * @var \Magento\Catalog\Model\Resource\AbstractResource|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Catalog\Model\ResourceModel\AbstractResource|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $entityResource;
 
@@ -41,7 +41,8 @@ class LinkTest extends \PHPUnit_Framework_TestCase
             ->method('getStoreManager')
             ->will($this->returnValue($this->storeManager));
 
-        $this->entityResource = $this->getMock('Magento\Catalog\Model\Resource\AbstractResource', [], [], '', false);
+        $this->entityResource =
+            $this->getMock('Magento\Catalog\Model\ResourceModel\AbstractResource', [], [], '', false);
 
         $this->block = (new ObjectManager($this))->getObject('Magento\Catalog\Block\Widget\Link', [
             'context' => $context,

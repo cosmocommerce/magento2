@@ -2,7 +2,7 @@
 /**
  * Converter of email templates configuration from \DOMDocument to array
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Email\Model\Template\Config;
@@ -25,11 +25,14 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
             $templateFile = $templateNode->attributes->getNamedItem('file')->nodeValue;
             $templateType = $templateNode->attributes->getNamedItem('type')->nodeValue;
             $templateModule = $templateNode->attributes->getNamedItem('module')->nodeValue;
+            $templateArea = $templateNode->attributes->getNamedItem('area')->nodeValue;
+
             $result[$templateId] = [
                 'label' => $templateLabel,
                 'file' => $templateFile,
                 'type' => $templateType,
                 'module' => $templateModule,
+                'area' => $templateArea,
             ];
         }
         return $result;

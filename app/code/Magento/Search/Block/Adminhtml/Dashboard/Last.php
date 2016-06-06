@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Search\Block\Adminhtml\Dashboard;
@@ -12,12 +12,12 @@ namespace Magento\Search\Block\Adminhtml\Dashboard;
 class Last extends \Magento\Backend\Block\Dashboard\Grid
 {
     /**
-     * @var \Magento\Search\Model\Resource\Query\Collection
+     * @var \Magento\Search\Model\ResourceModel\Query\Collection
      */
     protected $_collection;
 
     /**
-     * @var \Magento\Search\Model\Resource\Query\CollectionFactory
+     * @var \Magento\Search\Model\ResourceModel\Query\CollectionFactory
      */
     protected $_queriesFactory;
 
@@ -33,14 +33,14 @@ class Last extends \Magento\Backend\Block\Dashboard\Grid
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Backend\Helper\Data $backendHelper
      * @param \Magento\Framework\Module\Manager $moduleManager
-     * @param \Magento\Search\Model\Resource\Query\CollectionFactory $queriesFactory
+     * @param \Magento\Search\Model\ResourceModel\Query\CollectionFactory $queriesFactory
      * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Framework\Module\Manager $moduleManager,
-        \Magento\Search\Model\Resource\Query\CollectionFactory $queriesFactory,
+        \Magento\Search\Model\ResourceModel\Query\CollectionFactory $queriesFactory,
         array $data = []
     ) {
         $this->_moduleManager = $moduleManager;
@@ -91,7 +91,9 @@ class Last extends \Magento\Backend\Block\Dashboard\Grid
                 'header' => __('Search Term'),
                 'sortable' => false,
                 'index' => 'query_text',
-                'renderer' => 'Magento\Backend\Block\Dashboard\Searches\Renderer\Searchquery'
+                'renderer' => 'Magento\Backend\Block\Dashboard\Searches\Renderer\Searchquery',
+                'header_css_class' => 'col-search-query',
+                'column_css_class' => 'col-search-query'
             ]
         );
 

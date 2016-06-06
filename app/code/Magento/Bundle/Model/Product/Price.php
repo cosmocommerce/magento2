@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -40,14 +40,15 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
     protected $_catalogData = null;
 
     /**
-     * @param \Magento\CatalogRule\Model\Resource\RuleFactory $ruleFactory
+     * Price constructor.
+     *
+     * @param \Magento\CatalogRule\Model\ResourceModel\RuleFactory $ruleFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param PriceCurrencyInterface $priceCurrency
      * @param GroupManagementInterface $groupManagement
-     * @param \Magento\Catalog\Api\Data\ProductGroupPriceInterfaceFactory $groupPriceFactory
      * @param \Magento\Catalog\Api\Data\ProductTierPriceInterfaceFactory $tierPriceFactory
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
      * @param \Magento\Catalog\Helper\Data $catalogData
@@ -55,14 +56,13 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
-        \Magento\CatalogRule\Model\Resource\RuleFactory $ruleFactory,
+        \Magento\CatalogRule\Model\ResourceModel\RuleFactory $ruleFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         PriceCurrencyInterface $priceCurrency,
         GroupManagementInterface $groupManagement,
-        \Magento\Catalog\Api\Data\ProductGroupPriceInterfaceFactory $groupPriceFactory,
         \Magento\Catalog\Api\Data\ProductTierPriceInterfaceFactory $tierPriceFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $config,
         \Magento\Catalog\Helper\Data $catalogData
@@ -76,7 +76,6 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
             $eventManager,
             $priceCurrency,
             $groupManagement,
-            $groupPriceFactory,
             $tierPriceFactory,
             $config
         );
@@ -98,7 +97,6 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
      *
      * @param \Magento\Catalog\Model\Product $product
      * @return float
-     * @deprecated (MAGETWO-31476)
      */
     public function getPrice($product)
     {
@@ -120,9 +118,8 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
     {
         $price = 0.0;
         if ($product->hasCustomOptions()) {
-            $customOption = $product->getCustomOption('bundle_selection_ids');
-            if ($customOption) {
-                $selectionIds = unserialize($customOption->getValue());
+            $selectionIds = $this->getBundleSelectionIds($product);
+            if ($selectionIds) {
                 $selections = $product->getTypeInstance()->getSelectionsByIds($selectionIds, $product);
                 $selections->addTierPriceData();
                 $this->_eventManager->dispatch(
@@ -148,6 +145,24 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
     }
 
     /**
+     * Retrieve array of bundle selection IDs
+     *
+     * @param \Magento\Catalog\Model\Product $product
+     * @return array
+     */
+    protected function getBundleSelectionIds(\Magento\Catalog\Model\Product $product)
+    {
+        $customOption = $product->getCustomOption('bundle_selection_ids');
+        if ($customOption) {
+            $selectionIds = unserialize($customOption->getValue());
+            if (!empty($selectionIds) && is_array($selectionIds)) {
+                return $selectionIds;
+            }
+        }
+        return [];
+    }
+
+    /**
      * Get product final price
      *
      * @param   float                     $qty
@@ -168,8 +183,9 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
         $finalPrice = $this->_applyOptionsPrice($product, $qty, $finalPrice);
         $finalPrice += $this->getTotalBundleItemsPrice($product, $qty);
 
+        $finalPrice = max(0, $finalPrice);
         $product->setFinalPrice($finalPrice);
-        return max(0, $product->getData('final_price'));
+        return $finalPrice;
     }
 
     /**
@@ -350,7 +366,7 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
      * Get Options with attached Selections collection
      *
      * @param \Magento\Catalog\Model\Product $product
-     * @return \Magento\Bundle\Model\Resource\Option\Collection
+     * @return \Magento\Bundle\Model\ResourceModel\Option\Collection
      */
     public function getOptions($product)
     {
@@ -375,7 +391,6 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
      * @param null|bool                  $multiplyQty      Whether to multiply selection's price by its quantity
      * @return float
      *
-     * @deprecated after 1.6.2.0 (MAGETWO-31475)
      * @see \Magento\Bundle\Model\Product\Price::getSelectionFinalTotalPrice()
      */
     public function getSelectionPrice($bundleProduct, $selectionProduct, $selectionQty = null, $multiplyQty = true)
@@ -447,66 +462,9 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
 
         return min(
             $price,
-            $this->_applyGroupPrice($bundleProduct, $price),
             $this->_applyTierPrice($bundleProduct, $bundleQty, $price),
             $this->_applySpecialPrice($bundleProduct, $price)
         );
-    }
-
-    /**
-     * Apply group price for bundle product
-     *
-     * @param \Magento\Catalog\Model\Product $product
-     * @param float $finalPrice
-     * @return float
-     */
-    protected function _applyGroupPrice($product, $finalPrice)
-    {
-        $result = $finalPrice;
-        $groupPrice = $product->getGroupPrice();
-
-        if (is_numeric($groupPrice)) {
-            $groupPrice = $finalPrice - $finalPrice * ($groupPrice / 100);
-            $result = min($finalPrice, $groupPrice);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get product group price
-     *
-     * @param \Magento\Catalog\Model\Product $product
-     * @return float|null
-     */
-    public function getGroupPrice($product)
-    {
-        $groupPrices = $product->getData('group_price');
-
-        if ($groupPrices === null) {
-            $attribute = $product->getResource()->getAttribute('group_price');
-            if ($attribute) {
-                $attribute->getBackend()->afterLoad($product);
-                $groupPrices = $product->getData('group_price');
-            }
-        }
-
-        if ($groupPrices === null || !is_array($groupPrices)) {
-            return null;
-        }
-
-        $customerGroup = $this->_getCustomerGroupId($product);
-
-        $matchedPrice = 0;
-
-        foreach ($groupPrices as $groupPrice) {
-            if ($groupPrice['cust_group'] == $customerGroup && $groupPrice['website_price'] > $matchedPrice) {
-                $matchedPrice = $groupPrice['website_price'];
-                break;
-            }
-        }
-
-        return $matchedPrice;
     }
 
     /**
@@ -626,16 +584,6 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
     }
 
     /**
-     * Check is group price value fixed or percent of original price
-     *
-     * @return bool
-     */
-    public function isGroupPriceFixed()
-    {
-        return false;
-    }
-
-    /**
      * Calculate and apply special price
      *
      * @param float  $finalPrice
@@ -675,7 +623,6 @@ class Price extends \Magento\Catalog\Model\Product\Type\Price
         $price = (float)$price;
         return min(
             $price,
-            $this->_applyGroupPrice($bundleProduct, $price),
             $this->_applyTierPrice($bundleProduct, $bundleQty, $price),
             $this->_applySpecialPrice($bundleProduct, $price)
         );

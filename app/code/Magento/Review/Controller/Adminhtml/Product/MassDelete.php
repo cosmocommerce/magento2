@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Review\Controller\Adminhtml\Product;
@@ -31,7 +31,7 @@ class MassDelete extends ProductController
             } catch (LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addException($e, __('An error occurred while deleting record(s).'));
+                $this->messageManager->addException($e, __('Something went wrong while deleting these records.'));
             }
         }
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */

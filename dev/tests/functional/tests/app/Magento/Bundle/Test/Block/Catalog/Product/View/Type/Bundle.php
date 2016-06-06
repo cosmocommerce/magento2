@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -243,7 +243,7 @@ class Bundle extends Block
      */
     protected function parseOptionText($optionText)
     {
-        preg_match('`^(.*?)\+ ?\$(\d.*?)$`', $optionText, $match);
+        preg_match('`^(.*?)\+ ?\$(\d.*?)$`sim', $optionText, $match);
         $optionPrice = isset($match[2]) ? str_replace(',', '', $match[2]) : 0;
         $optionTitle = isset($match[1]) ? trim($match[1]) : $optionText;
 

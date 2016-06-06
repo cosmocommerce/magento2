@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Block\Adminhtml\Catalog\Product\Edit\Tab\Bundle;
@@ -215,7 +215,7 @@ class Option extends \Magento\Backend\Block\Widget
     public function getOptions()
     {
         if (!$this->_options) {
-            /** @var \Magento\Bundle\Model\Resource\Option\Collection $optionCollection */
+            /** @var \Magento\Bundle\Model\ResourceModel\Option\Collection $optionCollection */
             $optionCollection = $this->getProduct()->getTypeInstance()->getOptionsCollection($this->getProduct());
 
             $selectionCollection = $this->getProduct()->getTypeInstance()->getSelectionsCollection(

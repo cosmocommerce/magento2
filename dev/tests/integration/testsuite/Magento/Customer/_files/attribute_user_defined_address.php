@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -24,8 +24,7 @@ $model->save();
 
 /** @var \Magento\Customer\Setup\CustomerSetup $setupResource */
 $setupResource = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\Customer\Setup\CustomerSetup',
-    ['resourceName' => 'customer_setup']
+    'Magento\Customer\Setup\CustomerSetup'
 );
 $data = [['form_code' => 'customer_address_edit', 'attribute_id' => $model->getAttributeId()]];
 $setupResource->getSetup()->getConnection()->insertMultiple(

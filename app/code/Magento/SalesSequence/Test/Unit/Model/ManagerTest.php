@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\SalesSequence\Test\Unit\Model;
@@ -11,7 +11,7 @@ namespace Magento\SalesSequence\Test\Unit\Model;
 class ManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Magento\SalesSequence\Model\Resource\Meta | \PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\SalesSequence\Model\ResourceModel\Meta | \PHPUnit_Framework_MockObject_MockObject
      */
     private $resourceSequenceMeta;
 
@@ -56,7 +56,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
             []
         );
         $this->resourceSequenceMeta = $this->getMock(
-            'Magento\SalesSequence\Model\Resource\Meta',
+            'Magento\SalesSequence\Model\ResourceModel\Meta',
             ['loadByEntityTypeAndStore'],
             [],
             '',

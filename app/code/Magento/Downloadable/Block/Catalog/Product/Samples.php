@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,7 +8,7 @@
 
 namespace Magento\Downloadable\Block\Catalog\Product;
 
-use Magento\Downloadable\Model\Resource\Sample;
+use Magento\Downloadable\Model\ResourceModel\Sample;
 
 /**
  * Downloadable Product Samples part block

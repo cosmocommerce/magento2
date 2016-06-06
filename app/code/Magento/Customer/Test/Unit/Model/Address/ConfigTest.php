@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Test\Unit\Model\Address;
@@ -47,7 +47,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     protected $_cacheId = 'cache_id';
 
-    public function setUp()
+    protected function setUp()
     {
         $this->_storeMock = $this->getMock('Magento\Store\Model\Store', [], [], '', false);
         $this->_scopeConfigMock = $this->getMock('\Magento\Framework\App\Config\ScopeConfigInterface');
@@ -123,7 +123,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $this->_scopeConfigMock->expects($this->any())->method('getValue')->will($this->returnValue('someValue'));
 
-        $rendererMock = $this->getMock('Magento\Framework\Object');
+        $rendererMock = $this->getMock('Magento\Framework\DataObject');
 
         $this->_addressHelperMock->expects(
             $this->any()
@@ -133,7 +133,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             $this->returnValue($rendererMock)
         );
 
-        $firstExpected = new \Magento\Framework\Object();
+        $firstExpected = new \Magento\Framework\DataObject();
         $firstExpected->setCode(
             'format_one'
         )->setTitle(
@@ -146,7 +146,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             null
         );
 
-        $secondExpected = new \Magento\Framework\Object();
+        $secondExpected = new \Magento\Framework\DataObject();
         $secondExpected->setCode(
             'format_two'
         )->setTitle(

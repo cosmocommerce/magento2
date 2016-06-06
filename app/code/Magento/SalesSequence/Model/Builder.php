@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\SalesSequence\Model;
 
 use Magento\Framework\Webapi\Exception;
-use Magento\SalesSequence\Model\Resource\Meta as ResourceMetadata;
-use Magento\Framework\App\Resource as AppResource;
+use Magento\SalesSequence\Model\ResourceModel\Meta as ResourceMetadata;
+use Magento\Framework\App\ResourceConnection as AppResource;
 use Magento\Framework\DB\Ddl\Sequence as DdlSequence;
 use Psr\Log\LoggerInterface as Logger;
 
@@ -246,9 +246,9 @@ class Builder
         $metadata->setHasDataChanges(true);
         try {
             $this->resourceMetadata->save($metadata);
-            $adapter = $this->appResource->getConnection('sales_write');
-            if (!$adapter->isTableExists($this->data['sequence_table'])) {
-                $adapter->query(
+            $connection = $this->appResource->getConnection('sales');
+            if (!$connection->isTableExists($this->data['sequence_table'])) {
+                $connection->query(
                     $this->ddlSequence->getCreateSequenceDdl(
                         $this->data['sequence_table'],
                         $this->data['start_value']

@@ -1,12 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ProductAlert\Controller\Add;
 
 use Magento\ProductAlert\Controller\Add as AddController;
-use Magento\Framework\Object;
+use Magento\Framework\DataObject;
 
 class TestObserver extends AddController
 {
@@ -15,7 +15,7 @@ class TestObserver extends AddController
      */
     public function execute()
     {
-        $object = new Object();
+        $object = new DataObject();
         /** @var \Magento\ProductAlert\Model\Observer $observer */
         $observer = $this->_objectManager->get('Magento\ProductAlert\Model\Observer');
         $observer->process($object);

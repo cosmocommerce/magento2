@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -34,7 +34,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->ioObjectMock->expects($this->once())->method('getResultFileName')
+        $this->ioObjectMock->expects($this->once())->method('generateResultFileName')
             ->with('\Magento\Framework\ObjectManager\Code\Generator\SampleFactory')
             ->will($this->returnValue('sample_file.php'));
         $factoryCode = file_get_contents(__DIR__ . '/_files/SampleFactory.txt');

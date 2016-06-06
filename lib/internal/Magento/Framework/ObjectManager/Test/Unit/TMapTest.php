@@ -1,11 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Test\Unit;
 
 use Magento\Framework\ObjectManager\TMap;
+use Magento\Framework\ObjectManagerInterface;
 
 require_once __DIR__ . '/_files/TMap/TClass.php';
 require_once __DIR__ . '/_files/TMap/TInterface.php';
@@ -13,7 +14,7 @@ require_once __DIR__ . '/_files/TMap/TInterface.php';
 class TMapTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectManagerInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     private $om;
 
@@ -22,20 +23,12 @@ class TMapTest extends \PHPUnit_Framework_TestCase
      */
     private $omConfig;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject | \Magento\Framework\Code\Reader\ClassReaderInterface
-     */
-    private $cReader;
-
-    public function setUp()
+    protected function setUp()
     {
         $this->om = $this->getMockBuilder('Magento\Framework\ObjectManagerInterface')
             ->getMockForAbstractClass();
 
         $this->omConfig = $this->getMockBuilder('Magento\Framework\ObjectManager\ConfigInterface')
-            ->getMockForAbstractClass();
-
-        $this->cReader = $this->getMockBuilder('Magento\Framework\Code\Reader\ClassReaderInterface')
             ->getMockForAbstractClass();
     }
 
@@ -154,20 +147,14 @@ class TMapTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $this->cReader->expects(static::exactly($exactlyCalls))
-            ->method('getParents')
-            ->willReturnMap(
-                [
-                    ['TClass', ['TInterface']]
-                ]
-            );
-
         return new TMap(
             'TInterface',
             $this->om,
             $this->omConfig,
-            $this->cReader,
-            $testClasses
+            $testClasses,
+            function (ObjectManagerInterface $om, $objectName) {
+                return $om->create($objectName);
+            }
         );
     }
 }

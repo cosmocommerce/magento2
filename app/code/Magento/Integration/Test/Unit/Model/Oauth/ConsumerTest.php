@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Integration\Test\Unit\Model\Oauth;
@@ -49,7 +49,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
     protected $oauthDataMock;
 
     /**
-     * @var \Magento\Framework\Model\Resource\AbstractResource|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Model\ResourceModel\AbstractResource|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $resourceMock;
 
@@ -63,7 +63,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
      */
     protected $validDataArray;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->contextMock = $this->getMock(
             'Magento\Framework\Model\Context',
@@ -109,8 +109,8 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(\Magento\Integration\Helper\Oauth\Data::CONSUMER_EXPIRATION_PERIOD_DEFAULT));
 
         $this->resourceMock = $this->getMock(
-            'Magento\Integration\Model\Resource\Oauth\Consumer',
-            ['getTimeInSecondsSinceCreation', 'getIdFieldName', 'selectByCompositeKey', 'deleteOldEntries'],
+            'Magento\Integration\Model\ResourceModel\Oauth\Consumer',
+            ['getIdFieldName', 'selectByCompositeKey', 'deleteOldEntries'],
             [],
             '',
             false,
@@ -215,21 +215,33 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConsumerExpirationPeriodValid()
     {
-        $this->resourceMock->expects($this->once())
-            ->method('getTimeInSecondsSinceCreation')
-            ->will($this->returnValue(30));
+        $dateHelperMock = $this->getMockBuilder('Magento\Framework\Stdlib\DateTime\DateTime')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $dateHelperMock->expects($this->at(0))->method('gmtTimestamp')->willReturn(time());
+        $dateHelperMock->expects($this->at(1))->method('gmtTimestamp')->willReturn(time() - 100);
 
-        $this->consumerModel->setCreatedAt(time());
+        $dateHelper = new \ReflectionProperty('Magento\Integration\Model\Oauth\Consumer', '_dateHelper');
+        $dateHelper->setAccessible(true);
+        $dateHelper->setValue($this->consumerModel, $dateHelperMock);
+
+        $this->consumerModel->setUpdatedAt(time());
         $this->assertTrue($this->consumerModel->isValidForTokenExchange());
     }
 
     public function testGetConsumerExpirationPeriodExpired()
     {
-        $this->resourceMock->expects($this->once())
-            ->method('getTimeInSecondsSinceCreation')
-            ->will($this->returnValue(400));
+        $dateHelperMock = $this->getMockBuilder('Magento\Framework\Stdlib\DateTime\DateTime')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $dateHelperMock->expects($this->at(0))->method('gmtTimestamp')->willReturn(time());
+        $dateHelperMock->expects($this->at(1))->method('gmtTimestamp')->willReturn(time() - 1000);
 
-        $this->consumerModel->setCreatedAt(time());
+        $dateHelper = new \ReflectionProperty('Magento\Integration\Model\Oauth\Consumer', '_dateHelper');
+        $dateHelper->setAccessible(true);
+        $dateHelper->setValue($this->consumerModel, $dateHelperMock);
+
+        $this->consumerModel->setUpdatedAt(time());
         $this->assertFalse($this->consumerModel->isValidForTokenExchange());
     }
 }

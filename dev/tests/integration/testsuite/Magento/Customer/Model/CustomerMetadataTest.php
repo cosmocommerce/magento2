@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -93,7 +93,7 @@ class CustomerMetadataTest extends \PHPUnit_Framework_TestCase
     public function testGetCustomerAttributeMetadata()
     {
         // Expect these attributes to exist but do not check the value
-        $expectAttrsWOutVals = ['created_at'];
+        $expectAttrsWOutVals = ['created_at', 'updated_at'];
 
         // Expect these attributes to exist and check the value - values come from _files/customer.php
         $expectAttrsWithVals = [
@@ -171,5 +171,14 @@ class CustomerMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($attributeMetadata->getValidationRules(), 'Validation rules are not set');
         $this->assertEquals('1', $attributeMetadata->isSystem(), '"Is system" field value is invalid');
         $this->assertEquals('40', $attributeMetadata->getSortOrder(), 'Sort order is invalid');
+    }
+
+    protected function tearDown()
+    {
+        $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+
+        /* @var \Magento\Framework\Config\CacheInterface $cache */
+        $cache = $objectManager->create('Magento\Framework\Config\CacheInterface');
+        $cache->remove('extension_attributes_config');
     }
 }

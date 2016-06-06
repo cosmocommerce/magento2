@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -9,7 +9,7 @@ namespace Magento\Widget\Test\Unit\Block\Adminhtml\Widget\Catalog\Category;
 class ChooserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Magento\Catalog\Model\Resource\Category\Collection|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Catalog\Model\ResourceModel\Category\Collection|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $collection;
 
@@ -24,7 +24,7 @@ class ChooserTest extends \PHPUnit_Framework_TestCase
     protected $rootNode;
 
     /**
-     * @var \Magento\Catalog\Model\Resource\Category\Tree|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Catalog\Model\ResourceModel\Category\Tree|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $categoryTree;
 
@@ -58,9 +58,15 @@ class ChooserTest extends \PHPUnit_Framework_TestCase
      */
     protected $context;
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->collection = $this->getMock('Magento\Catalog\Model\Resource\Category\Collection', [], [], '', false);
+        $this->collection = $this->getMock(
+            'Magento\Catalog\Model\ResourceModel\Category\Collection',
+            [],
+            [],
+            '',
+            false
+        );
 
         $this->childNode = $this->getMock(
             'Magento\Framework\Data\Tree\Node',
@@ -76,7 +82,7 @@ class ChooserTest extends \PHPUnit_Framework_TestCase
             '',
             false
         );
-        $this->categoryTree = $this->getMock('Magento\Catalog\Model\Resource\Category\Tree', [], [], '', false);
+        $this->categoryTree = $this->getMock('Magento\Catalog\Model\ResourceModel\Category\Tree', [], [], '', false);
         $this->store = $this->getMock('Magento\Store\Model\Store', [], [], '', false);
         $this->storeManager = $this->getMock('Magento\Store\Model\StoreManagerInterface', [], [], '', false);
         $this->request = $this->getMock('Magento\Framework\App\RequestInterface', [], [], '', false);

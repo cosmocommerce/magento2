@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Model\Calculation;
@@ -16,11 +16,17 @@ class RowBaseCalculator extends AbstractAggregateCalculator
         $rate = null,
         $direction = null,
         $type = self::KEY_REGULAR_DELTA_ROUNDING,
-        $round = true
+        $round = true,
+        $item = null
     ) {
-        if ($round) {
-            $amount = $this->calculationTool->round($amount);
+
+        if ($item->getAssociatedItemCode()) {
+            // Use delta rounding of the product's instead of the weee's
+            $type = $type . $item->getAssociatedItemCode();
+        } else {
+            $type = $type . $item->getCode();
         }
-        return $amount;
+
+        return $this->deltaRound($amount, $rate, $direction, $type, $round);
     }
 }

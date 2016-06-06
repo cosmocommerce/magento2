@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Widget\Controller\Adminhtml;
@@ -8,7 +8,7 @@ namespace Magento\Widget\Controller\Adminhtml;
 /**
  * @magentoAppArea adminhtml
  */
-class WidgetTest extends \Magento\Backend\Utility\Controller
+class WidgetTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * Partially covers \Magento\Widget\Block\Adminhtml\Widget\Options::_addField()

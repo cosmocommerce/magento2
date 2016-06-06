@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -39,9 +39,9 @@ class EavAbstractTest extends \PHPUnit_Framework_TestCase
     {
         $indexAttributeCode = 'gender';
 
-        /** @var $attributeCollection \Magento\Customer\Model\Resource\Attribute\Collection */
+        /** @var $attributeCollection \Magento\Customer\Model\ResourceModel\Attribute\Collection */
         $attributeCollection = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-            'Magento\Customer\Model\Resource\Attribute\Collection'
+            'Magento\Customer\Model\ResourceModel\Attribute\Collection'
         );
         $attributeCollection->addFieldToFilter(
             'attribute_code',

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Indexer\Product\Price\Action;
@@ -22,7 +22,9 @@ class Row extends \Magento\Catalog\Model\Indexer\Product\Price\AbstractAction
     public function execute($id = null)
     {
         if (!isset($id) || empty($id)) {
-            throw new \Magento\Framework\Exception\InputException(__('Could not rebuild index for undefined product'));
+            throw new \Magento\Framework\Exception\InputException(
+                __('We can\'t rebuild the index for an undefined product.')
+            );
         }
         try {
             $this->_reindexRows([$id]);

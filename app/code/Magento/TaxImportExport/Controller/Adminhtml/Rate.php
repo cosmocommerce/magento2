@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\TaxImportExport\Controller\Adminhtml;
@@ -8,8 +8,15 @@ namespace Magento\TaxImportExport\Controller\Adminhtml;
 /**
  * Adminhtml tax rate controller
  */
-class Rate extends \Magento\Backend\App\Action
+abstract class Rate extends \Magento\Backend\App\Action
 {
+    /**
+     * Authorization level of a basic admin session
+     *
+     * @see _isAllowed()
+     */
+    const ADMIN_RESOURCE = 'Magento_Tax::manage_tax';
+
     /**
      * @var \Magento\Framework\App\Response\Http\FileFactory
      */
@@ -25,25 +32,5 @@ class Rate extends \Magento\Backend\App\Action
     ) {
         $this->fileFactory = $fileFactory;
         parent::__construct($context);
-    }
-
-    /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        switch ($this->getRequest()->getActionName()) {
-            case 'importExport':
-                return $this->_authorization->isAllowed('Magento_TaxImportExport::import_export');
-            case 'importPost':
-            case 'exportPost':
-                return $this->_authorization->isAllowed(
-                    'Magento_Tax::manage_tax'
-                ) || $this->_authorization->isAllowed(
-                    'Magento_TaxImportExport::import_export'
-                );
-            default:
-                return $this->_authorization->isAllowed('Magento_Tax::manage_tax');
-        }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Edit\Tab;
@@ -133,6 +133,7 @@ class Newsletter extends \Magento\Backend\Block\Widget\Form\Generic implements T
      * Initialize the form.
      *
      * @return $this
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function initForm()
     {
@@ -154,15 +155,19 @@ class Newsletter extends \Magento\Backend\Block\Widget\Form\Generic implements T
             [
                 'label' => __('Subscribed to Newsletter'),
                 'name' => 'subscription',
-                'data-form-part' => $this->getData('target_form')
+                'data-form-part' => $this->getData('target_form'),
+                'onchange' => 'this.value = this.checked;'
             ]
         );
 
         if ($this->customerAccountManagement->isReadOnly($customerId)) {
             $form->getElement('subscription')->setReadonly(true, true);
         }
+        $isSubscribed = $subscriber->isSubscribed();
+        $form->setValues(['subscription' => $isSubscribed ? 'true' : 'false']);
+        $form->getElement('subscription')->setIsChecked($isSubscribed);
 
-        $form->getElement('subscription')->setIsChecked($subscriber->isSubscribed());
+        $this->updateFromSession($form, $customerId);
 
         $changedDate = $this->getStatusChangedDate();
         if ($changedDate) {
@@ -170,7 +175,7 @@ class Newsletter extends \Magento\Backend\Block\Widget\Form\Generic implements T
                 'change_status_date',
                 'label',
                 [
-                    'label' => $subscriber->isSubscribed() ? __('Last Date Subscribed') : __('Last Date Unsubscribed'),
+                    'label' => $isSubscribed ? __('Last Date Subscribed') : __('Last Date Unsubscribed'),
                     'value' => $changedDate,
                     'bold' => true
                 ]
@@ -179,6 +184,24 @@ class Newsletter extends \Magento\Backend\Block\Widget\Form\Generic implements T
 
         $this->setForm($form);
         return $this;
+    }
+
+    /**
+     * Update form elements from session data
+     *
+     * @param \Magento\Framework\Data\Form $form
+     * @param int $customerId
+     * @return void
+     */
+    protected function updateFromSession(\Magento\Framework\Data\Form $form, $customerId)
+    {
+        $data = $this->_backendSession->getCustomerFormData();
+        if (!empty($data)) {
+            $dataCustomerId = isset($data['customer']['entity_id']) ? $data['customer']['entity_id'] : null;
+            if (isset($data['subscription']) && $dataCustomerId == $customerId) {
+                $form->getElement('subscription')->setIsChecked($data['subscription']);
+            }
+        }
     }
 
     /**

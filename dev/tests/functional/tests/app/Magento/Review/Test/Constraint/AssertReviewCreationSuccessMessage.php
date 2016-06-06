@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -17,7 +17,7 @@ class AssertReviewCreationSuccessMessage extends AbstractConstraint
     /**
      * Text of success message after review created
      */
-    const SUCCESS_MESSAGE = 'Your review has been accepted for moderation.';
+    const SUCCESS_MESSAGE = 'You submitted your review for moderation.';
 
     /**
      * Assert that success message is displayed after review created
@@ -27,7 +27,7 @@ class AssertReviewCreationSuccessMessage extends AbstractConstraint
      */
     public function processAssert(CatalogProductView $catalogProductView)
     {
-        $actualMessage = $catalogProductView->getMessagesBlock()->getSuccessMessages();
+        $actualMessage = $catalogProductView->getMessagesBlock()->getSuccessMessage();
         \PHPUnit_Framework_Assert::assertEquals(
             self::SUCCESS_MESSAGE,
             $actualMessage,

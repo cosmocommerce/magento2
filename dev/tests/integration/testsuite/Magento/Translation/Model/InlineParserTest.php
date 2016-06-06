@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Translation\Model;
@@ -54,7 +54,7 @@ class InlineParserTest extends \PHPUnit_Framework_TestCase
         $this->_inlineParser->processAjaxPost($inputArray);
 
         $model = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-            'Magento\Translation\Model\String'
+            'Magento\Translation\Model\StringUtils'
         );
         $model->load($originalText);
         try {

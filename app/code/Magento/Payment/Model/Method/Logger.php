@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Model\Method;
@@ -15,36 +15,71 @@ use Psr\Log\LoggerInterface;
 class Logger
 {
     const DEBUG_KEYS_MASK = '****';
+
     /**
      * @var LoggerInterface
      */
     protected $logger;
 
     /**
-     * @param LoggerInterface $logger
+     * @var \Magento\Payment\Gateway\ConfigInterface
      */
-    public function __construct(LoggerInterface $logger)
-    {
+    private $config;
+
+    /**
+     * @param LoggerInterface $logger
+     * @param \Magento\Payment\Gateway\ConfigInterface $config
+     */
+    public function __construct(
+        LoggerInterface $logger,
+        \Magento\Payment\Gateway\ConfigInterface $config = null
+    ) {
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     /**
      * Logs payment related information used for debug
      *
-     * @param array $debugData
-     * @param array $debugReplaceKeys
-     * @param bool $debugFlag
+     * @param array $data
+     * @param array|null $maskKeys
+     * @param bool|null $forceDebug
      * @return void
      */
-    public function debug(array $debugData, array $debugReplaceKeys, $debugFlag)
+    public function debug(array $data, array $maskKeys = null, $forceDebug = null)
     {
-        if ($debugFlag == true && !empty($debugData) && !empty($debugReplaceKeys)) {
-                $debugData = $this->filterDebugData(
-                    $debugData,
-                    $debugReplaceKeys
-                );
-            $this->logger->debug(var_export($debugData, true));
+        $maskKeys = $maskKeys !== null ? $maskKeys : $this->getDebugReplaceFields();
+        $debugOn = $forceDebug !== null ? $forceDebug : $this->isDebugOn();
+        if ($debugOn === true) {
+            $data = $this->filterDebugData(
+                $data,
+                $maskKeys
+            );
+            $this->logger->debug(var_export($data, true));
         }
+    }
+
+    /**
+     * Returns configured keys to be replaced with mask
+     *
+     * @return array
+     */
+    private function getDebugReplaceFields()
+    {
+        if ($this->config and $this->config->getValue('debugReplaceKeys')) {
+            return explode(',', $this->config->getValue('debugReplaceKeys'));
+        }
+        return [];
+    }
+
+    /**
+     * Whether debug is enabled in configuration
+     *
+     * @return bool
+     */
+    private function isDebugOn()
+    {
+        return $this->config and (bool)$this->config->getValue('debug');
     }
 
     /**

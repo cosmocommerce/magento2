@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Test\Unit\Code\Generator;
@@ -54,7 +54,7 @@ class GenerateRepositoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->ioObjectMock->expects($this->once())
-            ->method('getResultFileName')
+            ->method('generateResultFileName')
             ->with('\Magento\Framework\ObjectManager\Code\Generator\SampleRepository')
             ->willReturn('SampleRepository.php');
 

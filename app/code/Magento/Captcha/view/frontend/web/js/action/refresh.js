@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 /*jshint browser:true*/
@@ -9,9 +9,10 @@ define(
     function(storage) {
         "use strict";
         return function(refreshUrl, formId, imageSource) {
-            storage.post(
+            return storage.post(
                 refreshUrl,
-                JSON.stringify({'formId': formId})
+                JSON.stringify({'formId': formId}),
+                false
             ).done(
                 function (response) {
                     if (response.imgSrc) {

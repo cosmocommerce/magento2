@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 TabsTest = TestCase('TabsTest');
@@ -129,30 +129,6 @@ TabsTest.prototype.testOnContentChange = function() {
 
     tabs.data("tabs")._onContentChange(eventMock);
     assertTrue(jQuery('#tab1').hasClass('_changed'));
-};
-
-TabsTest.prototype.testOnInvalid = function() {
-    /*:DOC += <div id="tabs"><ul>
-         <li>
-             <a href="www.site.com" id="tab1">Tab 1<span class="_error">&nbsp;</span></a>
-             <div id="tab1_content"></div>
-         </li>
-     </ul></div>
-     */
-    var eventMock = {
-            data: {
-                index: 0
-            }
-        },
-        tabs = jQuery('#tabs').tabs(),
-        errorIcon = jQuery('#tab1').find('._error');
-
-    errorIcon.hide();
-    assertTrue(errorIcon.is(':hidden'));
-
-    tabs.data("tabs")._onInvalid(eventMock);
-    assertTrue(jQuery('#tab1').hasClass('_error'));
-    assertTrue(errorIcon.is(':visible'));
 };
 
 TabsTest.prototype.testOnFocus = function() {

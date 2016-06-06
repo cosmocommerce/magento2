@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Config\Block\System\Config\Form\Fieldset;
 
 /**
- * Magento\Config\Block\System\Config\Form\Fieldset object factory
+ * Magento\Config\Block\System\Config\Form\Fieldset Class Factory
  *
  * @codeCoverageIgnore
  */

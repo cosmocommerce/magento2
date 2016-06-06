@@ -1,10 +1,15 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Gateway\Http;
 
+/**
+ * Interface TransferInterface
+ * @package Magento\Payment\Gateway\Http
+ * @api
+ */
 interface TransferInterface
 {
     /**
@@ -38,7 +43,7 @@ interface TransferInterface
     /**
      * Returns request body
      *
-     * @return string
+     * @return array|string
      */
     public function getBody();
 
@@ -48,4 +53,18 @@ interface TransferInterface
      * @return string
      */
     public function getUri();
+
+    /**
+     * Returns Auth username
+     *
+     * @return string
+     */
+    public function getAuthUsername();
+
+    /**
+     * Returns Auth password
+     *
+     * @return string
+     */
+    public function getAuthPassword();
 }

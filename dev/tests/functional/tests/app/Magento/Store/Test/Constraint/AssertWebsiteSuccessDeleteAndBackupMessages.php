@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -23,7 +23,7 @@ class AssertWebsiteSuccessDeleteAndBackupMessages extends AbstractConstraint
     /**
      * Success website delete message
      */
-    const SUCCESS_DELETE_MESSAGE = 'The website has been deleted.';
+    const SUCCESS_DELETE_MESSAGE = 'You deleted the website.';
 
     /**
      * Assert that success messages is displayed after deleting website

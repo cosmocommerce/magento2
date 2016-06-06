@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -22,6 +22,11 @@ class Preview extends \Magento\Backend\Block\Widget
      * @var \Magento\Email\Model\TemplateFactory
      */
     protected $_emailFactory;
+
+    /**
+     * @var string
+     */
+    protected $profilerName = 'email_template_proccessing';
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
@@ -47,12 +52,11 @@ class Preview extends \Magento\Backend\Block\Widget
      */
     protected function _toHtml()
     {
+        $storeId = $this->getAnyStoreView()->getId();
         /** @var $template \Magento\Email\Model\Template */
-        $template = $this->_emailFactory->create(
-            ['data' => ['area' => \Magento\Framework\App\Area::AREA_FRONTEND]]
-        );
-        $id = (int)$this->getRequest()->getParam('id');
-        if ($id) {
+        $template = $this->_emailFactory->create();
+
+        if ($id = (int)$this->getRequest()->getParam('id')) {
             $template->load($id);
         } else {
             $template->setTemplateType($this->getRequest()->getParam('type'));
@@ -62,21 +66,20 @@ class Preview extends \Magento\Backend\Block\Widget
 
         $template->setTemplateText($this->_maliciousCode->filter($template->getTemplateText()));
 
-        \Magento\Framework\Profiler::start("email_template_proccessing");
-        $vars = [];
+        \Magento\Framework\Profiler::start($this->profilerName);
 
-        $store = $this->getAnyStoreView();
-        $storeId = $store ? $store->getId() : null;
-        $template->setDesignConfig(
-            ['area' => $this->_design->getArea(), 'store' => $storeId]
+        $template->emulateDesign($storeId);
+        $templateProcessed = $this->_appState->emulateAreaCode(
+            \Magento\Email\Model\AbstractTemplate::DEFAULT_DESIGN_AREA,
+            [$template, 'getProcessedTemplate']
         );
-        $templateProcessed = $template->getProcessedTemplate($vars, true);
+        $template->revertDesign();
 
         if ($template->isPlain()) {
             $templateProcessed = "<pre>" . htmlspecialchars($templateProcessed) . "</pre>";
         }
 
-        \Magento\Framework\Profiler::stop("email_template_proccessing");
+        \Magento\Framework\Profiler::stop($this->profilerName);
 
         return $templateProcessed;
     }

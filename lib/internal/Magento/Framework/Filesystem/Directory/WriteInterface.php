@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Filesystem\Directory;
@@ -67,6 +67,17 @@ interface WriteInterface extends ReadInterface
      * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function changePermissions($path, $permissions);
+
+    /**
+     * Change permissions of given path
+     *
+     * @param string $path
+     * @param int $dirPermissions
+     * @param int $filePermissions
+     * @return bool
+     * @throws \Magento\Framework\Exception\FileSystemException
+     */
+    public function changePermissionsRecursively($path, $dirPermissions, $filePermissions);
 
     /**
      * Sets access and modification time of file.

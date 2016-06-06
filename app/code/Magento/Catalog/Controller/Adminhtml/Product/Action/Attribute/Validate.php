@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Adminhtml\Product\Action\Attribute;
@@ -42,7 +42,7 @@ class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Action\Attr
      */
     public function execute()
     {
-        $response = $this->_objectManager->create('Magento\Framework\Object');
+        $response = $this->_objectManager->create('Magento\Framework\DataObject');
         $response->setError(false);
         $attributesData = $this->getRequest()->getParam('attributes', []);
         $data = $this->_objectManager->create('Magento\Catalog\Model\Product');

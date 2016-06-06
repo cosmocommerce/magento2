@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Model;
@@ -41,7 +41,7 @@ class Option extends \Magento\Framework\Model\AbstractExtensibleModel implements
      */
     protected function _construct()
     {
-        $this->_init('Magento\Bundle\Model\Resource\Option');
+        $this->_init('Magento\Bundle\Model\ResourceModel\Option');
         parent::_construct();
     }
 

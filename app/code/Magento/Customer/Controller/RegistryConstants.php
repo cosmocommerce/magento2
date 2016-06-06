@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller;
@@ -11,12 +11,6 @@ namespace Magento\Customer\Controller;
  */
 class RegistryConstants
 {
-    /**
-     * Registry key where current customer DTO stored
-     * @todo switch to use ID instead and remove after refactoring of all occurrences
-     */
-    const CURRENT_CUSTOMER = 'current_customer';
-
     /**
      * Registry key where current customer ID is stored
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -27,7 +27,7 @@ class Main extends AbstractMain
     protected function _prepareForm()
     {
         parent::_prepareForm();
-        /** @var \Magento\Catalog\Model\Resource\Eav\Attribute $attributeObject */
+        /** @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute $attributeObject */
         $attributeObject = $this->getAttributeObject();
         /* @var $form \Magento\Framework\Data\Form */
         $form = $this->getForm();
@@ -58,7 +58,7 @@ class Main extends AbstractMain
             ];
         }
 
-        $response = new \Magento\Framework\Object();
+        $response = new \Magento\Framework\DataObject();
         $response->setTypes([]);
         $this->_eventManager->dispatch('adminhtml_product_attribute_types', ['response' => $response]);
         $_hiddenFields = [];
@@ -72,6 +72,8 @@ class Main extends AbstractMain
 
         $frontendInputValues = array_merge($frontendInputElm->getValues(), $additionalTypes);
         $frontendInputElm->setValues($frontendInputValues);
+
+        $this->_eventManager->dispatch('product_attribute_form_build_main_tab', ['form' => $form]);
 
         return $this;
     }

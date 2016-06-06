@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -10,35 +10,35 @@ use Magento\Mtf\Block\Block;
 use Magento\Mtf\Client\Locator;
 
 /**
- * Class Method
- * Adminhtml sales order create shipping method block
+ * Adminhtml sales order create shipping method block.
  */
 class Method extends Block
 {
     /**
-     * 'Get shipping methods and rates' link
+     * 'Get shipping methods and rates' link.
      *
      * @var string
      */
     protected $shippingMethodsLink = '#order-shipping-method-summary a';
 
     /**
-     * Shipping method
+     * Shipping method.
      *
      * @var string
      */
     protected $shippingMethod = '//dt[contains(.,"%s")]/following-sibling::*//*[contains(text(), "%s")]';
 
     /**
-     * Select shipping method
+     * Select shipping method.
      *
      * @param array $shippingMethod
+     * @return void
      */
     public function selectShippingMethod(array $shippingMethod)
     {
-        // Click on rootElement to solve overlapping inner elements by header menu.
-        $this->_rootElement->click();
-        $this->_rootElement->find($this->shippingMethodsLink)->click();
+        if ($this->_rootElement->find($this->shippingMethodsLink)->isVisible()) {
+            $this->_rootElement->find($this->shippingMethodsLink)->click();
+        }
         $selector = sprintf(
             $this->shippingMethod,
             $shippingMethod['shipping_service'],

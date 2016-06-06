@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Model\Config\Source\Product\Options;
@@ -51,7 +51,11 @@ class TypeTest extends \PHPUnit_Framework_TestCase
         ];
         $expect = [
             ['value' => '', 'label' => __('-- Please select --')],
-            ['label' => 'optionLabel', 'value' => [['label' => 'typeLabel', 'value' => 'typeName']]],
+            [
+                'label' => 'optionLabel',
+                'optgroup-name' => 'optionLabel',
+                'value' => [['label' => 'typeLabel', 'value' => 'typeName']]
+            ],
         ];
 
         $this->productOptionConfig->expects($this->any())->method('getAll')->will($this->returnValue($allOptions));

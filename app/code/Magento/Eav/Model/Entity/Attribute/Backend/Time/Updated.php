@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute\Backend\Time;
@@ -17,6 +17,8 @@ class Updated extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBacken
 
     /**
      * @param \Magento\Framework\Stdlib\DateTime $dateTime
+     * @codeCoverageIgnore
+     * @deprecated Remove unused dependency
      */
     public function __construct(\Magento\Framework\Stdlib\DateTime $dateTime)
     {
@@ -26,7 +28,7 @@ class Updated extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBacken
     /**
      * Set modified date
      *
-     * @param \Magento\Framework\Object $object
+     * @param \Magento\Framework\DataObject $object
      * @return $this
      */
     public function beforeSave($object)

@@ -1,19 +1,16 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 require __DIR__ . '/multiselect_attribute.php';
 
 /** @var $installer \Magento\Catalog\Setup\CategorySetup */
-$installer = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\Catalog\Setup\CategorySetup',
-    ['resourceName' => 'catalog_setup']
-);
+$installer = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Setup\CategorySetup');
 
-/** @var $options \Magento\Eav\Model\Resource\Entity\Attribute\Option\Collection */
+/** @var $options \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection */
 $options = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\Eav\Model\Resource\Entity\Attribute\Option\Collection'
+    'Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection'
 );
 $options->setAttributeFilter($attribute->getId());
 $optionIds = $options->getAllIds();
@@ -62,7 +59,7 @@ $product->setTypeId(
 )->setVisibility(
     \Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH
 )->setMultiselectAttribute(
-    [$optionIds[1], $optionIds[2]]
+    [$optionIds[1], $optionIds[2], $optionIds[3]]
 )->setStatus(
     \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED
 )->setStockData(

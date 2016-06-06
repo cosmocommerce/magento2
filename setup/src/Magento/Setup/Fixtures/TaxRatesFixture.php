@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -27,9 +27,9 @@ class TaxRatesFixture extends Fixture
         }
         $this->fixtureModel->resetObjectManager();
         /** Clean predefined tax rates to maintain consistency */
-        /** @var $collection Magento\Tax\Model\Resource\Calculation\Rate\Collection */
+        /** @var $collection Magento\Tax\Model\ResourceModel\Calculation\Rate\Collection */
         $collection = $this->fixtureModel->getObjectManager()
-            ->get('Magento\Tax\Model\Resource\Calculation\Rate\Collection');
+            ->get('Magento\Tax\Model\ResourceModel\Calculation\Rate\Collection');
 
         /** @var $model Magento\Tax\Model\Calculation\Rate */
         $model = $this->fixtureModel->getObjectManager()

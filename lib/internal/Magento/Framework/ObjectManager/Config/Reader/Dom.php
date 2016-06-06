@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Config\Reader;
@@ -62,6 +62,12 @@ class Dom extends \Magento\Framework\Config\Reader\Filesystem
      */
     protected function _createConfigMerger($mergerClass, $initialContents)
     {
-        return new $mergerClass($initialContents, $this->_idAttributes, self::TYPE_ATTRIBUTE, $this->_perFileSchema);
+        return new $mergerClass(
+            $initialContents,
+            $this->validationState,
+            $this->_idAttributes,
+            self::TYPE_ATTRIBUTE,
+            $this->_perFileSchema
+        );
     }
 }

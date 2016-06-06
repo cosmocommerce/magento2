@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Model\Sales\Order\Pdf\Items;
@@ -15,10 +15,10 @@ abstract class AbstractItems extends \Magento\Sales\Model\Order\Pdf\Items\Abstra
     /**
      * Getting all available children for Invoice, Shipment or CreditMemo item
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return array
      */
-    public function getChilds($item)
+    public function getChildren($item)
     {
         $itemsArray = [];
 
@@ -52,7 +52,7 @@ abstract class AbstractItems extends \Magento\Sales\Model\Order\Pdf\Items\Abstra
     /**
      * Retrieve is Shipment Separately flag for Item
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return bool
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -90,7 +90,7 @@ abstract class AbstractItems extends \Magento\Sales\Model\Order\Pdf\Items\Abstra
     /**
      * Retrieve is Child Calculated
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return bool
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -130,7 +130,7 @@ abstract class AbstractItems extends \Magento\Sales\Model\Order\Pdf\Items\Abstra
     /**
      * Retrieve Bundle Options
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return array
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
@@ -146,7 +146,7 @@ abstract class AbstractItems extends \Magento\Sales\Model\Order\Pdf\Items\Abstra
     /**
      * Retrieve Selection attributes
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return mixed
      */
     public function getSelectionAttributes($item)
@@ -165,7 +165,7 @@ abstract class AbstractItems extends \Magento\Sales\Model\Order\Pdf\Items\Abstra
     /**
      * Retrieve Order options
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return array
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -24,11 +24,11 @@ class CustomizeStore extends Form
     protected $next = "[ng-click*='checkModuleConstraints']";
 
     /**
-     * First field selector
+     * Module configuration section.
      *
      * @var string
      */
-    protected $firstField = '[ng-model*="language"]';
+    protected $moduleConfiguration = '.customize-your-store-advanced';
 
     /**
      * Click on 'Next' button.
@@ -49,7 +49,17 @@ class CustomizeStore extends Form
      */
     public function fill(FixtureInterface $fixture, SimpleElement $element = null)
     {
-        $this->waitForElementVisible($this->firstField);
-        return parent::fill($fixture, $element);
+        $this->waitForElementVisible($this->moduleConfiguration);
+        $data = $fixture->getData();
+        $storeData = [];
+        foreach ($data as $key => $value) {
+            if (strpos($key, 'store') === 0) {
+                $storeData[$key] = $value;
+            }
+        }
+        $mapping = $this->dataMapping($storeData);
+        $this->_fill($mapping, $element);
+
+        return $this;
     }
 }

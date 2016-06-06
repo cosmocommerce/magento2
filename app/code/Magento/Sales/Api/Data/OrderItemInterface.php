@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Api\Data;
@@ -54,10 +54,6 @@ interface OrderItemInterface extends \Magento\Framework\Api\ExtensibleDataInterf
      * Product type.
      */
     const PRODUCT_TYPE = 'product_type';
-    /*
-     * Product options.
-     */
-    const PRODUCT_OPTIONS = 'product_options';
     /*
      * Weight.
      */
@@ -395,6 +391,11 @@ interface OrderItemInterface extends \Magento\Framework\Api\ExtensibleDataInterf
      * Parent Item
      */
     const PARENT_ITEM = 'parent_item';
+
+    /**
+     * Product Option
+     */
+    const KEY_PRODUCT_OPTION = 'product_option';
 
 
     /**
@@ -852,21 +853,6 @@ interface OrderItemInterface extends \Magento\Framework\Api\ExtensibleDataInterf
      * @return int|null Product ID.
      */
     public function getProductId();
-
-    /**
-     * Gets the product options for the order item.
-     *
-     * @return string[] Array of product options.
-     */
-    public function getProductOptions();
-
-    /**
-     * Sets the product options for the order item.
-     *
-     * @param string[] $productOptions
-     * @return $this
-     */
-    public function setProductOptions(array $productOptions = null);
 
     /**
      * Gets the product type for the order item.
@@ -1806,6 +1792,21 @@ interface OrderItemInterface extends \Magento\Framework\Api\ExtensibleDataInterf
      * @return $this
      */
     public function setBaseWeeeTaxRowDisposition($baseWeeeTaxRowDisposition);
+
+    /**
+     * Returns product option
+     *
+     * @return \Magento\Catalog\Api\Data\ProductOptionInterface|null
+     */
+    public function getProductOption();
+
+    /**
+     * Sets product option
+     *
+     * @param \Magento\Catalog\Api\Data\ProductOptionInterface $productOption
+     * @return $this
+     */
+    public function setProductOption(\Magento\Catalog\Api\Data\ProductOptionInterface $productOption);
 
     /**
      * Retrieve existing extension attributes object or create a new one.

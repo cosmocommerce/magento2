@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Order\Address;
@@ -75,7 +75,7 @@ class Validator
     }
 
     /**
-     * Validate address attribute for payment operations
+     * Validate address attribute for customer creation
      *
      * @return bool|array
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -83,7 +83,7 @@ class Validator
      *
      * @param Address $address
      */
-    public function validateForPayment(Address $address)
+    public function validateForCustomer(Address $address)
     {
         if ($address->getShouldIgnoreValidation()) {
             return true;

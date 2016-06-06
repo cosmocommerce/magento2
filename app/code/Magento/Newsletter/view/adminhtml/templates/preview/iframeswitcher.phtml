@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -15,7 +15,7 @@
         </div>
         <?php endif;?>
     </div>
-    <iframe name="preview_iframe" id="preview_iframe" frameborder="0" title="<?php echo __('Preview') ?>" width="100%"></iframe>
+    <iframe name="preview_iframe" id="preview_iframe" frameborder="0" title="<?php /* @escapeNotVerified */ echo __('Preview') ?>" width="100%"></iframe>
     <?php echo $block->getChildHtml('preview_form'); ?>
 </div>
 
@@ -42,8 +42,8 @@ function unBlockPreview() {
     jQuery('body').trigger('hideLoadingPopup');
 }
 
-Event.observe(window, 'load', preview);
-Event.observe(previewIframe, 'load', unBlockPreview);
+jQuery(document).ready(preview);
+jQuery(previewIframe).ready(unBlockPreview);
 
 jQuery("#preview_iframe").load(function() {
     jQuery(this).height(jQuery(this).contents().find("html").height() );

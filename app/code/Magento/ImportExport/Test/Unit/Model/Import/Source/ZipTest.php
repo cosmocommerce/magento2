@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,19 +18,12 @@ class ZipTest extends \PHPUnit_Framework_TestCase
      */
     protected $zip;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->directory = $this->getMockBuilder('\Magento\Framework\Filesystem\Directory\Write')
             ->disableOriginalConstructor()
             ->setMethods(['getRelativePath'])
             ->getMock();
-    }
-
-    public function testConstructorInternalCalls()
-    {
-        $this->directory->expects($this->any())->method('getRelativePath');
-        $fileName = 'test_file';
-        $this->_invokeConstructor($fileName);
     }
 
     /**

@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\GroupedProduct\Block\Cart\Item\Renderer;
 
 use Magento\Catalog\Model\Config\Source\Product\Thumbnail as ThumbnailSource;
 use Magento\Checkout\Block\Cart\Item\Renderer;
-use Magento\Framework\Object\IdentityInterface;
+use Magento\Framework\DataObject\IdentityInterface;
 
 /**
  * Shopping cart item render block

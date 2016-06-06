@@ -1,27 +1,42 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 define([
     './abstract'
 ], function (Abstract) {
     'use strict';
 
     return Abstract.extend({
+        defaults: {
+            checked: false,
+            links: {
+                checked: 'value'
+            }
+        },
+
         /**
-         * Converts the result of parent 'getInitialValue' call to boolean
-         *
-         * @return {Boolean}
+         * @returns {*|void|Element}
          */
-        getInititalValue: function () {
+        initObservable: function () {
+            return this._super()
+                    .observe('checked');
+        },
+
+        /**
+         * Converts provided value to boolean.
+         *
+         * @returns {Boolean}
+         */
+        normalizeData: function () {
             return !!+this._super();
         },
 
         /**
-         * Calls 'store' method of parent, if value is defined and instance's
+         * Calls 'onUpdate' method of parent, if value is defined and instance's
          *     'unique' property set to true, calls 'setUnique' method
          *
-         * @param  {*} value
          * @return {Object} - reference to instance
          */
         onUpdate: function () {

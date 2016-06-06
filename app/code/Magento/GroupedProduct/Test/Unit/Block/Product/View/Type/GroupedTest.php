@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\GroupedProduct\Test\Unit\Block\Product\View\Type;
@@ -54,7 +54,7 @@ class GroupedTest extends \PHPUnit_Framework_TestCase
             $this->returnValue($this->typeInstanceMock)
         );
         $this->configuredValueMock = $this->getMock(
-            'Magento\Framework\Object',
+            'Magento\Framework\DataObject',
             ['getSuperGroup'],
             [],
             '',

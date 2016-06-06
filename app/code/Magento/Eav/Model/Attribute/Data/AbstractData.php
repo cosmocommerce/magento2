@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -88,6 +88,7 @@ abstract class AbstractData
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Locale\ResolverInterface $localeResolver
+     * @codeCoverageIgnore
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
@@ -104,6 +105,7 @@ abstract class AbstractData
      *
      * @param \Magento\Eav\Model\Entity\Attribute\AbstractAttribute $attribute
      * @return $this
+     * @codeCoverageIgnore
      */
     public function setAttribute(\Magento\Eav\Model\Entity\Attribute\AbstractAttribute $attribute)
     {
@@ -130,6 +132,7 @@ abstract class AbstractData
      *
      * @param string $scope
      * @return $this
+     * @codeCoverageIgnore
      */
     public function setRequestScope($scope)
     {
@@ -143,6 +146,7 @@ abstract class AbstractData
      *
      * @param bool $flag
      * @return $this
+     * @codeCoverageIgnore
      */
     public function setRequestScopeOnly($flag)
     {
@@ -155,6 +159,7 @@ abstract class AbstractData
      *
      * @param \Magento\Framework\Model\AbstractModel $entity
      * @return $this
+     * @codeCoverageIgnore
      */
     public function setEntity(\Magento\Framework\Model\AbstractModel $entity)
     {
@@ -166,6 +171,7 @@ abstract class AbstractData
      * Returns entity instance
      *
      * @return \Magento\Framework\Model\AbstractModel
+     * @throws CoreException
      */
     public function getEntity()
     {
@@ -180,6 +186,7 @@ abstract class AbstractData
      *
      * @param array $data
      * @return $this
+     * @codeCoverageIgnore
      */
     public function setExtractedData(array $data)
     {
@@ -357,9 +364,7 @@ abstract class AbstractData
                     __("'%value%' appears to be a DNS hostname but cannot extract TLD part")
                     __("'%value%' appears to be a DNS hostname but cannot match TLD against known list")
                     */
-                    $validator = new \Zend_Validate_EmailAddress(
-                        ['allow' => ['allow' => \Zend_Validate_Hostname::ALLOW_ALL, 'tld' => false]]
-                    );
+                    $validator = new \Zend_Validate_EmailAddress();
                     $validator->setMessage(
                         __('"%1" invalid type entered.', $label),
                         \Zend_Validate_EmailAddress::INVALID
@@ -474,6 +479,7 @@ abstract class AbstractData
      *
      * @param bool $flag
      * @return $this
+     * @codeCoverageIgnore
      */
     public function setIsAjaxRequest($flag = true)
     {
@@ -486,6 +492,7 @@ abstract class AbstractData
      *
      * @return bool
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     * @codeCoverageIgnore
      */
     public function getIsAjaxRequest()
     {

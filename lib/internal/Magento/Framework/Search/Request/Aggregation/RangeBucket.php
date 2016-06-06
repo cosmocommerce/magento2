@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Request\Aggregation;
@@ -56,6 +56,7 @@ class RangeBucket implements BucketInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -64,6 +65,7 @@ class RangeBucket implements BucketInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getField()
     {
@@ -72,6 +74,7 @@ class RangeBucket implements BucketInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getMetrics()
     {
@@ -82,6 +85,7 @@ class RangeBucket implements BucketInterface
      * Get Ranges
      *
      * @return Range[]
+     * @codeCoverageIgnore
      */
     public function getRanges()
     {

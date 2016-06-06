@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -64,15 +64,10 @@ class AssertProductInCart extends AbstractConstraint
             ? $checkoutData['options']['custom_options']
             : [];
         $fixturePrice = $product->getPrice();
-        $groupPrice = $product->getGroupPrice();
         $specialPrice = $product->getSpecialPrice();
         $cartItem = $checkoutCart->getCartBlock()->getCartItem($product);
         $formPrice = $cartItem->getPrice();
 
-        if ($groupPrice) {
-            $groupPrice = reset($groupPrice);
-            $fixturePrice = $groupPrice['price'];
-        }
         if ($specialPrice) {
             $fixturePrice = $specialPrice;
         }

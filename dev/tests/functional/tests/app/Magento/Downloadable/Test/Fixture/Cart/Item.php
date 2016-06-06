@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -10,8 +10,7 @@ use Magento\Downloadable\Test\Fixture\DownloadableProduct;
 use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
- * Class Item
- * Data for verify cart item block on checkout page
+ * Data for verify cart item block on checkout page.
  *
  * Data keys:
  *  - product (fixture data for verify)
@@ -33,7 +32,7 @@ class Item extends \Magento\Catalog\Test\Fixture\Cart\Item
         foreach ($checkoutData['options']['links'] as $link) {
             $keyLink = str_replace('link_', '', $link['label']);
             $checkoutDownloadableOptions[] = [
-                'title' => 'Links',
+                'title' => $downloadableOptions['title'],
                 'value' => $downloadableOptions['downloadable']['link'][$keyLink]['title'],
             ];
         }

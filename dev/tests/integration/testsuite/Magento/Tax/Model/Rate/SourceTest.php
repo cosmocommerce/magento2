@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,8 +12,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase
 {
     public function testToOptionArray()
     {
-        /** @var \Magento\Tax\Model\Resource\Calculation\Rate\Collection $collection */
-        $collection = Bootstrap::getObjectManager()->get('Magento\Tax\Model\Resource\Calculation\Rate\Collection');
+        /** @var \Magento\Tax\Model\ResourceModel\Calculation\Rate\Collection $collection */
+        $collection = Bootstrap::getObjectManager()->get('Magento\Tax\Model\ResourceModel\Calculation\Rate\Collection');
         $expectedResult = [];
         /** @var $taxRate \Magento\Tax\Model\Calculation\Rate */
         foreach ($collection as $taxRate) {

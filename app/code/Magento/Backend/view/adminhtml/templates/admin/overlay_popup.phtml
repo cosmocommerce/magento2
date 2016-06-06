@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -11,7 +11,7 @@
     <div class="middle" id="anchor-content">
         <div id="page:main-container">
         <?php if ($block->getChildHtml('left')): ?>
-            <div class="columns <?php echo $block->getContainerCssClass() ?>" id="page:container">
+            <div class="columns <?php /* @escapeNotVerified */ echo $block->getContainerCssClass() ?>" id="page:container">
                 <div id="page:left" class="side-col">
                     <?php echo $block->getChildHtml('left') ?>
                 </div>

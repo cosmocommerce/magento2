@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Persistent\Block\Form;
@@ -70,6 +70,7 @@ class Remember extends \Magento\Framework\View\Element\Template
      * @param int $length
      * @param string|null $chars
      * @return string
+     * @codeCoverageIgnore
      */
     public function getRandomString($length, $chars = null)
     {

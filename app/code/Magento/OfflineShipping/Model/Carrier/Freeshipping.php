@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -10,6 +10,8 @@
  * @author     Magento Core Team <core@magentocommerce.com>
  */
 namespace Magento\OfflineShipping\Model\Carrier;
+
+use Magento\Quote\Model\Quote\Address\RateRequest;
 
 class Freeshipping extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
     \Magento\Shipping\Model\Carrier\CarrierInterface
@@ -58,10 +60,10 @@ class Freeshipping extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
     /**
      * FreeShipping Rates Collector
      *
-     * @param \Magento\Framework\Object $request
+     * @param RateRequest $request
      * @return \Magento\Shipping\Model\Rate\Result|bool
      */
-    public function collectRates(\Magento\Framework\Object $request)
+    public function collectRates(RateRequest $request)
     {
         if (!$this->getConfigFlag('active')) {
             return false;

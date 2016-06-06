@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Model;
@@ -38,7 +38,7 @@ class Info extends AbstractExtensibleModel implements InfoInterface
      * @param \Magento\Framework\Api\AttributeValueFactory $customAttributeFactory,
      * @param \Magento\Payment\Helper\Data $paymentData
      * @param \Magento\Framework\Encryption\EncryptorInterface $encryptor
-     * @param \Magento\Framework\Model\Resource\AbstractResource $resource
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
      * @param array $data
      */
@@ -49,7 +49,7 @@ class Info extends AbstractExtensibleModel implements InfoInterface
         \Magento\Framework\Api\AttributeValueFactory $customAttributeFactory,
         \Magento\Payment\Helper\Data $paymentData,
         \Magento\Framework\Encryption\EncryptorInterface $encryptor,
-        \Magento\Framework\Model\Resource\AbstractResource $resource = null,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
@@ -188,9 +188,12 @@ class Info extends AbstractExtensibleModel implements InfoInterface
         if ($key && isset($this->_additionalInformation[$key])) {
             unset($this->_additionalInformation[$key]);
             return $this->setData('additional_information', $this->_additionalInformation);
+        } elseif (null === $key) {
+            $this->_additionalInformation = [];
+            return $this->unsetData('additional_information');
         }
-        $this->_additionalInformation = [];
-        return $this->unsetData('additional_information');
+
+        return $this;
     }
 
     /**
@@ -217,9 +220,6 @@ class Info extends AbstractExtensibleModel implements InfoInterface
     {
         $additionalInfo = $this->_getData('additional_information');
         if (empty($this->_additionalInformation) && $additionalInfo) {
-            if (!is_array($additionalInfo)) {
-                $additionalInfo = unserialize($additionalInfo);
-            }
             $this->_additionalInformation = $additionalInfo;
         }
     }

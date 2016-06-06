@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Layout\Reader;
@@ -61,7 +61,14 @@ class BlockTest extends \PHPUnit_Framework_TestCase
         $resultElementData = $structure->getStructureElementData($this->blockName);
 
         $this->assertEquals(
-            ['group' => 'test.group', 'class' => 'Dummy\Class', 'template' => 'test.phtml', 'ttl' => 3],
+            [
+                Block::ATTRIBUTE_GROUP => 'test.group',
+                Block::ATTRIBUTE_CLASS => 'Dummy\Class',
+                Block::ATTRIBUTE_TEMPLATE => 'test.phtml',
+                Block::ATTRIBUTE_TTL => 3,
+                Block::ATTRIBUTE_DISPLAY => '',
+                Block::ATTRIBUTE_ACL => ''
+            ],
             $resultElementData['attributes']
         );
         $this->assertEquals(

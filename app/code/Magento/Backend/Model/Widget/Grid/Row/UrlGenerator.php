@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Model\Widget\Grid\Row;
@@ -53,7 +53,7 @@ class UrlGenerator implements \Magento\Backend\Model\Widget\Grid\Row\GeneratorIn
     /**
      * Create url for passed item using passed url model
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return string
      */
     public function getUrl($item)
@@ -68,7 +68,7 @@ class UrlGenerator implements \Magento\Backend\Model\Widget\Grid\Row\GeneratorIn
     /**
      * Convert template params array and merge with preselected params
      *
-     * @param \Magento\Framework\Object $item
+     * @param \Magento\Framework\DataObject $item
      * @return array
      */
     protected function _prepareParameters($item)

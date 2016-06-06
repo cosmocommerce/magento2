@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Test\Unit\Code\Generator;
@@ -41,7 +41,7 @@ class RepositoryTest extends EntityChildTestAbstract
     protected function mockDefinedClassesCall()
     {
         $this->definedClassesMock->expects($this->at(0))
-            ->method('classLoadable')
+            ->method('isClassLoadable')
             ->with($this->getSourceClassName() . 'Interface')
             ->willReturn(true);
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Filter\Template\Tokenizer;
@@ -55,6 +55,24 @@ abstract class AbstractTokenizer
         }
 
         $this->_currentIndex--;
+        return true;
+    }
+
+    /**
+     * Move current index backwards.
+     *
+     * If index out of bounds returns false
+     *
+     * @param int $distance number of characters to backtrack
+     * @return bool
+     */
+    public function back($distance)
+    {
+        if ($this->_currentIndex - $distance < 0) {
+            return false;
+        }
+
+        $this->_currentIndex -= $distance;
         return true;
     }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,7 +18,7 @@ class ConfiguredPriceTest extends \PHPUnit_Framework_TestCase
     protected $model;
 
     /**
-     * @var \Magento\Framework\Pricing\Object\SaleableInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Pricing\SaleableInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $saleableItem;
 
@@ -42,8 +42,7 @@ class ConfiguredPriceTest extends \PHPUnit_Framework_TestCase
      */
     protected $priceInfo;
 
-
-    public function setUp()
+    protected function setUp()
     {
         $this->price = $this->getMockBuilder('Magento\Framework\Pricing\Price\PriceInterface')
             ->getMock();
@@ -51,7 +50,7 @@ class ConfiguredPriceTest extends \PHPUnit_Framework_TestCase
         $this->priceInfo = $this->getMockBuilder('Magento\Framework\Pricing\PriceInfoInterface')
             ->getMock();
 
-        $this->saleableItem = $this->getMockBuilder('Magento\Framework\Pricing\Object\SaleableInterface')
+        $this->saleableItem = $this->getMockBuilder('Magento\Framework\Pricing\SaleableInterface')
             ->setMethods([
                 'getTypeId',
                 'getId',
@@ -202,7 +201,7 @@ class ConfiguredPriceTest extends \PHPUnit_Framework_TestCase
     {
         $resultPrice = rand(1, 9);
 
-        $this->price->expects($this->once())
+        $this->price->expects($this->exactly(4))
             ->method('getValue')
             ->willReturn($resultPrice);
 

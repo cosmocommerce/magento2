@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Config\Test\Unit\Model\Config;
@@ -34,7 +34,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $this->_model = new \Magento\Config\Model\Config\Loader($this->_configValueFactory);
 
         $this->_configCollection = $this->getMock(
-            'Magento\Config\Model\Resource\Config\Data\Collection',
+            'Magento\Config\Model\ResourceModel\Config\Data\Collection',
             [],
             [],
             '',
@@ -74,7 +74,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             'getItems'
         )->will(
             $this->returnValue(
-                [new \Magento\Framework\Object(['path' => 'section', 'value' => 10, 'config_id' => 20])]
+                [new \Magento\Framework\DataObject(['path' => 'section', 'value' => 10, 'config_id' => 20])]
             )
         );
     }

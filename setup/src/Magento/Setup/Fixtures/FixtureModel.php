@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -105,22 +105,13 @@ class FixtureModel
      */
     public function loadFixtures()
     {
-        if (!is_readable(__DIR__)) {
-            throw new \Exception(
-                'Fixtures set directory `' . __DIR__ . '` is not readable or does not exists.'
-            );
-        }
         $files = glob(__DIR__ . DIRECTORY_SEPARATOR . self::FIXTURE_PATTERN);
 
         foreach ($files as $file) {
             $file = basename($file, '.php');
             /** @var \Magento\Setup\Fixtures\Fixture $fixture */
-            $fixture = $this->objectManager->create(
-                'Magento\Setup\Fixtures' . '\\' . $file,
-                [
-                    'fixtureModel' => $this
-                ]
-            );
+            $type = 'Magento\Setup\Fixtures' . '\\' . $file;
+            $fixture = new $type($this);
             $this->fixtures[$fixture->getPriority()] = $fixture;
         }
 
@@ -176,9 +167,12 @@ class FixtureModel
      */
     public function initObjectManager()
     {
-        $this->getObjectManager()->configure(
-            $this->getObjectManager()->get('Magento\Framework\App\ObjectManager\ConfigLoader')->load(self::AREA_CODE)
-        );
+        $this->getObjectManager()
+            ->configure(
+                $this->getObjectManager()
+                    ->get('Magento\Framework\ObjectManager\ConfigLoaderInterface')
+                    ->load(self::AREA_CODE)
+            );
         $this->getObjectManager()->get('Magento\Framework\Config\ScopeInterface')->setCurrentScope(self::AREA_CODE);
         return $this;
     }

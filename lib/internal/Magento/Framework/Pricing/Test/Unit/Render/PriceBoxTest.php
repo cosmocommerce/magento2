@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Pricing\Test\Unit\Render;
@@ -33,7 +33,7 @@ class PriceBoxTest extends \PHPUnit_Framework_TestCase
     protected $rendererPool;
 
     /**
-     * @var \Magento\Framework\Pricing\Object\SaleableInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Pricing\SaleableInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $saleable;
 
@@ -42,7 +42,7 @@ class PriceBoxTest extends \PHPUnit_Framework_TestCase
      */
     protected $price;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
 
@@ -54,6 +54,8 @@ class PriceBoxTest extends \PHPUnit_Framework_TestCase
         $layout = $this->getMock('Magento\Framework\View\LayoutInterface');
         $eventManager = $this->getMock('Magento\Framework\Event\ManagerInterface');
         $scopeConfigMock = $this->getMockForAbstractClass('Magento\Framework\App\Config\ScopeConfigInterface');
+        $cacheState = $this->getMockBuilder(\Magento\Framework\App\Cache\StateInterface::class)
+            ->getMockForAbstractClass();
         $storeConfig = $this->getMockBuilder('Magento\Store\Model\Store\Config')
             ->disableOriginalConstructor()
             ->getMock();
@@ -72,8 +74,11 @@ class PriceBoxTest extends \PHPUnit_Framework_TestCase
         $this->context->expects($this->any())
             ->method('getScopeConfig')
             ->will($this->returnValue($scopeConfigMock));
+        $this->context->expects($this->any())
+            ->method('getCacheState')
+            ->will($this->returnValue($cacheState));
 
-        $this->saleable = $this->getMock('Magento\Framework\Pricing\Object\SaleableInterface');
+        $this->saleable = $this->getMock('Magento\Framework\Pricing\SaleableInterface');
 
         $this->price = $this->getMock('Magento\Framework\Pricing\Price\PriceInterface');
 

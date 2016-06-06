@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -243,7 +243,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $checkMock = $this->getMock('Magento\Framework\Object', ['getMessage', 'getHasError'], [], '', false);
+        $checkMock = $this->getMock('Magento\Framework\DataObject', ['getMessage', 'getHasError'], [], '', false);
 
         $layoutMock->expects($this->once())->method('getParentName')->will($this->returnValue('parentBlock'));
         $layoutMock->expects($this->once())->method('getBlock')->with('parentBlock')

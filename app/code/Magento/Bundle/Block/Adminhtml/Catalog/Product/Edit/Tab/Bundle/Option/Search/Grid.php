@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Block\Adminhtml\Catalog\Product\Edit\Tab\Bundle\Option\Search;
@@ -118,7 +118,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 
         if ($this->getFirstShow()) {
             $collection->addIdFilter('-1');
-            $this->setEmptyText(__('Please enter search conditions to view products.'));
+            $this->setEmptyText(__('What are you looking for?'));
         }
 
         $this->setCollection($collection);

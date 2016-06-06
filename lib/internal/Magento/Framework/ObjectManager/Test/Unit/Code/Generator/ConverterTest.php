@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Test\Unit\Code\Generator;
@@ -77,7 +77,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
         //Mocking _validateData call
         $this->definedClassesMock->expects($this->at(0))
-            ->method('classLoadable')
+            ->method('isClassLoadable')
             ->will($this->returnValue(true));
 
         $this->ioObjectMock->expects($this->once())
@@ -105,7 +105,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
         //Mocking generation
         $this->ioObjectMock->expects($this->any())
-            ->method('getResultFileName')
+            ->method('generateResultFileName')
             ->with(self::RESULT_CLASS_NAME)
             ->will($this->returnValue($resultFileName));
         $this->ioObjectMock->expects($this->once())

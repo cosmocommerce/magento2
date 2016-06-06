@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model\Metadata;
@@ -39,7 +39,6 @@ class FormTest extends \PHPUnit_Framework_TestCase
             'default_shipping' => 1,
             'default_billing' => 0,
             'company' => 'Company Name',
-            'fax' => '(555) 555-5555',
             'middlename' => 'Mid',
             'prefix' => 'Mr.',
             'suffix' => 'Esq.',
@@ -57,7 +56,6 @@ class FormTest extends \PHPUnit_Framework_TestCase
 
         $requestData = [
             'company' => 'Company Name',
-            'fax' => '(555) 555-5555',
             'middlename' => 'Mid',
             'prefix' => 'Mr.',
             'suffix' => 'Esq.',

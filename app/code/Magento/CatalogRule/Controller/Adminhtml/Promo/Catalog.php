@@ -1,10 +1,8 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-
-// @codingStandardsIgnoreFile
 
 /**
  * Backend Catalog Price Rules controller
@@ -18,8 +16,15 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\Filter\Date;
 
-class Catalog extends Action
+abstract class Catalog extends Action
 {
+    /**
+     * Authorization level of a basic admin session
+     *
+     * @see _isAllowed()
+     */
+    const ADMIN_RESOURCE = 'Magento_CatalogRule::promo_catalog';
+
     /**
      * Dirty rules notice message
      *
@@ -36,11 +41,15 @@ class Catalog extends Action
     protected $_coreRegistry = null;
 
     /**
+     * Date filter instance
+     *
      * @var \Magento\Framework\Stdlib\DateTime\Filter\Date
      */
     protected $_dateFilter;
 
     /**
+     * Constructor
+     *
      * @param Context $context
      * @param Registry $coreRegistry
      * @param Date $dateFilter
@@ -53,6 +62,8 @@ class Catalog extends Action
     }
 
     /**
+     * Init action
+     *
      * @return $this
      */
     protected function _initAction()
@@ -68,18 +79,11 @@ class Catalog extends Action
     }
 
     /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Magento_CatalogRule::promo_catalog');
-    }
-
-    /**
      * Set dirty rules notice message
      *
      * @param string $dirtyRulesNoticeMessage
      * @return void
+     * @codeCoverageIgnore
      */
     public function setDirtyRulesNoticeMessage($dirtyRulesNoticeMessage)
     {
@@ -94,7 +98,7 @@ class Catalog extends Action
     public function getDirtyRulesNoticeMessage()
     {
         $defaultMessage = __(
-            'There are rules that have been changed but were not applied. Please, click Apply Rules in order to see immediate effect in the catalog.'
+            'We found updated rules that are not applied. Please click "Apply Rules" to update your catalog.'
         );
         return $this->_dirtyRulesNoticeMessage ? $this->_dirtyRulesNoticeMessage : $defaultMessage;
     }

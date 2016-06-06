@@ -3,12 +3,14 @@
 /**
  * Import entity of bundle product type
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\BundleImportExport\Model\Import\Product\Type;
 
 use \Magento\Bundle\Model\Product\Price as BundlePrice;
+use \Magento\BundleImportExport\Model\Export\RowCustomizer;
+use \Magento\Catalog\Model\Product\Type\AbstractType;
 
 /**
  * Class Bundle
@@ -63,7 +65,7 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
     /**
      * Instance of application resource.
      *
-     * @var \Magento\Framework\App\Resource
+     * @var \Magento\Framework\App\ResourceConnection
      */
     protected $_resource;
 
@@ -89,6 +91,13 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
     protected $_cachedSkuToProducts = [];
 
     /**
+     * Array of queries selecting cached options.
+     *
+     * @var array
+     */
+    protected $_cachedOptionSelectQuery = [];
+
+    /**
      * Column names that holds values with particular meaning.
      *
      * @var string[]
@@ -106,6 +115,7 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
      */
     protected $_customFieldsMapping = [
         'price_type' => 'bundle_price_type',
+        'shipment_type' => 'bundle_shipment_type',
         'price_view' => 'bundle_price_view',
         'weight_type' => 'bundle_weight_type',
         'sku_type' => 'bundle_sku_type',
@@ -135,20 +145,20 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
     ];
 
     /**
-     * @param \Magento\Eav\Model\Resource\Entity\Attribute\Set\CollectionFactory $attrSetColFac
-     * @param \Magento\Catalog\Model\Resource\Product\Attribute\CollectionFactory $prodAttrColFac
+     * @param \Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory $attrSetColFac
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory $prodAttrColFac
+     * @param \Magento\Framework\App\ResourceConnection $resource
      * @param array $params
-     * @param \Magento\Framework\App\Resource $resource
      */
     public function __construct(
-        \Magento\Eav\Model\Resource\Entity\Attribute\Set\CollectionFactory $attrSetColFac,
-        \Magento\Catalog\Model\Resource\Product\Attribute\CollectionFactory $prodAttrColFac,
-        array $params,
-        \Magento\Framework\App\Resource $resource
+        \Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory $attrSetColFac,
+        \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory $prodAttrColFac,
+        \Magento\Framework\App\ResourceConnection $resource,
+        array $params
     ) {
-        parent::__construct($attrSetColFac, $prodAttrColFac, $params);
+        parent::__construct($attrSetColFac, $prodAttrColFac, $resource, $params);
         $this->_resource = $resource;
-        $this->connection = $resource->getConnection('write');
+        $this->connection = $resource->getConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
     }
 
     /**
@@ -185,9 +195,10 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
                 }
                 $this->_cachedOptions[$entityId][$option['name']]['selections'][] = $option;
                 $this->_cachedOptionSelectQuery[] =
-                    $this->connection->select()
-                    ->getAdapter()
-                    ->quoteInto('(parent_id = '.(int)$entityId.' AND title = ?)', $option['name']);
+                    $this->connection->quoteInto(
+                        '(parent_id = ' . (int)$entityId . ' AND title = ?)',
+                        $option['name']
+                    );
             }
         }
         return $selections;
@@ -231,6 +242,7 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
     protected function populateOptionTemplate($option, $entityId, $index = null)
     {
         $populatedOption = [
+            'option_id' => null,
             'parent_id' => $entityId,
             'required' => isset($option['required']) ? $option['required'] : 1,
             'position' => ($index === null ? 0 : $index),
@@ -282,9 +294,10 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
             }
             $productId = $this->_cachedSkuToProducts[$selection['sku']];
         } else {
-            $productId = $selection['parent_product_id'];
+            $productId = $selection['product_id'];
         }
         $populatedSelection = [
+            'selection_id' => null,
             'option_id' => (int)$optionId,
             'parent_product_id' => (int)$parentId,
             'product_id' => (int)$productId,
@@ -334,7 +347,7 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
             while ($bunch = $this->_entityModel->getNextBunch()) {
                 foreach ($bunch as $rowNum => $rowData) {
                     $productData = $newSku[$rowData[\Magento\CatalogImportExport\Model\Import\Product::COL_SKU]];
-                    $productIds[] = $productData['entity_id'];
+                    $productIds[] = $productData[$this->getProductEntityLinkField()];
                 }
                 $this->deleteOptionsAndSelections($productIds);
             }
@@ -349,7 +362,7 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
                     if ($this->_type != $productData['type_id']) {
                         continue;
                     }
-                    $this->parseSelections($rowData, $productData['entity_id']);
+                    $this->parseSelections($rowData, $productData[$this->getProductEntityLinkField()]);
                 }
                 if (!empty($this->_cachedOptions)) {
                     $this->retrieveProducsByCachedSkus();
@@ -373,7 +386,10 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
      */
     public function isRowValid(array $rowData, $rowNum, $isNewProduct = true)
     {
-        $rowData = array_merge($rowData, $this->transformBundleCustomAttributes($rowData));
+        if (isset($rowData['bundle_price_type']) && $rowData['bundle_price_type'] == 'dynamic') {
+            $rowData['price'] = isset($rowData['price']) && $rowData['price'] ? $rowData['price'] : '0.00';
+        }
+
         return parent::isRowValid($rowData, $rowNum, $isNewProduct);
     }
 
@@ -400,15 +416,24 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
     protected function transformBundleCustomAttributes($rowData)
     {
         $resultAttrs = [];
-        foreach (array_keys($this->_customFieldsMapping) as $oldKey) {
+        foreach ($this->_customFieldsMapping as $oldKey => $newKey) {
             if (isset($rowData[$oldKey])) {
-                if ($oldKey != self::NOT_FIXED_DYNAMIC_ATTRIBUTE) {
-                    $resultAttrs[$oldKey] = (($rowData[$oldKey] == self::VALUE_FIXED) ?
-                        BundlePrice::PRICE_TYPE_FIXED :
-                        BundlePrice::PRICE_TYPE_DYNAMIC);
+                switch ($newKey) {
+                    case $this->_customFieldsMapping['price_view']:
+                        break;
+                    case $this->_customFieldsMapping['shipment_type']:
+                        $resultAttrs[$oldKey] = (($rowData[$oldKey] == 'separately') ?
+                            AbstractType::SHIPMENT_SEPARATELY :
+                            AbstractType::SHIPMENT_TOGETHER);
+                        break;
+                    default:
+                        $resultAttrs[$oldKey] = (($rowData[$oldKey] == self::VALUE_FIXED) ?
+                            BundlePrice::PRICE_TYPE_FIXED :
+                            BundlePrice::PRICE_TYPE_DYNAMIC);
                 }
             }
         }
+
         return $resultAttrs;
     }
 
@@ -584,6 +609,7 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
                 $selectionTable,
                 $selections,
                 [
+                    'selection_id',
                     'product_id',
                     'position',
                     'is_default',
@@ -595,6 +621,35 @@ class Bundle extends \Magento\CatalogImportExport\Model\Import\Product\Type\Abst
             );
         }
         return $this;
+    }
+
+    /**
+     * Initialize attributes parameters for all attributes' sets.
+     *
+     * @return $this
+     */
+    protected function _initAttributes()
+    {
+        parent::_initAttributes();
+
+        $options = [
+            self::VALUE_DYNAMIC => BundlePrice::PRICE_TYPE_DYNAMIC,
+            self::VALUE_FIXED => BundlePrice::PRICE_TYPE_FIXED,
+        ];
+
+        foreach ($this->_specialAttributes as $attributeCode) {
+            if (isset(self::$attributeCodeToId[$attributeCode]) && $id = self::$attributeCodeToId[$attributeCode]) {
+                self::$commonAttributesCache[$id]['type'] = 'select';
+                self::$commonAttributesCache[$id]['options'] = $options;
+
+                foreach ($this->_attributes as $attrSetName => $attrSetValue) {
+                    if (isset($attrSetValue[$attributeCode])) {
+                        $this->_attributes[$attrSetName][$attributeCode]['type'] = 'select';
+                        $this->_attributes[$attrSetName][$attributeCode]['options'] = $options;
+                    }
+                }
+            }
+        }
     }
 
     /**

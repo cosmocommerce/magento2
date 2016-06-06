@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ProductAlert\Model;
@@ -53,8 +53,8 @@ class ObserverTest extends \PHPUnit_Framework_TestCase
         /** @var \Magento\TestFramework\Mail\Template\TransportBuilderMock $transportBuilder */
         $transportBuilder = $this->_objectManager->get('Magento\TestFramework\Mail\Template\TransportBuilderMock');
         $this->assertContains(
-            'Hello John Smi=' . PHP_EOL . 'th',
-            $transportBuilder->getSentMessage()->getBodyHtml()->getContent()
+            'John Smith,',
+            $transportBuilder->getSentMessage()->getBodyHtml()->getRawContent()
         );
     }
 }

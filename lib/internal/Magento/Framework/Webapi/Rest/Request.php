@@ -2,7 +2,7 @@
 /**
  * REST API request.
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -48,6 +48,7 @@ class Request extends \Magento\Framework\Webapi\Request
      * Initialize dependencies
      *
      * @param \Magento\Framework\Stdlib\Cookie\CookieReaderInterface $cookieReader
+     * @param \Magento\Framework\Stdlib\StringUtils $converter
      * @param \Magento\Framework\App\AreaList $areaList
      * @param \Magento\Framework\Config\ScopeInterface $configScope
      * @param \Magento\Framework\Webapi\Rest\Request\DeserializerFactory $deserializerFactory
@@ -55,12 +56,13 @@ class Request extends \Magento\Framework\Webapi\Request
      */
     public function __construct(
         \Magento\Framework\Stdlib\Cookie\CookieReaderInterface $cookieReader,
+        \Magento\Framework\Stdlib\StringUtils $converter,
         \Magento\Framework\App\AreaList $areaList,
         \Magento\Framework\Config\ScopeInterface $configScope,
         \Magento\Framework\Webapi\Rest\Request\DeserializerFactory $deserializerFactory,
         $uri = null
     ) {
-        parent::__construct($cookieReader, $areaList, $configScope, $uri);
+        parent::__construct($cookieReader, $converter, $areaList, $configScope, $uri);
         $this->_deserializerFactory = $deserializerFactory;
     }
 
@@ -123,7 +125,12 @@ class Request extends \Magento\Framework\Webapi\Request
     public function getBodyParams()
     {
         if (null == $this->_bodyParams) {
-            $this->_bodyParams = (array)$this->_getDeserializer()->deserialize((string)$this->getContent());
+            $this->_bodyParams = [];
+            //avoid JSON decoding with empty string
+            if ($this->getContent()) {
+                $this->_bodyParams = (array)$this->_getDeserializer()->deserialize((string)$this->getContent());
+            }
+
         }
         return $this->_bodyParams;
     }
@@ -183,13 +190,6 @@ class Request extends \Magento\Framework\Webapi\Request
             $requestBodyParams = $this->getBodyParams();
         }
 
-        /*
-         * Valid only for updates using PUT when passing id value both in URL and body
-         */
-        if ($httpMethod == self::HTTP_METHOD_PUT && !empty($params)) {
-            $requestBodyParams = $this->overrideRequestBodyIdWithPathParam($params);
-        }
-
         return array_merge($requestBodyParams, $params);
     }
 
@@ -207,6 +207,9 @@ class Request extends \Magento\Framework\Webapi\Request
      *
      * @param array $urlPathParams url path parameters as array
      * @return array
+     *
+     * @deprecated
+     * @see \Magento\Webapi\Controller\Rest\ParamsOverrider::overrideRequestBodyIdWithPathParam
      */
     protected function overrideRequestBodyIdWithPathParam($urlPathParams)
     {
@@ -235,6 +238,8 @@ class Request extends \Magento\Framework\Webapi\Request
      * @param string $key
      * @param string $value
      * @return void
+     * @deprecated
+     * @see \Magento\Webapi\Controller\Rest\ParamsOverrider::substituteParameters
      */
     protected function substituteParameters(&$requestData, $key, $value)
     {

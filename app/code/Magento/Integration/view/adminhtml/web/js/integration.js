@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 /*jshint jquery:true*/
@@ -7,9 +7,11 @@
 /*global integration*/
 define([
     "jquery",
+    "Magento_Ui/js/modal/alert",
     "jquery/ui",
-    "mage/translate"
-], function($){
+    "mage/translate",
+    "Magento_Ui/js/modal/modal"
+], function($, alert){
     "use strict";
 
     $.widget('mage.integration', {
@@ -80,7 +82,9 @@ define([
                     }
                 },
                 error: function (jqXHR, status, error) {
-                    alert($.mage.__('Sorry, something went wrong. Please try again later.'));
+                    alert({
+                        content: $.mage.__('Sorry, something went wrong. Please try again later.')
+                    });
                     window.console && console.log(status + ': ' + error + "\nResponse text:\n" + jqXHR.responseText);
                 },
                 complete: function () {
@@ -129,11 +133,11 @@ define([
                 TOP: screen.height - 510 - 300
             },
 
-            invokePopup: function (identityCallbackUrl, consumerId, jqInfoDialog) {
+            invokePopup: function (identityCallbackUrl, consumerKey, jqInfoDialog) {
                 // Callback should be invoked only once. Reset callback flag on subsequent invocations.
                 IdentityLogin.isCalledBack = false;
                 IdentityLogin.jqInfoDialog = jqInfoDialog;
-                var param = $.param({"consumer_id": consumerId, "success_call_back": IdentityLogin.successCallbackUrl});
+                var param = $.param({"oauth_consumer_key": consumerKey, "success_call_back": IdentityLogin.successCallbackUrl});
                 IdentityLogin.win = window.open(identityCallbackUrl + '?' + param, '',
                     'top=' + IdentityLogin.Constants.TOP +
                         ', left=' + IdentityLogin.Constants.LEFT +
@@ -168,17 +172,29 @@ define([
                         $('body').trigger('processStart');
                         //Check for window closed
                         window.location.reload();
-                        IdentityLogin.jqInfoDialog.dialog('close');
+                        IdentityLogin.jqInfoDialog.modal('closeModal');
                     }
                 } catch (e) {
                     //squash. In case Window closed without success callback, clear polling
                     if (IdentityLogin.win.closed) {
-                        IdentityLogin.jqInfoDialog.dialog('close');
+                        IdentityLogin.jqInfoDialog.modal('closeModal');
                         clearInterval(IdentityLogin.checker);
                     }
                     return;
                 }
             }
+        };
+
+        var isPopupBlocked = function(popupWindow) {
+            try {
+                popupWindow.focus();
+            } catch (e) {
+                alert({
+                    content: $.mage.__("Popup Blocker is enabled! Please add this site to your exception list.")
+                });
+                return true;
+            }
+            return false;
         };
 
         var _showPopup = function (dialog, title, okButton, url) {
@@ -201,7 +217,7 @@ define([
                     }
 
                     var identityLinkUrl = null,
-                        consumerId = null,
+                        consumerKey = null,
                         popupHtml = null,
                         popup = $('#integration-popup-container');
 
@@ -211,59 +227,33 @@ define([
                             result;
 
                         identityLinkUrl = resultObj['identity_link_url'];
-                        consumerId      = resultObj['consumer_id'];
+                        consumerKey      = resultObj['oauth_consumer_key'];
                         popupHtml       = resultObj['popup_content'];
-                        
+
                     } catch (e) {
                         //This is expected if result is not json. Do nothing.
                     }
-                    if (identityLinkUrl && consumerId && popupHtml) {
-                        IdentityLogin.invokePopup(identityLinkUrl, consumerId, popup);
+
+                    if (identityLinkUrl && consumerKey && popupHtml) {
+                        IdentityLogin.invokePopup(identityLinkUrl, consumerKey, popup);
+                        if (isPopupBlocked(IdentityLogin.win)) {
+                            return;
+                        }
                     } else {
                         popupHtml = result;
                     }
 
+                    if (popup.length === 0){
+                        popup = $('<div/>');
+                    }
                     popup.html(popupHtml);
 
                     var buttons = [],
                         dialogProperties = {
                             title: title,
-                            modal: true,
-                            autoOpen: true,
-                            minHeight: 450,
-                            minWidth: 600,
-                            width: '75%',
+                            type: 'slide',
                             dialogClass: dialog == 'permissions' ? 'integration-dialog' : 'integration-dialog no-close',
-                            closeOnEscape: false,
-                            position: {
-                                my: 'left top',
-                                at: 'center top',
-                                of: 'body'
-                            },
-                            open: function () {
-                                $(this).closest('.ui-dialog').addClass('ui-dialog-active');
-
-                                var topMargin = $(this).closest('.ui-dialog').children('.ui-dialog-titlebar').outerHeight() + 30;
-                                $(this).closest('.ui-dialog').css('margin-top', topMargin);
-                            },
-                            close: function () {
-                                $(this).closest('.ui-dialog').removeClass('ui-dialog-active');
-                            }
                         };
-                    if (dialog == 'permissions') {
-                        // We don't need this button in 'tokens' dialog, since if you got there - integration is
-                        // already activated and have necessary tokens
-                        buttons.push({
-                            text: $.mage.__('Cancel'),
-                            'class': 'action-close',
-                            click: function () {
-                                $(this).dialog('close');
-                            }
-                        });
-                    } else if (dialog == 'tokensExchange') {
-                        dialogProperties['minHeight'] = 150;
-                        dialogProperties['minWidth'] = 500;
-                    }
 
                     // Add confirmation button to the list of dialog buttons. okButton not set for tokenExchange dialog
                     if (okButton) {
@@ -273,10 +263,13 @@ define([
                     if (buttons.length > 0) {
                         dialogProperties['buttons'] = buttons
                     }
-                    popup.dialog(dialogProperties);
+                    popup.modal(dialogProperties);
+                    popup.modal('openModal');
                 },
                 error: function (jqXHR, status, error) {
-                    alert($.mage.__('Sorry, something went wrong. Please try again later.'));
+                    alert({
+                        content: $.mage.__('Sorry, something went wrong. Please try again later.')
+                    });
                     window.console && console.log(status + ': ' + error + "\nResponse text:\n" + jqXHR.responseText);
                 },
                 complete: function () {
@@ -322,17 +315,20 @@ define([
                         permissions: {
                             text: (isReauthorize == '1') ? $.mage.__('Reauthorize') : $.mage.__('Allow'),
                             'class': 'action-primary',
-                            // This data is going to be used in the next dialog
-                            'data-row-id': integrationId,
-                            'data-row-name': integrationName,
-                            'data-row-dialog': (isTokenExchange == '1') ? 'tokensExchange' : 'tokens',
-                            'data-row-is-reauthorize': isReauthorize,
-                            'data-row-is-token-exchange': isTokenExchange,
+                            attr: {
+                                'data-row-id': integrationId,
+                                'data-row-name': integrationName,
+                                'data-row-dialog': (isTokenExchange == '1') ? 'tokensExchange' : 'tokens',
+                                'data-row-is-reauthorize': isReauthorize,
+                                'data-row-is-token-exchange': isTokenExchange
+                            },
                             click: function () {
                                 // Find the 'Allow' button and clone - it has all necessary data, but is going to be
                                 // destroyed along with the current dialog
-                                var ctx = $(this).parent().find('button.action-primary').clone(true);
-                                $(this).dialog('destroy');
+                                var ctx = this.modal.find('button.action-primary').clone(true);
+
+                                this.closeModal();
+                                this.modal.remove();
                                 // Make popup out of data we saved from 'Allow' button
                                 window.integration.popup.show(ctx);
                             }

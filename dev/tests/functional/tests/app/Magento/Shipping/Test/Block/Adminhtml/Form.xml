@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
 <!--
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 -->
 <mapping strict="0">
-    <wrapper>creditmemo</wrapper>
+    <wrapper>shipment</wrapper>
     <fields>
         <comment_text />
         <shipping_amount />

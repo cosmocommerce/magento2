@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Model\Rule\Condition;
@@ -73,7 +73,7 @@ class Combine extends \Magento\Rule\Model\Condition\Combine
             ]
         );
 
-        $additional = new \Magento\Framework\Object();
+        $additional = new \Magento\Framework\DataObject();
         $this->_eventManager->dispatch('salesrule_rule_condition_combine', ['additional' => $additional]);
         $additionalConditions = $additional->getConditions();
         if ($additionalConditions) {

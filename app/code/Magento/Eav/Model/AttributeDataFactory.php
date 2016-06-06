@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -42,16 +42,19 @@ class AttributeDataFactory
     protected $_objectManager;
 
     /**
-     * @var \Magento\Framework\Stdlib\String
+     * @var \Magento\Framework\Stdlib\StringUtils
      */
     protected $string;
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     * @param \Magento\Framework\Stdlib\String $string
+     * @param \Magento\Framework\Stdlib\StringUtils $string
+     * @codeCoverageIgnore
      */
-    public function __construct(\Magento\Framework\ObjectManagerInterface $objectManager, \Magento\Framework\Stdlib\String $string)
-    {
+    public function __construct(
+        \Magento\Framework\ObjectManagerInterface $objectManager,
+        \Magento\Framework\Stdlib\StringUtils $string
+    ) {
         $this->_objectManager = $objectManager;
         $this->string = $string;
     }

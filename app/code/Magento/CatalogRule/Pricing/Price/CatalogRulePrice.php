@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogRule\Pricing\Price;
 
 use Magento\Catalog\Model\Product;
-use Magento\CatalogRule\Model\Resource\RuleFactory;
+use Magento\CatalogRule\Model\ResourceModel\RuleFactory;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Pricing\Adjustment\Calculator;
 use Magento\Framework\Pricing\Price\AbstractPrice;
@@ -41,7 +41,7 @@ class CatalogRulePrice extends AbstractPrice implements BasePriceProviderInterfa
     protected $customerSession;
 
     /**
-     * @var \Magento\CatalogRule\Model\Resource\RuleFactory
+     * @var \Magento\CatalogRule\Model\ResourceModel\RuleFactory
      */
     protected $resourceRuleFactory;
 

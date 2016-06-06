@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Version\Controller\Index;
@@ -9,6 +9,7 @@ namespace Magento\Version\Controller\Index;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\Exception\StateException;
 
 /**
  * Magento Version controller
@@ -31,15 +32,21 @@ class Index extends Action
     }
 
     /**
-     * Sets the response body with ProductName/Version (Edition). E.g.: Magento/0.42.0-beta3 (Community)
+     * Sets the response body to ProductName/Major.MinorVersion (Edition). E.g.: Magento/0.42 (Community). Omits patch
+     * version from response
      *
      * @return void
      */
     public function execute()
     {
+        $versionParts = explode('.', $this->productMetadata->getVersion());
+        if (!isset($versionParts[0]) || !isset($versionParts[1])) {
+            return ; // Major and minor version are not set - return empty response
+        }
+        $majorMinorVersion = $versionParts[0] . '.' . $versionParts[1];
         $this->getResponse()->setBody(
             $this->productMetadata->getName() . '/' .
-            $this->productMetadata->getVersion() . ' (' .
+            $majorMinorVersion . ' (' .
             $this->productMetadata->getEdition() . ')'
         );
     }

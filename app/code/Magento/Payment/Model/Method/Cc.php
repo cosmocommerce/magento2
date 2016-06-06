@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Model\Method;
@@ -46,7 +46,7 @@ class Cc extends \Magento\Payment\Model\Method\AbstractMethod
      * @param Logger $logger
      * @param \Magento\Framework\Module\ModuleListInterface $moduleList
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
-     * @param \Magento\Framework\Model\Resource\AbstractResource $resource
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
      * @param array $data
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
@@ -61,7 +61,7 @@ class Cc extends \Magento\Payment\Model\Method\AbstractMethod
         \Magento\Payment\Model\Method\Logger $logger,
         \Magento\Framework\Module\ModuleListInterface $moduleList,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
-        \Magento\Framework\Model\Resource\AbstractResource $resource = null,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
@@ -79,42 +79,6 @@ class Cc extends \Magento\Payment\Model\Method\AbstractMethod
         );
         $this->_moduleList = $moduleList;
         $this->_localeDate = $localeDate;
-    }
-
-    /**
-     * Assign data to info model instance
-     *
-     * @param \Magento\Framework\Object|mixed $data
-     * @return $this
-     */
-    public function assignData($data)
-    {
-        if (!$data instanceof \Magento\Framework\Object) {
-            $data = new \Magento\Framework\Object($data);
-        }
-        $info = $this->getInfoInstance();
-        $info->setCcType(
-            $data->getCcType()
-        )->setCcOwner(
-            $data->getCcOwner()
-        )->setCcLast4(
-            substr($data->getCcNumber(), -4)
-        )->setCcNumber(
-            $data->getCcNumber()
-        )->setCcCid(
-            $data->getCcCid()
-        )->setCcExpMonth(
-            $data->getCcExpMonth()
-        )->setCcExpYear(
-            $data->getCcExpYear()
-        )->setCcSsIssue(
-            $data->getCcSsIssue()
-        )->setCcSsStartMonth(
-            $data->getCcSsStartMonth()
-        )->setCcSsStartYear(
-            $data->getCcSsStartYear()
-        );
-        return $this;
     }
 
     /**
@@ -180,6 +144,8 @@ class Cc extends \Magento\Payment\Model\Method\AbstractMethod
                     '|8[6-9][0-9]{10}|9[0-9]{11})|62(2(12[6-9][0-9]{10}|1[3-9][0-9]{11}|[2-8][0-9]{12}' .
                     '|9[0-1][0-9]{11}|92[0-5][0-9]{10})|[4-6][0-9]{13}|8[2-8][0-9]{12})|6(4[4-9][0-9]{13}' .
                     '|5[0-9]{14}))$/',
+                    'MI' => '/^(5(0|[6-9])|63|67(?!59|6770|6774))\d*$/',
+                    'MD' => '/^(6759(?!24|38|40|6[3-9]|70|76)|676770|676774)\d*$/',
                 ];
 
                 $ccNumAndTypeMatches = isset(
@@ -191,13 +157,13 @@ class Cc extends \Magento\Payment\Model\Method\AbstractMethod
                 $ccType = $ccNumAndTypeMatches ? $info->getCcType() : 'OT';
 
                 if (!$ccNumAndTypeMatches && !$this->otherCcType($info->getCcType())) {
-                    $errorMsg = __('Credit card number mismatch with credit card type.');
+                    $errorMsg = __('The credit card number doesn\'t match the credit card type.');
                 }
             } else {
                 $errorMsg = __('Invalid Credit Card Number');
             }
         } else {
-            $errorMsg = __('Credit card type is not allowed for this payment method.');
+            $errorMsg = __('This credit card type is not allowed for this payment method.');
         }
 
         //validate credit card verification number
@@ -210,7 +176,7 @@ class Cc extends \Magento\Payment\Model\Method\AbstractMethod
         }
 
         if ($ccType != 'SS' && !$this->_validateExpDate($info->getCcExpYear(), $info->getCcExpMonth())) {
-            $errorMsg = __('We found an incorrect credit card expiration date.');
+            $errorMsg = __('Please enter a valid credit card expiration date.');
         }
 
         if ($errorMsg) {
@@ -249,6 +215,8 @@ class Cc extends \Magento\Payment\Model\Method\AbstractMethod
             'SO' => '/^[0-9]{3,4}$/',
             'OT' => '/^[0-9]{3,4}$/',
             'JCB' => '/^[0-9]{3,4}$/',
+            'MI' => '/^[0-9]{3}$/',
+            'MD' => '/^[0-9]{3}$/',
         ];
         return $verificationExpList;
     }
@@ -337,7 +305,7 @@ class Cc extends \Magento\Payment\Model\Method\AbstractMethod
      * @param \Magento\Quote\Api\Data\CartInterface|null $quote
      * @return bool
      */
-    public function isAvailable($quote = null)
+    public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
     {
         return $this->getConfigData('cctypes', $quote ? $quote->getStoreId() : null) && parent::isAvailable($quote);
     }

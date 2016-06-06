@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App;
@@ -30,11 +30,11 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
     public function testDispatch()
     {
         if (!\Magento\TestFramework\Helper\Bootstrap::canTestHeaders()) {
-            $this->markTestSkipped('Cant\'t test dispatch process without sending headers');
+            $this->markTestSkipped('Can\'t test dispatch process without sending headers');
         }
         $_SERVER['HTTP_HOST'] = 'localhost';
         $this->_objectManager->get('Magento\Framework\App\State')->setAreaCode('frontend');
-        $request = $this->_objectManager->create('Magento\Framework\App\Request\Http');
+        $request = $this->_objectManager->get('Magento\Framework\App\Request\Http');
         /* empty action */
         $request->setRequestUri('core/index/index');
         $this->assertInstanceOf('Magento\Framework\Controller\ResultInterface', $this->_model->dispatch($request));

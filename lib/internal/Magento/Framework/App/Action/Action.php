@@ -1,12 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Action;
 
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NotFoundException;
 
 /**
@@ -15,7 +16,7 @@ use Magento\Framework\Exception\NotFoundException;
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-class Action extends AbstractAction
+abstract class Action extends AbstractAction
 {
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -46,7 +47,6 @@ class Action extends AbstractAction
     protected $_redirect;
 
     /**
-     * @deprecated
      * @var \Magento\Framework\App\ViewInterface
      */
     protected $_view;

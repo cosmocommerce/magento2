@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -77,7 +77,7 @@ class InstallSchema implements InstallSchemaInterface
                 'modified',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
                 null,
-                [],
+                ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE],
                 'User Modified Time'
             )->addColumn(
                 'logdate',
@@ -124,7 +124,7 @@ class InstallSchema implements InstallSchemaInterface
             )->addColumn(
                 'interface_locale',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-                5,
+                16,
                 ['nullable' => false, 'default' => 'en_US'],
                 'Backend interface locale'
             )->addIndex(

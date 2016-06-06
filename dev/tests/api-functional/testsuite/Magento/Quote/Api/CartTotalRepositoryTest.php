@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Quote\Api;
@@ -23,7 +23,7 @@ class CartTotalRepositoryTest extends WebapiAbstract
     /**
      * @var SearchCriteriaBuilder
      */
-    private $searchBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * @var FilterBuilder
@@ -33,7 +33,7 @@ class CartTotalRepositoryTest extends WebapiAbstract
     protected function setUp()
     {
         $this->objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
-        $this->searchBuilder = $this->objectManager->create(
+        $this->searchCriteriaBuilder = $this->objectManager->create(
             'Magento\Framework\Api\SearchCriteriaBuilder'
         );
         $this->filterBuilder = $this->objectManager->create(
@@ -77,6 +77,7 @@ class CartTotalRepositoryTest extends WebapiAbstract
             Totals::KEY_BASE_SHIPPING_INCL_TAX => $shippingAddress->getBaseShippingInclTax(),
             Totals::KEY_BASE_CURRENCY_CODE => $quote->getBaseCurrencyCode(),
             Totals::KEY_QUOTE_CURRENCY_CODE => $quote->getQuoteCurrencyCode(),
+            Totals::KEY_ITEMS_QTY => $quote->getItemsQty(),
             Totals::KEY_ITEMS => [$this->getQuoteItemTotalsData($quote)],
         ];
 
@@ -85,6 +86,10 @@ class CartTotalRepositoryTest extends WebapiAbstract
         $data = $this->formatTotalsData($data);
         $actual = $this->_webApiCall($this->getServiceInfoForTotalsService($cartId), $requestData);
         unset($actual['items'][0]['options']);
+        unset($actual['weee_tax_applied_amount']);
+
+        /** TODO: cover total segments with separate test */
+        unset($actual['total_segments']);
         if (array_key_exists('extension_attributes', $actual)) {
             unset($actual['extension_attributes']);
         }
@@ -97,7 +102,7 @@ class CartTotalRepositoryTest extends WebapiAbstract
      */
     public function testGetTotalsWithAbsentQuote()
     {
-        $cartId = 'unknownCart';
+        $cartId = 9999999999;
         $requestData = ['cartId' => $cartId];
         $this->_webApiCall($this->getServiceInfoForTotalsService($cartId), $requestData);
     }
@@ -231,12 +236,17 @@ class CartTotalRepositoryTest extends WebapiAbstract
             Totals::KEY_BASE_SHIPPING_INCL_TAX => $shippingAddress->getBaseShippingInclTax(),
             Totals::KEY_BASE_CURRENCY_CODE => $quote->getBaseCurrencyCode(),
             Totals::KEY_QUOTE_CURRENCY_CODE => $quote->getQuoteCurrencyCode(),
+            Totals::KEY_ITEMS_QTY => $quote->getItemsQty(),
             Totals::KEY_ITEMS => [$this->getQuoteItemTotalsData($quote)],
         ];
 
         $data = $this->formatTotalsData($data);
         $actual = $this->_webApiCall($serviceInfo);
         unset($actual['items'][0]['options']);
+        unset($actual['weee_tax_applied_amount']);
+
+        /** TODO: cover total segments with separate test */
+        unset($actual['total_segments']);
         if (array_key_exists('extension_attributes', $actual)) {
             unset($actual['extension_attributes']);
         }

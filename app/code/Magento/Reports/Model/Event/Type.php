@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Model\Event;
@@ -8,8 +8,8 @@ namespace Magento\Reports\Model\Event;
 /**
  * Event type model
  *
- * @method \Magento\Reports\Model\Resource\Event\Type _getResource()
- * @method \Magento\Reports\Model\Resource\Event\Type getResource()
+ * @method \Magento\Reports\Model\ResourceModel\Event\Type _getResource()
+ * @method \Magento\Reports\Model\ResourceModel\Event\Type getResource()
  * @method string getEventName()
  * @method \Magento\Reports\Model\Event\Type setEventName(string $value)
  * @method int getCustomerLogin()
@@ -24,6 +24,6 @@ class Type extends \Magento\Framework\Model\AbstractModel
      */
     protected function _construct()
     {
-        $this->_init('Magento\Reports\Model\Resource\Event\Type');
+        $this->_init('Magento\Reports\Model\ResourceModel\Event\Type');
     }
 }

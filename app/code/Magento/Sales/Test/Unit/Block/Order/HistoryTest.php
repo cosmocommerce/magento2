@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Block\Order;
@@ -18,7 +18,7 @@ class HistoryTest extends \PHPUnit_Framework_TestCase
     protected $context;
 
     /**
-     * @var \Magento\Sales\Model\Resource\Order\CollectionFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Sales\Model\ResourceModel\Order\CollectionFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $orderCollectionFactory;
 
@@ -42,10 +42,11 @@ class HistoryTest extends \PHPUnit_Framework_TestCase
      */
     protected $pageTitleMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->context = $this->getMock('Magento\Framework\View\Element\Template\Context', [], [], '', false, false);
-        $this->orderCollectionFactory = $this->getMockBuilder('Magento\Sales\Model\Resource\Order\CollectionFactory')
+        $this->orderCollectionFactory =
+            $this->getMockBuilder('Magento\Sales\Model\ResourceModel\Order\CollectionFactory')
             ->disableOriginalConstructor()->setMethods(['create'])->getMock();
 
         $this->customerSession = $this->getMockBuilder('Magento\Customer\Model\Session')
@@ -76,7 +77,7 @@ class HistoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($statuses));
 
         $orderCollection = $this->getMock(
-            'Magento\Sales\Model\Resource\Order\Collection',
+            'Magento\Sales\Model\ResourceModel\Order\Collection',
             ['addFieldToSelect', 'addFieldToFilter', 'setOrder'],
             [],
             '',

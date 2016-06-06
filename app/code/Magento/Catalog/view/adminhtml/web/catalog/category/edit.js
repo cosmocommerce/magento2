@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 /**
@@ -20,7 +20,7 @@ define([
 
     var params = {};
     var fields = $('category_edit_form').getElementsBySelector('input', 'select');
-    for(var i=0;i<fields.length;i++){
+    for (var i=0; i<fields.length; i++) {
         if (!fields[i].name) {
             continue;
         }

@@ -1,11 +1,12 @@
 <!--
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 -->
 <input class="input-text" type="text" data-bind="
     value: value,
+    valueUpdate: 'keyup',
     hasFocus: focused,
     attr: {
         name: inputName,

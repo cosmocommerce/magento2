@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,7 +13,7 @@ use Magento\Mtf\TestCase\Scenario;
  *
  * Preconditions:
  * 1. Enable Gift Messages (Order/Items level)
- * 2. Create Product according dataSet
+ * 2. Create Product according dataset
  *
  * Steps:
  * 1. Login as registered customer

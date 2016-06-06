@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,7 +13,6 @@ use Magento\Customer\Test\Fixture\Customer;
 use Magento\Catalog\Test\Page\Product\CatalogProductView;
 
 /**
- * Test Flow:
  * Preconditions:
  * 1. Create simple product.
  * 2. Create customer.
@@ -36,7 +35,6 @@ class AbandonedCartsReportEntityTest extends Injectable
     /* tags */
     const MVP = 'no';
     const DOMAIN = 'MX';
-    const STABLE = 'no';
     /* end tags */
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Block\Rss\Product;
@@ -134,9 +134,9 @@ class SpecialTest extends \PHPUnit_Framework_TestCase
 
         $this->priceCurrency->expects($this->any())->method('convertAndFormat')->will($this->returnArgument(0));
 
-        $this->imageHelper->expects($this->once())->method('init')->with($item, 'thumbnail')
+        $this->imageHelper->expects($this->once())->method('init')->with($item, 'rss_thumbnail')
             ->will($this->returnSelf());
-        $this->imageHelper->expects($this->once())->method('resize')->with(75, 75)
+        $this->imageHelper->expects($this->once())->method('getUrl')
             ->will($this->returnValue('image_link'));
         $this->outputHelper->expects($this->once())->method('productAttribute')->will($this->returnValue(''));
         $data = [

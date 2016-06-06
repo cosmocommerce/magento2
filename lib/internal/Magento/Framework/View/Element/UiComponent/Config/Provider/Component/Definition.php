@@ -1,11 +1,13 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Element\UiComponent\Config\Provider\Component;
 
+use Magento\Framework\Phrase;
 use Magento\Framework\Config\CacheInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Element\UiComponent\Config\Converter;
 use Magento\Framework\View\Element\UiComponent\ArrayObjectFactory;
 use Magento\Framework\View\Element\UiComponent\Config\UiReaderInterface;
@@ -66,9 +68,18 @@ class Definition
      *
      * @param string $name
      * @return array
+     * @throws LocalizedException
      */
     public function getComponentData($name)
     {
+        if (!$this->componentData->offsetExists($name)) {
+            throw new LocalizedException(
+                new Phrase(
+                    'The requested component ("' . $name . '") is not found. '
+                    . 'Before using, you must add the implementation.'
+                )
+            );
+        }
         return (array) $this->componentData->offsetGet($name);
     }
 

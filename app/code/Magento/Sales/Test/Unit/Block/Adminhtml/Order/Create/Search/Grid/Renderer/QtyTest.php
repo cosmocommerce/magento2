@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Block\Adminhtml\Order\Create\Search\Grid\Renderer;
@@ -26,7 +26,7 @@ class QtyTest extends \PHPUnit_Framework_TestCase
     {
         $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
 
-        $this->rowMock = $this->getMock('Magento\Framework\Object', ['getTypeId', 'getIndex'], [], '', false);
+        $this->rowMock = $this->getMock('Magento\Framework\DataObject', ['getTypeId', 'getIndex'], [], '', false);
         $this->typeConfigMock = $this->getMock('Magento\Catalog\Model\ProductTypes\ConfigInterface');
         $this->renderer = $helper->getObject(
             'Magento\Sales\Block\Adminhtml\Order\Create\Search\Grid\Renderer\Qty',

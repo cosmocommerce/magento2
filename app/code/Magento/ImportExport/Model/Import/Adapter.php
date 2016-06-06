@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ImportExport\Model\Import;
@@ -30,7 +30,7 @@ class Adapter
     {
         if (!is_string($type) || !$type) {
             throw new \Magento\Framework\Exception\LocalizedException(
-                __('The adapter type must be a non empty string.')
+                __('The adapter type must be a non-empty string.')
             );
         }
         $adapterClass = 'Magento\ImportExport\Model\Import\Source\\' . ucfirst(strtolower($type));

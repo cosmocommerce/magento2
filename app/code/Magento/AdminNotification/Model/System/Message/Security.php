@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -135,8 +135,8 @@ class Security implements \Magento\Framework\Notification\MessageInterface
     public function getText()
     {
         return __(
-            'Your web server is configured incorrectly. As a result, configuration files '
-            . ' with sensitive information are accessible from the outside. Please contact your hosting provider.'
+            'Your web server is set up incorrectly and allows unauthorized access to sensitive files. '
+            . 'Please contact your hosting provider.'
         );
     }
 

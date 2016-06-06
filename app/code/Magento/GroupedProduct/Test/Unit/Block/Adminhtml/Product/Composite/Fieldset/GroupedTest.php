@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\GroupedProduct\Test\Unit\Block\Adminhtml\Product\Composite\Fieldset;
@@ -172,7 +172,7 @@ class GroupedTest extends \PHPUnit_Framework_TestCase
     {
         $storeId = 2;
 
-        $objectMock = $this->getMock('\Magento\Framework\Object', ['getSuperGroup'], [], '', false);
+        $objectMock = $this->getMock('\Magento\Framework\DataObject', ['getSuperGroup'], [], '', false);
         $instanceMock = $this->getMock(
             'Magento\GroupedProduct\Model\Product\Type\Grouped',
             [],

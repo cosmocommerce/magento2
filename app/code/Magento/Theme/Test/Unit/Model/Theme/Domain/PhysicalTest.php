@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -43,7 +43,7 @@ class PhysicalTest extends \PHPUnit_Framework_TestCase
         $themeFactory->expects($this->once())->method('create')->will($this->returnValue($virtualTheme));
 
         $themeCollection = $this->getMock(
-            'Magento\Theme\Model\Resource\Theme\Collection',
+            'Magento\Theme\Model\ResourceModel\Theme\Collection',
             ['addTypeFilter', 'addAreaFilter', 'addFilter', 'count'],
             [],
             '',

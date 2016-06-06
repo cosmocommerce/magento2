@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Adminhtml\Cart\Product\Composite\Cart;
@@ -15,7 +15,7 @@ class Configure extends \Magento\Customer\Controller\Adminhtml\Cart\Product\Comp
      */
     public function execute()
     {
-        $configureResult = new \Magento\Framework\Object();
+        $configureResult = new \Magento\Framework\DataObject();
         try {
             $this->_initData();
 

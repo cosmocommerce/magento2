@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Test\Unit\Element\Html;
@@ -53,8 +53,27 @@ class LinkTest extends \PHPUnit_Framework_TestCase
             ->method('getUrl')
             ->will($this->returnArgument('http://site.com/link.html'));
 
+        $validtorMock = $this->getMockBuilder('Magento\Framework\View\Element\Template\File\Validator')
+            ->setMethods(['isValid'])->disableOriginalConstructor()->getMock();
+
+        $scopeConfigMock = $this->getMockBuilder('Magento\Framework\App\Config')
+            ->setMethods(['isSetFlag'])->disableOriginalConstructor()->getMock();
+
+        $resolverMock = $this->getMockBuilder('Magento\Framework\View\Element\Template\File\Resolver')
+            ->setMethods([])->disableOriginalConstructor()->getMock();
+
         $contextMock = $this->getMockBuilder('Magento\Framework\View\Element\Template\Context')
-            ->setMethods(['getEscaper', 'getUrlBuilder'])->disableOriginalConstructor()->getMock();
+            ->setMethods(['getEscaper', 'getUrlBuilder', 'getValidator', 'getResolver', 'getScopeConfig'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $contextMock->expects($this->any())
+            ->method('getValidator')
+            ->will($this->returnValue($validtorMock));
+
+        $contextMock->expects($this->any())
+            ->method('getResolver')
+            ->will($this->returnValue($resolverMock));
 
         $contextMock->expects($this->any())
             ->method('getEscaper')
@@ -63,6 +82,10 @@ class LinkTest extends \PHPUnit_Framework_TestCase
         $contextMock->expects($this->any())
             ->method('getUrlBuilder')
             ->will($this->returnValue($urlBuilderMock));
+
+        $contextMock->expects($this->any())
+            ->method('getScopeConfig')
+            ->will($this->returnValue($scopeConfigMock));
 
         /** @var \Magento\Framework\View\Element\Html\Link $linkWithAttributes */
         $linkWithAttributes = $objectManagerHelper->getObject(

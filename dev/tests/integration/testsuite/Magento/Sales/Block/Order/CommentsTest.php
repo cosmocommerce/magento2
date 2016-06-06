@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Order;
@@ -42,15 +42,15 @@ class CommentsTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 'Magento\Sales\Model\Order\Invoice',
-                'Magento\Sales\Model\Resource\Order\Invoice\Comment\Collection',
+                'Magento\Sales\Model\ResourceModel\Order\Invoice\Comment\Collection',
             ],
             [
                 'Magento\Sales\Model\Order\Creditmemo',
-                'Magento\Sales\Model\Resource\Order\Creditmemo\Comment\Collection'
+                'Magento\Sales\Model\ResourceModel\Order\Creditmemo\Comment\Collection'
             ],
             [
                 'Magento\Sales\Model\Order\Shipment',
-                'Magento\Sales\Model\Resource\Order\Shipment\Comment\Collection'
+                'Magento\Sales\Model\ResourceModel\Order\Shipment\Comment\Collection'
             ]
         ];
     }

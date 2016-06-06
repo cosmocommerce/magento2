@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 /*jshint browser:true jquery:true*/
@@ -17,7 +17,7 @@ define(
                 displayArea: 'actions'
             },
             getActiveView: function() {
-                var view = this.getViewByCode(quote.getPaymentMethod()());
+                var view = this.getViewByCode(quote.paymentMethod());
                 return view ? view : this.getDefaultView();
             },
             getViewByCode: function(code) {

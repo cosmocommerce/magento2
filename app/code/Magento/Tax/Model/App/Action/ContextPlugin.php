@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -73,18 +73,19 @@ class ContextPlugin
     }
 
     /**
-     * @param \Magento\Framework\App\Action\Action $subject
+     * @param \Magento\Framework\App\ActionInterface $subject
      * @param callable $proceed
      * @param \Magento\Framework\App\RequestInterface $request
      * @return mixed
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function aroundDispatch(
-        \Magento\Framework\App\Action\Action $subject,
+        \Magento\Framework\App\ActionInterface $subject,
         \Closure $proceed,
         \Magento\Framework\App\RequestInterface $request
     ) {
-        if (!$this->moduleManager->isEnabled('Magento_PageCache') ||
+        if (!$this->customerSession->isLoggedIn() ||
+            !$this->moduleManager->isEnabled('Magento_PageCache') ||
             !$this->cacheConfig->isEnabled() ||
             !$this->taxHelper->isCatalogPriceDisplayAffectedByTax()) {
             return $proceed($request);

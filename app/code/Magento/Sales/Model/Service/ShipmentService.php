@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Service;
@@ -88,11 +88,11 @@ class ShipmentService implements ShipmentManagementInterface
      */
     public function getCommentsList($id)
     {
-        $this->criteriaBuilder->addFilter(
-            ['eq' => $this->filterBuilder->setField('parent_id')->setValue($id)->create()]
+        $this->criteriaBuilder->addFilters(
+            [$this->filterBuilder->setField('parent_id')->setValue($id)->setConditionType('eq')->create()]
         );
-        $criteria = $this->criteriaBuilder->create();
-        return $this->commentRepository->getList($criteria);
+        $searchCriteria = $this->criteriaBuilder->create();
+        return $this->commentRepository->getList($searchCriteria);
     }
 
     /**

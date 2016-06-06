@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -16,13 +16,6 @@ use Magento\Mtf\Fixture\DataSource;
 class BillingAddressId extends DataSource
 {
     /**
-     * Current preset.
-     *
-     * @var string
-     */
-    protected $currentPreset;
-
-    /**
      * @constructor
      * @param FixtureFactory $fixtureFactory
      * @param array $data
@@ -35,8 +28,8 @@ class BillingAddressId extends DataSource
             $this->data = $data['value'];
             return;
         }
-        if (isset($data['dataSet'])) {
-            $addresses = $fixtureFactory->createByCode('address', ['dataSet' => $data['dataSet']]);
+        if (isset($data['dataset'])) {
+            $addresses = $fixtureFactory->createByCode('address', ['dataset' => $data['dataset']]);
             $this->data = $addresses->getData();
             $this->data['street'] = [$this->data['street']];
         }

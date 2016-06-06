@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute\Source;
@@ -15,15 +15,16 @@ class Boolean extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     const VALUE_NO = 0;
 
     /**
-     * @var \Magento\Eav\Model\Resource\Entity\AttributeFactory
+     * @var \Magento\Eav\Model\ResourceModel\Entity\AttributeFactory
      */
     protected $_eavAttrEntity;
 
     /**
-     * @param \Magento\Eav\Model\Resource\Entity\AttributeFactory $eavAttrEntity
+     * @param \Magento\Eav\Model\ResourceModel\Entity\AttributeFactory $eavAttrEntity
+     * @codeCoverageIgnore
      */
     public function __construct(
-        \Magento\Eav\Model\Resource\Entity\AttributeFactory $eavAttrEntity
+        \Magento\Eav\Model\ResourceModel\Entity\AttributeFactory $eavAttrEntity
     ) {
         $this->_eavAttrEntity = $eavAttrEntity;
     }

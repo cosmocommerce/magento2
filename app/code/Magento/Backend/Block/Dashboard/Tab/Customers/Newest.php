@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Dashboard\Tab\Customers;
@@ -14,20 +14,20 @@ namespace Magento\Backend\Block\Dashboard\Tab\Customers;
 class Newest extends \Magento\Backend\Block\Dashboard\Grid
 {
     /**
-     * @var \Magento\Reports\Model\Resource\Customer\CollectionFactory
+     * @var \Magento\Reports\Model\ResourceModel\Customer\CollectionFactory
      */
     protected $_collectionFactory;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Backend\Helper\Data $backendHelper
-     * @param \Magento\Reports\Model\Resource\Customer\CollectionFactory $collectionFactory
+     * @param \Magento\Reports\Model\ResourceModel\Customer\CollectionFactory $collectionFactory
      * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
-        \Magento\Reports\Model\Resource\Customer\CollectionFactory $collectionFactory,
+        \Magento\Reports\Model\ResourceModel\Customer\CollectionFactory $collectionFactory,
         array $data = []
     ) {
         $this->_collectionFactory = $collectionFactory;
@@ -78,7 +78,14 @@ class Newest extends \Magento\Backend\Block\Dashboard\Grid
 
         $this->addColumn(
             'orders_count',
-            ['header' => __('Orders'), 'sortable' => false, 'index' => 'orders_count', 'type' => 'number']
+            [
+                'header' => __('Orders'),
+                'sortable' => false,
+                'index' => 'orders_count',
+                'type' => 'number',
+                'header_css_class' => 'col-orders',
+                'column_css_class' => 'col-orders'
+            ]
         );
 
         $baseCurrencyCode = (string)$this->_storeManager->getStore(

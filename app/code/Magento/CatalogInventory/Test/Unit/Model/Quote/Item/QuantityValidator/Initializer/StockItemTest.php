@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Test\Unit\Model\Quote\Item\QuantityValidator\Initializer;
@@ -110,7 +110,7 @@ class StockItemTest extends \PHPUnit_Framework_TestCase
         $productTypeCustomOption = $this->getMockBuilder('Magento\Catalog\Model\Product\Configuration\Item\Option')
             ->disableOriginalConstructor()
             ->getMock();
-        $result = $this->getMockBuilder('Magento\Framework\Object')
+        $result = $this->getMockBuilder('Magento\Framework\DataObject')
             ->setMethods(
                 [
                     'getItemIsQtyDecimal',
@@ -206,7 +206,7 @@ class StockItemTest extends \PHPUnit_Framework_TestCase
         $productTypeCustomOption = $this->getMockBuilder('Magento\Catalog\Model\Product\Configuration\Item\Option')
             ->disableOriginalConstructor()
             ->getMock();
-        $result = $this->getMockBuilder('Magento\Framework\Object')
+        $result = $this->getMockBuilder('Magento\Framework\DataObject')
             ->setMethods(
                 ['getItemIsQtyDecimal', 'getHasQtyOptionUpdate', 'getItemUseOldQty', 'getMessage', 'getItemBackorders']
             )

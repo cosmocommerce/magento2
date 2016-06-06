@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Model\Indexer\Product\Flat\Plugin;
@@ -32,7 +32,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $this->subjectMock = $this->getMock('\Magento\Store\Model\Resource\Store', [], [], '', false);
+        $this->subjectMock = $this->getMock('\Magento\Store\Model\ResourceModel\Store', [], [], '', false);
         $this->storeMock = $this->getMock(
             'Magento\Store\Model\Store',
             ['getId', '__wakeup', 'dataHasChangedFor'],

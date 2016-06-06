@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -36,14 +36,13 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     /**
      * Test setUp
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->prices = [
             'regular_price' => 'RegularPrice',
             'special_price' => 'SpecialPrice',
         ];
         $this->target = [
-            'group_price' => 'TargetGroupPrice',
             'regular_price' => 'TargetRegularPrice',
         ];
         $this->targetPool = new Pool($this->target);
@@ -58,7 +57,6 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $expected = new Pool([
             'regular_price' => 'RegularPrice',
             'special_price' => 'SpecialPrice',
-            'group_price' => 'TargetGroupPrice',
         ]);
         $this->assertEquals($expected, $this->pool);
     }
@@ -70,7 +68,6 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('RegularPrice', $this->pool->get('regular_price'));
         $this->assertEquals('SpecialPrice', $this->pool->get('special_price'));
-        $this->assertEquals('TargetGroupPrice', $this->pool->get('group_price'));
     }
 
     /**
@@ -80,7 +77,6 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('RegularPrice', $this->pool['regular_price']);
         $this->assertEquals('SpecialPrice', $this->pool['special_price']);
-        $this->assertEquals('TargetGroupPrice', $this->pool['group_price']);
         $this->pool['fake_price'] = 'FakePrice';
         $this->assertEquals('FakePrice', $this->pool['fake_price']);
         $this->assertTrue(isset($this->pool['fake_price']));

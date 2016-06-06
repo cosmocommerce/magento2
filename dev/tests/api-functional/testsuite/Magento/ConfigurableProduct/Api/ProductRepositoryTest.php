@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -56,9 +56,9 @@ class ProductRepositoryTest extends WebapiAbstract
 
     protected function getConfigurableAttributeOptions()
     {
-        /** @var \Magento\Eav\Model\Resource\Entity\Attribute\Option\Collection $optionCollection */
+        /** @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection $optionCollection */
         $optionCollection = $this->objectManager->create(
-            'Magento\Eav\Model\Resource\Entity\Attribute\Option\Collection'
+            'Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection'
         );
         $options = $optionCollection->setAttributeFilter($this->configurableAttribute->getId())->getData();
         return $options;
@@ -84,13 +84,9 @@ class ProductRepositoryTest extends WebapiAbstract
                 "position" => 0,
                 "values" => [
                     [
-                        "pricing_value" => 10,
-                        "is_percent" =>  0,
                         "value_index" =>  $options[0]['option_id'],
                     ],
                     [
-                        "pricing_value" => 5,
-                        "is_percent" =>  1,
                         "value_index" =>  $options[1]['option_id'],
                     ]
                 ],
@@ -130,7 +126,6 @@ class ProductRepositoryTest extends WebapiAbstract
 
         $response = $this->createConfigurableProduct();
         $this->assertEquals(self::CONFIGURABLE_PRODUCT_SKU, $response[ProductInterface::SKU]);
-        $this->assertEquals(50, $response['price']);
         $this->assertTrue(
             isset($response[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]["configurable_product_options"])
         );
@@ -196,6 +191,7 @@ class ProductRepositoryTest extends WebapiAbstract
         $option = $response[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]["configurable_product_options"][0];
 
         $optionId = $option['id'];
+        $productId = $option['product_id'];
         $updatedOption = [
             'id' => $optionId,
             'attribute_id' => $option['attribute_id'],
@@ -203,12 +199,10 @@ class ProductRepositoryTest extends WebapiAbstract
             'position' => 1,
             'values' => [
                 [
-                    'pricing_value' => 15,
-                    'is_percent' => 1,
                     'value_index' => $option['values'][0]['value_index'],
                 ],
             ],
-            'product_id' => $response['id'],
+            'product_id' => $productId,
         ];
         $response[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]['configurable_product_options'][0] =
             $updatedOption;
@@ -222,6 +216,8 @@ class ProductRepositoryTest extends WebapiAbstract
             = $response[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]["configurable_product_options"];
         $this->assertEquals(1, count($resultConfigurableProductOptions));
 
+        unset($updatedOption['id']);
+        unset($resultConfigurableProductOptions[0]['id']);
         $this->assertEquals($updatedOption, $resultConfigurableProductOptions[0]);
     }
 
@@ -289,7 +285,7 @@ class ProductRepositoryTest extends WebapiAbstract
             $productId1, $nonExistingId
         ];
 
-        $expectedMessage = 'Product with id "%1" does not exist.';
+        $expectedMessage = 'Unable to save product';
         try {
             $this->saveProduct($response);
             $this->fail("Expected exception");
@@ -302,7 +298,6 @@ class ProductRepositoryTest extends WebapiAbstract
         } catch (\Exception $e) {
             $errorObj = $this->processRestExceptionResult($e);
             $this->assertEquals($expectedMessage, $errorObj['message']);
-            $this->assertEquals(['0' => '999'], $errorObj['parameters']);
         }
     }
 
@@ -333,7 +328,7 @@ class ProductRepositoryTest extends WebapiAbstract
             $productId1, $productId2
         ];
 
-        $expectedMessage = 'Products "%1" and %2 have the same set of attribute values.';
+        $expectedMessage = 'Products "%1" and "%2" have the same set of attribute values.';
         try {
             $this->saveProduct($response);
             $this->fail("Expected exception");
@@ -355,8 +350,8 @@ class ProductRepositoryTest extends WebapiAbstract
      */
     public function testUpdateConfigurableProductLinksWithWithoutVariationAttributes()
     {
-        $productId1 = 10;
-        $productId2 = 20;
+        $productId1 = 99;
+        $productId2 = 88;
 
         $response = $this->createConfigurableProduct();
 
@@ -366,7 +361,7 @@ class ProductRepositoryTest extends WebapiAbstract
             $productId1, $productId2
         ];
 
-        $expectedMessage = 'The configurable product does not have any variation attribute.';
+        $expectedMessage = 'Unable to save product';
         try {
             $this->saveProduct($response);
             $this->fail("Expected exception");

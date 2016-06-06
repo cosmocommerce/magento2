@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -32,12 +32,11 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     protected $customerFactory;
 
     /**
-     * @var \Magento\Customer\Model\Resource\Address | \PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Customer\Model\ResourceModel\Address | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $resource;
 
-
-    public function setUp()
+    protected function setUp()
     {
         $this->objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
 
@@ -59,7 +58,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
             ->method('create')
             ->will($this->returnValue($this->customer));
 
-        $this->resource = $this->getMockBuilder('Magento\Customer\Model\Resource\Address')
+        $this->resource = $this->getMockBuilder('Magento\Customer\Model\ResourceModel\Address')
             ->disableOriginalConstructor()
             ->getMock();
 

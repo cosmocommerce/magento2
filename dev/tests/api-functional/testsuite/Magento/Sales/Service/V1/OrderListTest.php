@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Service\V1;
@@ -44,17 +44,18 @@ class OrderListTest extends WebapiAbstract
             'Magento\Framework\Api\FilterBuilder'
         );
 
-        $searchCriteriaBuilder->addFilter(
+        $searchCriteriaBuilder->addFilters(
             [
                 $filterBuilder
                     ->setField('status')
                     ->setValue('processing')
+                    ->setConditionType('eq')
                     ->create(),
             ]
         );
         $searchData = $searchCriteriaBuilder->create()->__toArray();
 
-        $requestData = ['criteria' => $searchData];
+        $requestData = ['searchCriteria' => $searchData];
         $serviceInfo = [
             'rest' => [
                 'resourcePath' => self::RESOURCE_PATH . '?' . http_build_query($requestData),
@@ -70,5 +71,7 @@ class OrderListTest extends WebapiAbstract
         $result = $this->_webApiCall($serviceInfo, $requestData);
         $this->assertArrayHasKey('items', $result);
         $this->assertCount(1, $result['items']);
+        $this->assertArrayHasKey('search_criteria', $result);
+        $this->assertEquals($searchData, $result['search_criteria']);
     }
 }

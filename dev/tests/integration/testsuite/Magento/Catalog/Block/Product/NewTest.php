@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Product;
@@ -109,7 +109,7 @@ class NewTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($html);
         $this->assertContains('New Product', $html);
         $this->assertInstanceOf(
-            'Magento\Catalog\Model\Resource\Product\Collection',
+            'Magento\Catalog\Model\ResourceModel\Product\Collection',
             $this->_block->getProductCollection()
         );
     }

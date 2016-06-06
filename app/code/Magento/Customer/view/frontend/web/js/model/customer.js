@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 /*global define*/
@@ -8,47 +8,31 @@ define(
         'jquery',
         'ko',
         'underscore',
-        'mage/storage',
-        'Magento_Checkout/js/model/addresslist',
-        './customer/address'
+        './address-list'
     ],
-    function($, ko, _, storage, addressList, address) {
+    function($, ko, _, addressList) {
         "use strict";
         var isLoggedIn = ko.observable(window.isCustomerLoggedIn),
-            failedLoginAttempts = ko.observable(0),
             customerData = {};
 
         if (isLoggedIn()) {
             customerData = window.customerData;
-            if (Object.keys(customerData).length) {
-                $.each(customerData.addresses, function (key, item) {
-                    addressList.add(new address(item));
-                });
-            }
         } else {
             customerData = {};
         }
+
         return {
             customerData: customerData,
             customerDetails: {},
-            isLoggedIn: function() {
-                return isLoggedIn;
-            },
+            isLoggedIn: isLoggedIn,
             setIsLoggedIn: function (flag) {
                 isLoggedIn(flag);
             },
-            getFailedLoginAttempts: function() {
-                return failedLoginAttempts;
-            },
-            increaseFailedLoginAttempt: function() {
-                var oldAttempts = failedLoginAttempts();
-                failedLoginAttempts(++oldAttempts);
-            },
             getBillingAddressList: function () {
-                return addressList.getAddresses();
+                return addressList();
             },
             getShippingAddressList: function () {
-                return addressList.getAddresses();
+                return addressList();
             },
             setDetails: function (fieldName, value) {
                 if (fieldName) {

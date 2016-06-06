@@ -1,15 +1,22 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Test\Unit\Adapter\Mysql\Aggregation;
 
+use Magento\Framework\DB\Ddl\Table;
+use Magento\Framework\DB\Select;
+use Magento\Framework\Search\Adapter\Aggregation\AggregationResolverInterface;
 use Magento\Framework\Search\Adapter\Mysql\Aggregation\DataProviderContainer;
 use Magento\Framework\Search\Adapter\Mysql\Aggregation\DataProviderInterface;
 use Magento\Framework\Search\Adapter\Mysql\Aggregation\Builder;
+use Magento\Framework\Search\Adapter\Mysql\TemporaryStorage;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -18,14 +25,14 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     private $entityMetadata;
 
     /**
-     * @var \Magento\Framework\App\Resource|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\App\ResourceConnection|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resource;
 
     /**
      * @var \Magento\Framework\DB\Adapter\AdapterInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $adapter;
+    private $connectionMock;
 
     /**
      * @var \Magento\Framework\Search\RequestInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -61,6 +68,16 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      * @var \Magento\Framework\DB\Select|\PHPUnit_Framework_MockObject_MockObject
      */
     private $select;
+
+    /**
+     * @var AggregationResolverInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $aggregationResolver;
+
+    /**
+     * @var Table|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $table;
 
     /**
      * @var \Magento\Framework\Search\Adapter\Mysql\Aggregation\Builder
@@ -108,7 +125,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->aggregationContainer->expects($this->any())->method('get')->willReturn($this->bucketBuilder);
 
-        $this->adapter = $this->getMockBuilder('Magento\Framework\DB\Adapter\AdapterInterface')
+        $this->connectionMock = $this->getMockBuilder('Magento\Framework\DB\Adapter\AdapterInterface')
             ->setMethods(['fetchAssoc'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
@@ -128,10 +145,15 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->dataProviderContainer->expects($this->any())->method('get')->willReturn($this->dataProvider);
 
-        $this->resource = $this->getMockBuilder('Magento\Framework\App\Resource')
+        $this->resource = $this->getMockBuilder('Magento\Framework\App\ResourceConnection')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->resource->expects($this->any())->method('getConnection')->willReturn($this->adapter);
+        $this->resource->expects($this->any())->method('getConnection')->willReturn($this->connectionMock);
+
+        $this->aggregationResolver = $this->getMock(AggregationResolverInterface::class);
+        $this->table = $this->getMockBuilder(Table::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->builder = $helper->getObject(
             'Magento\Framework\Search\Adapter\Mysql\Aggregation\Builder',
@@ -139,7 +161,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
                 'entityMetadata' => $this->entityMetadata,
                 'dataProviderContainer' => $this->dataProviderContainer,
                 'resource' => $this->resource,
-                'aggregationContainer' => $this->aggregationContainer
+                'aggregationContainer' => $this->aggregationContainer,
+                'aggregationResolver' => $this->aggregationResolver,
             ]
         );
     }
@@ -150,21 +173,47 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testBuild()
     {
         $fetchResult = ['name' => ['some', 'result']];
-        $documents = [
-            [
-                'product_id' => 1,
-                'sku' => 'Product',
-            ],
-        ];
+        $documents = [1 => 'document_1', 2 => 'document_2'];
 
+        $this->aggregationResolver->expects($this->once())
+            ->method('resolve')
+            ->with($this->request, array_keys($documents))
+            ->willReturn([$this->bucket]);
         $this->bucket->expects($this->once())->method('getName')->willReturn('name');
-        $this->entityMetadata->expects($this->once())->method('getEntityId')->willReturn('product_id');
-        $this->request->expects($this->once())->method('getAggregation')->willReturn([$this->bucket]);
         $this->request->expects($this->once())->method('getDimensions')->willReturn([]);
         $this->bucketBuilder->expects($this->once())->method('build')->willReturn($fetchResult['name']);
 
-        $result = $this->builder->build($this->request, $documents);
+        $result = $this->builder->build($this->request, $this->table, $documents);
 
-        $this->assertEquals($result, $fetchResult);
+        $this->assertEquals($fetchResult, $result);
+    }
+
+    public function testBuildWithoutPassedDocuments()
+    {
+        $documentIds = [1, 2];
+        $tableName = 'table_name';
+
+        $select = $this->getMockBuilder(Select::class)->disableOriginalConstructor()->getMock();
+        $select->expects($this->once())
+            ->method('from')
+            ->with($tableName, TemporaryStorage::FIELD_ENTITY_ID)
+            ->willReturnSelf();
+
+        $this->table->expects($this->once())->method('getName')->willReturn($tableName);
+        $this->connectionMock
+            ->expects($this->once())
+            ->method('select')
+            ->willReturn($select);
+        $this->connectionMock
+            ->expects($this->once())
+            ->method('fetchCol')
+            ->willReturn($documentIds);
+
+        $this->aggregationResolver->expects($this->once())
+            ->method('resolve')
+            ->with($this->request, $documentIds)
+            ->willReturn([]);
+
+        $this->builder->build($this->request, $this->table);
     }
 }

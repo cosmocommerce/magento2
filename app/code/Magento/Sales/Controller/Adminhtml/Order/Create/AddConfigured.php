@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order\Create;
@@ -23,7 +23,7 @@ class AddConfigured extends \Magento\Sales\Controller\Adminhtml\Order\Create
         }
 
         // Form result for client javascript
-        $updateResult = new \Magento\Framework\Object();
+        $updateResult = new \Magento\Framework\DataObject();
         if ($errorMessage) {
             $updateResult->setError(true);
             $updateResult->setMessage($errorMessage);

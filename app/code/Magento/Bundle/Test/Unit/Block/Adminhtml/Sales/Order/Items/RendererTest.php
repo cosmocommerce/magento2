@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Test\Unit\Block\Adminhtml\Sales\Order\Items;
@@ -40,7 +40,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
         $item->expects($this->once())->method('getOrderItem')->will($this->returnValue($this->orderItem));
         $this->orderItem->expects($this->any())->method('getId')->will($this->returnValue(1));
 
-        $this->assertSame(null, $this->model->getChilds($item));
+        $this->assertSame(null, $this->model->getChildren($item));
     }
 
     public function getChildrenEmptyItemsDataProvider()
@@ -79,7 +79,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
         $item->expects($this->once())->method('getInvoice')->will($this->returnValue($salesModel));
         $item->expects($this->any())->method('getOrderItem')->will($this->returnValue($this->orderItem));
 
-        $this->assertSame([2 => $this->orderItem], $this->model->getChilds($item));
+        $this->assertSame([2 => $this->orderItem], $this->model->getChildren($item));
     }
 
     public function getChildrenDataProvider()

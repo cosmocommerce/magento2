@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\System\Design;
@@ -64,7 +64,7 @@ class Edit extends \Magento\Backend\Block\Widget
                 'Magento\Backend\Block\Widget\Button',
                 [
                     'label' => __('Delete'),
-                    'onclick' => 'confirmSetLocation(\'' . __(
+                    'onclick' => 'deleteConfirm(\'' . __(
                         'Are you sure?'
                     ) . '\', \'' . $this->getDeleteUrl() . '\')',
                     'class' => 'delete'

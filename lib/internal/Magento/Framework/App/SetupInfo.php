@@ -1,10 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\App;
+
+use \Magento\Framework\Setup\BackendFrontnameGenerator;
 
 /**
  * A model for determining information about setup application
@@ -107,10 +109,22 @@ class SetupInfo
     public function getProjectUrl()
     {
         $isProjectInDocRoot = false !== strpos($this->projectRoot . '/', $this->docRoot . '/');
-        if (!$isProjectInDocRoot || empty($this->server['HTTP_HOST'])) {
+        if (empty($this->server['HTTP_HOST'])) {
             return '';
+        } else if (!$isProjectInDocRoot) {
+            return 'http://' . $this->server['HTTP_HOST'] . '/';
         }
         return 'http://' . $this->server['HTTP_HOST'] . substr($this->projectRoot . '/', strlen($this->docRoot));
+    }
+
+    /**
+     * Get the admin area path
+     *
+     * @return string
+     */
+    public function getProjectAdminPath()
+    {
+        return BackendFrontnameGenerator::generate();
     }
 
     /**

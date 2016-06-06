@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,16 +18,17 @@ angular.module('create-admin-account', ['ngStorage'])
                 return;
             }
             var p = $scope.admin.password;
-            if (p.length >= 6 && p.match(/[\d]+/) && p.match(/[a-z]+/) && p.match(/[A-Z]+/) && p.match(/[!@#$%^*()_\/\\\-\+=]+/)) {
+            var MIN_ADMIN_PASSWORD_LENGTH = 7;
+            if (p.length >= MIN_ADMIN_PASSWORD_LENGTH && p.match(/[\d]+/) && p.match(/[a-z]+/) && p.match(/[A-Z]+/) && p.match(/[!@#$%^*()_\/\\\-\+=]+/)) {
                 $scope.admin.passwordStatus.class = 'strong';
                 $scope.admin.passwordStatus.label = 'Strong';
-            } else if (p.length >= 6 && p.match(/[\d]+/) && p.match(/[a-z]+/) && p.match(/[A-Z]+/)) {
+            } else if (p.length >= MIN_ADMIN_PASSWORD_LENGTH && p.match(/[\d]+/) && p.match(/[a-z]+/) && p.match(/[A-Z]+/)) {
                 $scope.admin.passwordStatus.class = 'good';
                 $scope.admin.passwordStatus.label = 'Good';
-            } else if (p.length >= 6 && p.match(/[\d]+/) && p.match(/[a-zA-Z]+/)) {
+            } else if (p.length >= MIN_ADMIN_PASSWORD_LENGTH && p.match(/[\d]+/) && p.match(/[a-zA-Z]+/)) {
                 $scope.admin.passwordStatus.class = 'fair';
                 $scope.admin.passwordStatus.label = 'Fair';
-            } else if (p.length >= 6) {
+            } else if (p.length >= MIN_ADMIN_PASSWORD_LENGTH) {
                 $scope.admin.passwordStatus.class = 'weak';
                 $scope.admin.passwordStatus.label = 'Weak';
             } else {

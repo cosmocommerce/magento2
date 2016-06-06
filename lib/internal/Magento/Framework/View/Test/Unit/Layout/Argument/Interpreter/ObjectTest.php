@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Test\Unit\Layout\Argument\Interpreter;
 
-use \Magento\Framework\View\Layout\Argument\Interpreter\Object;
+use \Magento\Framework\View\Layout\Argument\Interpreter\DataObject;
 
 class ObjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,14 +22,14 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     protected $_interpreter;
 
     /**
-     * @var Object
+     * @var DataObject
      */
     protected $_model;
 
     protected function setUp()
     {
         $this->_objectManager = $this->getMock('Magento\Framework\ObjectManagerInterface');
-        $this->_model = new Object($this->_objectManager, self::EXPECTED_CLASS);
+        $this->_model = new DataObject($this->_objectManager, self::EXPECTED_CLASS);
     }
 
     public function testEvaluate()

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Adminhtml\Product\Action;
@@ -8,7 +8,7 @@ namespace Magento\Catalog\Controller\Adminhtml\Product\Action;
 /**
  * @magentoAppArea adminhtml
  */
-class AttributeTest extends \Magento\Backend\Utility\Controller
+class AttributeTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
     /**
      * @covers \Magento\Catalog\Controller\Adminhtml\Product\Action\Attribute\Save::execute

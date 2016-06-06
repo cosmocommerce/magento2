@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -15,7 +15,7 @@ use Magento\Customer\Test\Page\Adminhtml\CustomerIndexEdit;
  *
  * Preconditions:
  * 1. Create customer.
- * 2. Create products from dataSet.
+ * 2. Create products from dataset.
  * 3. Add products to the customer's wish list (composite products should be configured).
  *
  * Steps:

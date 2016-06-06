@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -36,7 +36,7 @@ class GenderTest extends \PHPUnit_Framework_TestCase
     /** @var Gender */
     private $block;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->attribute = $this->getMockBuilder('\Magento\Customer\Api\Data\AttributeMetadataInterface')
             ->getMockForAbstractClass();
@@ -95,7 +95,7 @@ class GenderTest extends \PHPUnit_Framework_TestCase
         )->will(
             $this->throwException(new NoSuchEntityException(
                 __(
-                    NoSuchEntityException::MESSAGE_SINGLE_FIELD,
+                    'No such entity with %fieldName = %fieldValue',
                     ['fieldName' => 'field', 'fieldValue' => 'value']
                 )
             ))
@@ -136,7 +136,7 @@ class GenderTest extends \PHPUnit_Framework_TestCase
         )->will(
             $this->throwException(new NoSuchEntityException(
                 __(
-                    NoSuchEntityException::MESSAGE_SINGLE_FIELD,
+                    'No such entity with %fieldName = %fieldValue',
                     ['fieldName' => 'field', 'fieldValue' => 'value']
                 )
             ))
@@ -169,7 +169,11 @@ class GenderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetGenderOptions()
     {
-        $options = [['label' => __('Male'), 'value' => 'M'], ['label' => __('Female'), 'value' => 'F']];
+        $options = [
+            ['label' => __('Male'), 'value' => 'M'],
+            ['label' => __('Female'), 'value' => 'F'],
+            ['label' => __('Not Specified'), 'value' => 'NA']
+        ];
 
         $this->attribute->expects($this->once())->method('getOptions')->will($this->returnValue($options));
         $this->assertSame($options, $this->block->getGenderOptions());

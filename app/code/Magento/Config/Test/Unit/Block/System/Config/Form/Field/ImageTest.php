@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -47,7 +47,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
             'value'          => 'test_value',
         ];
 
-        $formMock = new \Magento\Framework\Object();
+        $formMock = new \Magento\Framework\DataObject();
         $formMock->setHtmlIdPrefix($this->testData['html_id_prefix']);
         $formMock->setHtmlIdSuffix($this->testData['html_id_suffix']);
         $this->image->setForm($formMock);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute;
@@ -11,6 +11,7 @@ class Config extends \Magento\Framework\Config\Data
      * @param \Magento\Eav\Model\Entity\Attribute\Config\Reader $reader
      * @param \Magento\Framework\Config\CacheInterface $cache
      * @param string $cacheId
+     * @codeCoverageIgnore
      */
     public function __construct(
         \Magento\Eav\Model\Entity\Attribute\Config\Reader $reader,

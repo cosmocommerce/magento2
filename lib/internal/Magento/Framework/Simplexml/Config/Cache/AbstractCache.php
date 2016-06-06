@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -12,7 +12,7 @@ namespace Magento\Framework\Simplexml\Config\Cache;
  * @method void setIsAllowedToSave(bool $isAllowedToSave)
  * @method array getComponents()
  */
-abstract class AbstractCache extends \Magento\Framework\Object
+abstract class AbstractCache extends \Magento\Framework\DataObject
 {
     /**
      * Constructor

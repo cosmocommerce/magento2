@@ -1,26 +1,27 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Search\Model;
 
-use Magento\Search\Model\Resource\Query\Collection as QueryCollection;
-use Magento\Search\Model\Resource\Query\CollectionFactory as QueryCollectionFactory;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Search\Model\ResourceModel\Query\Collection as QueryCollection;
+use Magento\Search\Model\ResourceModel\Query\CollectionFactory as QueryCollectionFactory;
 use Magento\Search\Model\SearchCollectionInterface as Collection;
 use Magento\Search\Model\SearchCollectionFactory as CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Data\Collection\AbstractDb as DbCollection;
 use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\Model\Resource\AbstractResource;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Search query model
  *
- * @method Resource\Query _getResource()
- * @method Resource\Query getResource()
+ * @method \Magento\Search\Model\ResourceModel\Query _getResource()
+ * @method \Magento\Search\Model\ResourceModel\Query getResource()
  * @method \Magento\Search\Model\Query setQueryText(string $value)
  * @method int getNumResults()
  * @method \Magento\Search\Model\Query setNumResults(int $value)
@@ -28,8 +29,6 @@ use Magento\Store\Model\StoreManagerInterface;
  * @method \Magento\Search\Model\Query setPopularity(int $value)
  * @method string getRedirect()
  * @method \Magento\Search\Model\Query setRedirect(string $value)
- * @method string getSynonymFor()
- * @method \Magento\Search\Model\Query setSynonymFor(string $value)
  * @method int getDisplayInTerms()
  * @method \Magento\Search\Model\Query setDisplayInTerms(int $value)
  * @method \Magento\Search\Model\Query setQueryNameExceeded(bool $value)
@@ -40,6 +39,7 @@ use Magento\Store\Model\StoreManagerInterface;
  * @method string getUpdatedAt()
  * @method \Magento\Search\Model\Query setUpdatedAt(string $value)
  * @method \Magento\Search\Model\Query setIsQueryTextExceeded(bool $value)
+ * @method \Magento\Search\Model\Query setIsQueryTextShort(bool $value)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Query extends AbstractModel implements QueryInterface
@@ -101,7 +101,7 @@ class Query extends AbstractModel implements QueryInterface
      * @param CollectionFactory $searchCollectionFactory
      * @param StoreManagerInterface $storeManager
      * @param ScopeConfigInterface $scopeConfig
-     * @param \Magento\Framework\Model\Resource\AbstractResource $resource
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
      * @param DbCollection $resourceCollection
      * @param array $data
      */
@@ -130,7 +130,7 @@ class Query extends AbstractModel implements QueryInterface
      */
     protected function _construct()
     {
-        $this->_init('Magento\Search\Model\Resource\Query');
+        $this->_init('Magento\Search\Model\ResourceModel\Query');
     }
 
     /**
@@ -167,17 +167,16 @@ class Query extends AbstractModel implements QueryInterface
      *
      * @param string $text
      * @return $this
+     * @deprecated "synonym for" feature has been removed
      */
     public function loadByQuery($text)
     {
-        $this->_getResource()->loadByQuery($this, $text);
-        $this->_afterLoad();
-        $this->setOrigData();
+        $this->loadByQueryText($text);
         return $this;
     }
 
     /**
-     * Load Query object only by query text (skip 'synonym For')
+     * Load Query object only by query text
      *
      * @param string $text
      * @return $this
@@ -232,6 +231,36 @@ class Query extends AbstractModel implements QueryInterface
     }
 
     /**
+     * Save query with incremental popularity
+     *
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function saveIncrementalPopularity()
+    {
+        $this->getResource()->saveIncrementalPopularity($this);
+
+        return $this;
+    }
+
+    /**
+     * Save query with number of results
+     *
+     * @param int $numResults
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function saveNumResults($numResults)
+    {
+        $this->setNumResults($numResults);
+        $this->getResource()->saveNumResults($this);
+
+        return $this;
+    }
+
+    /**
      * Retrieve minimum query length
      *
      * @return int
@@ -261,6 +290,7 @@ class Query extends AbstractModel implements QueryInterface
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     public function getQueryText()
     {
@@ -269,9 +299,19 @@ class Query extends AbstractModel implements QueryInterface
 
     /**
      * @return bool
+     * @codeCoverageIgnore
      */
     public function isQueryTextExceeded()
     {
         return $this->getData('is_query_text_exceeded');
+    }
+
+    /**
+     * @return bool
+     * @codeCoverageIgnore
+     */
+    public function isQueryTextShort()
+    {
+        return $this->getData('is_query_text_short');
     }
 }

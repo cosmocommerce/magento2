@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -34,6 +34,10 @@ class CurrencySymbolForm extends Form
     public function fill(FixtureInterface $fixture, SimpleElement $element = null)
     {
         $element = $this->_rootElement->find(sprintf($this->currencyRow, $fixture->getCode()), Locator::SELECTOR_XPATH);
-        return parent::fill($fixture, $element);
+        $data = $fixture->getData();
+        unset($data['code']);
+        $mapping = $this->dataMapping($data);
+        $this->_fill($mapping, $element);
+        return $this;
     }
 }

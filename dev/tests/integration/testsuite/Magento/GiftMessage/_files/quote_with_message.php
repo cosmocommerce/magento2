@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -24,3 +24,11 @@ $quote->setData(
     ]
 );
 $quote->save();
+
+/** @var \Magento\Quote\Model\QuoteIdMask $quoteIdMask */
+$quoteIdMask = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
+    ->create('Magento\Quote\Model\QuoteIdMaskFactory')
+    ->create();
+$quoteIdMask->setQuoteId($quote->getId());
+$quoteIdMask->setDataChanges(true);
+$quoteIdMask->save();

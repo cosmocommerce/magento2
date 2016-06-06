@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -29,7 +29,7 @@ class AbstractPriceTest extends \PHPUnit_Framework_TestCase
     protected $amountMock;
 
     /**
-     * @var \Magento\Framework\Pricing\Object\SaleableInterface |\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Pricing\SaleableInterface |\PHPUnit_Framework_MockObject_MockObject
      */
     protected $saleableItemMock;
 

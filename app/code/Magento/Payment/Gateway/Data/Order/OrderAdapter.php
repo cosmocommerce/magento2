@@ -1,18 +1,21 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Gateway\Data\Order;
 
 use Magento\Payment\Gateway\Data\AddressAdapterInterface;
 use Magento\Payment\Gateway\Data\OrderAdapterInterface;
-use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order;
 
+/**
+ * Class OrderAdapter
+ */
 class OrderAdapter implements OrderAdapterInterface
 {
     /**
-     * @var OrderInterface
+     * @var Order
      */
     private $order;
 
@@ -22,11 +25,11 @@ class OrderAdapter implements OrderAdapterInterface
     private $addressAdapterFactory;
 
     /**
-     * @param OrderInterface $order
+     * @param Order $order
      * @param AddressAdapterFactory $addressAdapterFactory
      */
     public function __construct(
-        OrderInterface $order,
+        Order $order,
         AddressAdapterFactory $addressAdapterFactory
     ) {
         $this->order = $order;
@@ -66,24 +69,82 @@ class OrderAdapter implements OrderAdapterInterface
     /**
      * Returns billing address
      *
-     * @return AddressAdapterInterface
+     * @return AddressAdapterInterface|null
      */
     public function getBillingAddress()
     {
-        return $this->addressAdapterFactory->create(
-            ['address' => $this->order->getBillingAddress()]
-        );
+        if ($this->order->getBillingAddress()) {
+            return $this->addressAdapterFactory->create(
+                ['address' => $this->order->getBillingAddress()]
+            );
+        }
+
+        return null;
     }
 
     /**
      * Returns shipping address
      *
-     * @return AddressAdapterInterface
+     * @return AddressAdapterInterface|null
      */
     public function getShippingAddress()
     {
-        return $this->addressAdapterFactory->create(
-            ['address' => $this->order->getShippingAddress()]
-        );
+        if ($this->order->getShippingAddress()) {
+            return $this->addressAdapterFactory->create(
+                ['address' => $this->order->getShippingAddress()]
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns order store id
+     *
+     * @return int
+     */
+    public function getStoreId()
+    {
+        return $this->order->getStoreId();
+    }
+
+    /**
+     * Returns order id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->order->getEntityId();
+    }
+
+    /**
+     * Returns order grand total amount
+     *
+     * @return float|null
+     */
+    public function getGrandTotalAmount()
+    {
+        return $this->order->getBaseGrandTotal();
+    }
+
+    /**
+     * Returns list of line items in the cart
+     *
+     * @return \Magento\Sales\Api\Data\OrderItemInterface[]
+     */
+    public function getItems()
+    {
+        return $this->order->getItems();
+    }
+
+    /**
+     * Gets the remote IP address for the order.
+     *
+     * @return string|null Remote IP address.
+     */
+    public function getRemoteIp()
+    {
+        return $this->order->getRemoteIp();
     }
 }

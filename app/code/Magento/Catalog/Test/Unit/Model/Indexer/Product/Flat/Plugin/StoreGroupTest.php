@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Model\Indexer\Product\Flat\Plugin;
@@ -32,7 +32,7 @@ class StoreGroupTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $this->subjectMock = $this->getMock('Magento\Store\Model\Resource\Group', [], [], '', false);
+        $this->subjectMock = $this->getMock('Magento\Store\Model\ResourceModel\Group', [], [], '', false);
         $this->storeGroupMock = $this->getMock(
             'Magento\Store\Model\Group',
             ['getId', '__wakeup', 'dataHasChangedFor'],

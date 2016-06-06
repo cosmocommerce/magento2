@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Transactions\Detail;
@@ -66,7 +66,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     {
         $collection = $this->_collectionFactory->create();
         foreach ($this->getTransactionAdditionalInfo() as $key => $value) {
-            $data = new \Magento\Framework\Object(['key' => $key, 'value' => $value]);
+            $data = new \Magento\Framework\DataObject(['key' => $key, 'value' => $value]);
             $collection->addItem($data);
         }
 

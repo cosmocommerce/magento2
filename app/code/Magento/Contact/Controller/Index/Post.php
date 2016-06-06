@@ -1,13 +1,21 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Contact\Controller\Index;
 
+use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\App\ObjectManager;
+
 class Post extends \Magento\Contact\Controller\Index
 {
+    /**
+     * @var DataPersistorInterface
+     */
+    private $dataPersistor;
+
     /**
      * Post user question
      *
@@ -24,7 +32,7 @@ class Post extends \Magento\Contact\Controller\Index
 
         $this->inlineTranslation->suspend();
         try {
-            $postObject = new \Magento\Framework\Object();
+            $postObject = new \Magento\Framework\DataObject();
             $postObject->setData($post);
 
             $error = false;
@@ -50,8 +58,8 @@ class Post extends \Magento\Contact\Controller\Index
                 ->setTemplateIdentifier($this->scopeConfig->getValue(self::XML_PATH_EMAIL_TEMPLATE, $storeScope))
                 ->setTemplateOptions(
                     [
-                        'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
-                        'store' => $this->storeManager->getStore()->getId(),
+                        'area' => \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE,
+                        'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
                     ]
                 )
                 ->setTemplateVars(['data' => $postObject])
@@ -65,15 +73,32 @@ class Post extends \Magento\Contact\Controller\Index
             $this->messageManager->addSuccess(
                 __('Thanks for contacting us with your comments and questions. We\'ll respond to you very soon.')
             );
-            $this->_redirect('*/*/');
+            $this->getDataPersistor()->clear('contact_us');
+            $this->_redirect('contact/index');
             return;
         } catch (\Exception $e) {
             $this->inlineTranslation->resume();
             $this->messageManager->addError(
                 __('We can\'t process your request right now. Sorry, that\'s all we know.')
             );
-            $this->_redirect('*/*/');
+            $this->getDataPersistor()->set('contact_us', $post);
+            $this->_redirect('contact/index');
             return;
         }
+    }
+
+    /**
+     * Get Data Persistor
+     *
+     * @return DataPersistorInterface
+     */
+    private function getDataPersistor()
+    {
+        if ($this->dataPersistor === null) {
+            $this->dataPersistor = ObjectManager::getInstance()
+                ->get(DataPersistorInterface::class);
+        }
+
+        return $this->dataPersistor;
     }
 }

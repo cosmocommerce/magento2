@@ -4,10 +4,10 @@ namespace Magento\GoogleOptimizer\Model;
 /**
  * Google Experiment Code Model
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
- * @method \Magento\GoogleOptimizer\Model\Resource\Code _getResource()
- * @method \Magento\GoogleOptimizer\Model\Resource\Code getResource()
+ * @method \Magento\GoogleOptimizer\Model\ResourceModel\Code _getResource()
+ * @method \Magento\GoogleOptimizer\Model\ResourceModel\Code getResource()
  * @method \Magento\GoogleOptimizer\Model\Code setEntityId(int $value)
  * @method string getEntityId()
  * @method \Magento\GoogleOptimizer\Model\Code setEntityType(string $value)
@@ -42,7 +42,7 @@ class Code extends \Magento\Framework\Model\AbstractModel
     protected function _construct()
     {
         parent::_construct();
-        $this->_init('Magento\GoogleOptimizer\Model\Resource\Code');
+        $this->_init('Magento\GoogleOptimizer\Model\ResourceModel\Code');
     }
 
     /**

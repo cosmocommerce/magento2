@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Gateway\Data\Order;
@@ -8,6 +8,9 @@ namespace Magento\Payment\Gateway\Data\Order;
 use Magento\Payment\Gateway\Data\AddressAdapterInterface;
 use Magento\Sales\Api\Data\OrderAddressInterface;
 
+/**
+ * Class AddressAdapter
+ */
 class AddressAdapter implements AddressAdapterInterface
 {
     /**
@@ -28,9 +31,9 @@ class AddressAdapter implements AddressAdapterInterface
      *
      * @return string
      */
-    public function getRegion()
+    public function getRegionCode()
     {
-        return $this->address->getRegion();
+        return $this->address->getRegionCode();
     }
 
     /**
@@ -143,5 +146,35 @@ class AddressAdapter implements AddressAdapterInterface
     public function getEmail()
     {
         return $this->address->getEmail();
+    }
+
+    /**
+     * Returns name prefix
+     *
+     * @return string
+     */
+    public function getPrefix()
+    {
+        return $this->address->getPrefix();
+    }
+
+    /**
+     * Returns name suffix
+     *
+     * @return string
+     */
+    public function getSuffix()
+    {
+        return $this->address->getSuffix();
+    }
+
+    /**
+     * Get company
+     *
+     * @return string
+     */
+    public function getCompany()
+    {
+        return $this->address->getCompany();
     }
 }

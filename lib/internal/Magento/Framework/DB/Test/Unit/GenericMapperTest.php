@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Framework\DB\Test\Unit;
@@ -210,11 +210,11 @@ class GenericMapperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->selectMock));
         $this->selectMock->expects($this->once())
             ->method('getPart')
-            ->with(\Zend_Db_Select::COLUMNS)
+            ->with(\Magento\Framework\DB\Select::COLUMNS)
             ->willReturn([]);
         $this->selectMock->expects($this->once())
             ->method('setPart')
-            ->with(\Zend_Db_Select::COLUMNS, $this->equalTo($fields));
+            ->with(\Magento\Framework\DB\Select::COLUMNS, $this->equalTo($fields));
 
         $geneticMapper->mapFields($fields);
     }

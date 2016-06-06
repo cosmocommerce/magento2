@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -168,7 +168,10 @@ class TranslatedLists implements ListsInterface
      */
     public function getOptionAllCurrencies()
     {
-        $currencies = (new CurrencyBundle())->get($this->localeResolver->getLocale())['Currencies'] ?: [];
+        $currencyBundle = new \Magento\Framework\Locale\Bundle\CurrencyBundle();
+        $locale = $this->localeResolver->getLocale();
+        $currencies = $currencyBundle->get($locale)['Currencies'] ?: [];
+
         $options = [];
         foreach ($currencies as $code => $data) {
             $options[] = ['label' => $data[1], 'value' => $code];
@@ -197,8 +200,12 @@ class TranslatedLists implements ListsInterface
     /**
      * @inheritdoc
      */
-    public function getCountryTranslation($value)
+    public function getCountryTranslation($value, $locale = null)
     {
-        return (new RegionBundle())->get($this->localeResolver->getLocale())['Countries'][$value];
+        if ($locale == null) {
+            return (new RegionBundle())->get($this->localeResolver->getLocale())['Countries'][$value];
+        } else {
+            return (new RegionBundle())->get($locale)['Countries'][$value];
+        }
     }
 }

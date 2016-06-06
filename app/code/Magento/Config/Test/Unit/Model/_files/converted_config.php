@@ -1,12 +1,12 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 return [
     'config' => [
-        'noNamespaceSchemaLocation' => '../../../../../../../../app/code/Magento/Config/etc/system_file.xsd',
+        'noNamespaceSchemaLocation' => 'urn:magento:module:Magento_Config:etc/system_file.xsd',
         'system' => [
             'tabs' => [
                 'tab_1' => [

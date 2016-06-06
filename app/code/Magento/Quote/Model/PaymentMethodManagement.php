@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Quote\Model;
@@ -61,17 +61,9 @@ class PaymentMethodManagement implements \Magento\Quote\Api\PaymentMethodManagem
         $payment = $quote->getPayment();
 
         $data = $method->getData();
-        if (isset($data['additional_data'])) {
-            $data = array_merge($data, (array)$data['additional_data']);
-            unset($data['additional_data']);
-        }
         $payment->importData($data);
 
         if ($quote->isVirtual()) {
-            // check if billing address is set
-            if ($quote->getBillingAddress()->getCountryId() === null) {
-                throw new InvalidTransitionException(__('Billing address is not set'));
-            }
             $quote->getBillingAddress()->setPaymentMethod($payment->getMethod());
         } else {
             // check if shipping address is set

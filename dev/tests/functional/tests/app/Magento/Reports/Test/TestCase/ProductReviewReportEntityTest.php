@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -10,8 +10,6 @@ use Magento\Review\Test\Fixture\Review;
 use Magento\Mtf\TestCase\Injectable;
 
 /**
- * Test Creation for ProductReviewReportEntity
- *
  * Preconditions:
  * 1. Create simple product
  * 2. Create review for this product

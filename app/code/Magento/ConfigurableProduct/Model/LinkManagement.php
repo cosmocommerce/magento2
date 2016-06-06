@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ConfigurableProduct\Model;
@@ -23,7 +23,7 @@ class LinkManagement implements \Magento\ConfigurableProduct\Api\LinkManagementI
     private $productFactory;
 
     /**
-     * @var Resource\Product\Type\Configurable
+     * @var \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable
      */
     private $configurableType;
 
@@ -35,13 +35,13 @@ class LinkManagement implements \Magento\ConfigurableProduct\Api\LinkManagementI
     /**
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param \Magento\Catalog\Api\Data\ProductInterfaceFactory $productFactory
-     * @param Resource\Product\Type\Configurable $configurableType
+     * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableType
      * @param \Magento\Framework\Api\DataObjectHelper $dataObjectHelper
      */
     public function __construct(
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Catalog\Api\Data\ProductInterfaceFactory $productFactory,
-        \Magento\ConfigurableProduct\Model\Resource\Product\Type\Configurable $configurableType,
+        \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableType,
         \Magento\Framework\Api\DataObjectHelper $dataObjectHelper
     ) {
         $this->productRepository = $productRepository;

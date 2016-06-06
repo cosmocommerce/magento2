@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Test\Unit\Model\Indexer\Product\Eav\Action;
@@ -10,14 +10,14 @@ class FullTest extends \PHPUnit_Framework_TestCase
     public function testExecuteWithAdapterErrorThrowsException()
     {
         $eavDecimalFactory = $this->getMock(
-            'Magento\Catalog\Model\Resource\Product\Indexer\Eav\DecimalFactory',
+            'Magento\Catalog\Model\ResourceModel\Product\Indexer\Eav\DecimalFactory',
             ['create'],
             [],
             '',
             false
         );
         $eavSourceFactory = $this->getMock(
-            'Magento\Catalog\Model\Resource\Product\Indexer\Eav\SourceFactory',
+            'Magento\Catalog\Model\ResourceModel\Product\Indexer\Eav\SourceFactory',
             ['create'],
             [],
             '',

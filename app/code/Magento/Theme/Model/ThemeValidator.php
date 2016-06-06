@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Model;
@@ -75,15 +75,15 @@ class ThemeValidator
         foreach ($configData as $row) {
             switch($row['scope']) {
                 case 'default':
-                    $messages[] = $themesById[$row['value']] . ' is in use in default config';
+                    $messages[] = '<error>' . $themesById[$row['value']] . ' is in use in default config' . '</error>';
                     break;
                 case ScopeInterface::SCOPE_WEBSITES:
-                    $messages[] = $themesById[$row['value']] . ' is in use in website '
-                        . $this->storeManager->getWebsite($row['scope_id'])->getName();
+                    $messages[] = '<error>' . $themesById[$row['value']] . ' is in use in website '
+                        . $this->storeManager->getWebsite($row['scope_id'])->getName() . '</error>';
                     break;
                 case ScopeInterface::SCOPE_STORES:
-                    $messages[] = $themesById[$row['value']] . ' is in use in store '
-                        . $this->storeManager->getStore($row['scope_id'])->getName();
+                    $messages[] = '<error>' . $themesById[$row['value']] . ' is in use in store '
+                        . $this->storeManager->getStore($row['scope_id'])->getName() . '</error>';
                     break;
             }
         }

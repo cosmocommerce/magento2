@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Widget\Block\Adminhtml\Widget\Instance\Edit\Chooser;
@@ -39,10 +39,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAvailableContainers()
     {
-        $design = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
-            'Magento\Framework\View\DesignInterface'
+        $themeToTest = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
+            '\Magento\Theme\Model\Theme'
         );
-        $this->block->setTheme($design->getDesignTheme()->getId());
+        $themeId = $themeToTest->load('Magento/blank', 'code')
+            ->getId();
+        $this->block->setTheme($themeId);
         $this->assertContains('<option value="before.body.end" >', $this->block->toHtml());
     }
 }

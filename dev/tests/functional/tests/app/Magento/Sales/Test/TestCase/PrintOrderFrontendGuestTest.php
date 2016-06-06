@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -15,7 +15,7 @@ use Magento\Mtf\TestCase\Scenario;
  * 2. Enable all Gift Options.
  * 3. Create Gift Card Account with Balance = 1.
  * 4. Create Customer Account.
- * 5. Place order with options according to dataSet.
+ * 5. Place order with options according to dataset.
  *
  * Steps:
  * 1. Find the Order on frontend.
@@ -33,7 +33,6 @@ class PrintOrderFrontendGuestTest extends Scenario
     /* tags */
     const MVP = 'yes';
     const DOMAIN = 'CS';
-    const TO_MAINTAIN = 'yes';
     /* end tags */
 
     /**

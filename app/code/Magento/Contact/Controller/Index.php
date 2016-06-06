@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Contact\Controller;
@@ -12,7 +12,7 @@ use Magento\Store\Model\ScopeInterface;
 /**
  * Contact index controller
  */
-class Index extends \Magento\Framework\App\Action\Action
+abstract class Index extends \Magento\Framework\App\Action\Action
 {
     /**
      * Recipient email config path

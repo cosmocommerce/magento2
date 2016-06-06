@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -7,7 +7,10 @@ var config = {
     "waitSeconds": 0,
     "map": {
         "*": {
-            "mageUtils": "mage/utils/main"
+            "ko": "knockoutjs/knockout",
+            "knockout": "knockoutjs/knockout",
+            "mageUtils": "mage/utils/main",
+            "rjsResolver": "mage/requirejs/resolver"
         }
     },
     "shim": {
@@ -18,20 +21,21 @@ var config = {
         "mage/adminhtml/backup": ["prototype"],
         "mage/captcha": ["prototype"],
         "mage/common": ["jquery"],
-        "mage/requirejs/plugin/id-normalizer": ["jquery"],
+        "mage/new-gallery": ["jquery"],
         "mage/webapi": ["jquery"],
         "jquery/ui": ["jquery"],
+        "MutationObserver": ["es6-collections"],
         "tinymce": {
             "exports": "tinymce"
-        },
-        "ko": {
-            "exports": "ko"
         },
         "moment": {
             "exports": "moment"
         },
         "matchMedia": {
             "exports": "mediaCheck"
+        },
+        "jquery/jquery-storageapi": {
+            "deps": ["jquery/jquery.cookie"]
         }
     },
     "paths": {
@@ -41,14 +45,20 @@ var config = {
         "jquery/jquery.hashchange": "jquery/jquery.ba-hashchange.min",
         "prototype": "legacy-build.min",
         "jquery/jquery-storageapi": "jquery/jquery.storageapi.min",
-        "text": "requirejs/text",
+        "text": "mage/requirejs/text",
         "domReady": "requirejs/domReady",
-        "ko": "ko/ko",
         "tinymce": "tiny_mce/tiny_mce_src"
     },
     "deps": [
         "jquery/jquery-migrate"
-    ]
+    ],
+    "config": {
+        "mixins": {
+            "jquery/jstree/jquery.jstree": {
+                "mage/backend/jstree-mixin": true
+            }
+        }
+    }
 };
 
 require(['jquery'], function ($) {

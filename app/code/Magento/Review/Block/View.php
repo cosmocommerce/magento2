@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Review\Block;
@@ -97,7 +97,7 @@ class View extends \Magento\Catalog\Block\Product\AbstractProduct
     /**
      * Retrieve collection of ratings
      *
-     * @return \Magento\Review\Model\Resource\Rating\Option\Vote\Collection
+     * @return \Magento\Review\Model\ResourceModel\Rating\Option\Vote\Collection
      */
     public function getRating()
     {
